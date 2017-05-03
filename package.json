@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "A highly customizable Gauge Component for Angular 2+ apps and dashboards",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "rimraf dist && gulp build:lib",
+    "start": "rimraf dist && gulp build:watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ashish-chopra/ngx-gauge.git"
@@ -27,5 +30,26 @@
   "bugs": {
     "url": "https://github.com/ashish-chopra/ngx-gauge/issues"
   },
-  "homepage": "https://github.com/ashish-chopra/ngx-gauge#readme"
+  "homepage": "https://github.com/ashish-chopra/ngx-gauge#readme",
+  "devDependencies": {
+    "@angular/common": "^4.1.0",
+    "@angular/compiler": "^4.1.0",
+    "@angular/platform-browser": "^4.1.0",
+    "@angular/platform-browser-dynamic": "^4.1.0",
+    "gulp": "^3.9.1",
+    "gulp-better-rollup": "^1.1.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-header": "^1.8.8",
+    "gulp-inline-ng2-template": "^4.0.0",
+    "gulp-typescript": "^3.1.6",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.41.6",
+    "run-sequence": "^1.2.2",
+    "rxjs": "^5.3.1",
+    "typescript": "^2.3.2",
+    "zone.js": "^0.8.9"
+  },
+  "dependencies": {
+    "@angular/core": "^4.1.0"
+  }
 }
