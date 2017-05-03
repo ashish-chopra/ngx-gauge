@@ -1,7 +1,7 @@
 {
   "name": "ngx-gauge",
   "version": "0.0.1",
-  "description": "A gauge component for Angular 2+ apps",
+  "description": "A highly customizable Gauge Component for Angular 2+ apps and dashboards",
   "main": "index.js",
   "scripts": {},
   "repository": {
@@ -10,9 +10,6 @@
   },
   "keywords": [
     "angular",
-    "2",
-    "angular",
-    "4",
     "gauge",
     "dashboard",
     "meter",
@@ -21,7 +18,11 @@
     "ngx",
     "ngx-gauge"
   ],
-  "author": "Ashish Chopra",
+  "author": {
+    "name": "Ashish Chopra",
+    "email": "sendtoashishchopra@gmail.com",
+    "url": "https://ashish-chopra.github.io"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ashish-chopra/ngx-gauge/issues"
