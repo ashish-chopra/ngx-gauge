@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist && gulp build:lib",
-    "start": "rimraf dist && gulp build:watch"
+    "start": "rimraf dist && gulp build:watch",
+    "test": "gulp test",
+    "test:watch": "gulp test:watch"
   },
   "repository": {
     "type": "git",
@@ -36,16 +38,23 @@
     "@angular/compiler": "^4.1.0",
     "@angular/platform-browser": "^4.1.0",
     "@angular/platform-browser-dynamic": "^4.1.0",
+    "codelyzer": "^3.0.1",
     "gulp": "^3.9.1",
     "gulp-better-rollup": "^1.1.1",
     "gulp-clean": "^0.3.2",
     "gulp-header": "^1.8.8",
     "gulp-inline-ng2-template": "^4.0.0",
+    "gulp-tslint": "^8.0.0",
     "gulp-typescript": "^3.1.6",
+    "jasmine-core": "^2.6.1",
+    "karma": "^1.6.0",
+    "karma-chrome-launcher": "^2.1.0",
+    "karma-jasmine": "^1.1.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
     "run-sequence": "^1.2.2",
     "rxjs": "^5.3.1",
+    "tslint": "^5.2.0",
     "typescript": "^2.3.2",
     "zone.js": "^0.8.9"
   },

@@ -18,7 +18,9 @@ const gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     rollup = require('gulp-better-rollup'),
     pkg = require('./package.json'),
-    header = require('gulp-header');
+    header = require('gulp-header'),
+    tslint = require('gulp-tslint'),
+    KarmaServer = require('karma').Server;
 
 const config = {
     root: '.',
@@ -36,7 +38,7 @@ const config = {
     },
     bundle: {
         dir: 'dist/bundle',
-        src: 'dist/greeting.js',
+        src: 'dist/index.js',
     },
     tsConfigFilePath: 'tsconfig.json',
     banner:
@@ -87,10 +89,11 @@ gulp.task('clean', () => {
 gulp.task('build', () => {
     var tsProject = ts.createProject(config.tsConfigFilePath);
     return gulp.src(config.src.files)
-        .pipe(inlineNg2Template({ 
-            base: config.src.dir, 
+        .pipe(inlineNg2Template({
+            base: config.src.dir,
             useRelativePaths: true,
-            removeLineBreaks: true }))
+            removeLineBreaks: true
+        }))
         .pipe(sourcemaps.init())
         .pipe(tsProject())
         .pipe(header(config.banner, { pkg: pkg }))
@@ -111,10 +114,35 @@ gulp.task('package', () => {
         .pipe(gulp.dest(config.dest.dir));
 });
 
+gulp.task('lint', () => {
+    gulp.src(config.src.files)
+        .pipe(tslint({
+            formatter: 'verbose'
+        }))
+        .pipe(tslint.report({
+            summarizeFailureOutput: true,
+            emitError: false
+        }));
+});
+
+gulp.task('test', (done) => {
+    return new KarmaServer({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+
+gulp.task('test:watch', ['lint'], (done) => {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js'
+    }, done).start();
+});
+
+
 gulp.task('build:lib', (done) => {
     return runSequence('build', 'bundle', 'package', done);
 })
 
-gulp.task('build:watch',['build:lib'], () => {
+gulp.task('build:watch', ['build:lib'], () => {
     gulp.watch(config.src.dir + '/**/*.*', ['build:lib']);
 });
