@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NgxGauge} from './gauge';
 
 @NgModule({
-    imports: [],
-    declarations: [],
-    exports: []
+    imports: [CommonModule],
+    declarations: [NgxGauge],
+    exports: [NgxGauge]
 })
-export class NgxGagueModule { }
+export class NgxGaugeModule { }

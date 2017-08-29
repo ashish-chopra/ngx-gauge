@@ -2,7 +2,8 @@
   "name": "ngx-gauge",
   "version": "0.0.1",
   "description": "A highly customizable Gauge Component for Angular 2+ apps and dashboards",
-  "main": "index.js",
+  "main": "bundle/index.js",
+  "module": "index.js",
   "scripts": {
     "build": "rimraf dist && gulp build:lib",
     "start": "rimraf dist && gulp build:watch",
@@ -34,16 +35,14 @@
   },
   "homepage": "https://github.com/ashish-chopra/ngx-gauge#readme",
   "devDependencies": {
-    "@angular/common": "^4.1.0",
-    "@angular/compiler": "^4.1.0",
-    "@angular/platform-browser": "^4.1.0",
-    "@angular/platform-browser-dynamic": "^4.1.0",
+   
     "codelyzer": "^3.0.1",
     "gulp": "^3.9.1",
     "gulp-better-rollup": "^1.1.1",
     "gulp-clean": "^0.3.2",
     "gulp-header": "^1.8.8",
     "gulp-inline-ng2-template": "^4.0.0",
+    "gulp-ngc": "^0.3.2",
     "gulp-tslint": "^8.0.0",
     "gulp-typescript": "^3.1.6",
     "jasmine-core": "^2.6.1",
@@ -59,6 +58,13 @@
     "zone.js": "^0.8.9"
   },
   "dependencies": {
-    "@angular/core": "^4.1.0"
+    "@angular/core": "^4.3.6",
+    "@angular/animations": "^4.3.6",
+    "@angular/common": "^4.3.6",
+    "@angular/compiler": "^4.3.6",
+    "@angular/compiler-cli": "^4.3.6",
+    "@angular/platform-browser": "^4.3.6",
+    "@angular/platform-browser-dynamic": "^4.3.6",
+    "@angular/platform-server": "^4.3.6"
   }
 }

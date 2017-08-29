@@ -68,7 +68,7 @@ Checkout the extensive list of configuration properites given below and try them
 
 # Configuration Properties
 
-There are plenty of configurable `input` properties available to tune the `Gauge` as per your needs.
+There are plenty of configurable properties available to tune the gauge as per your needs.
 
 | Name      | Description  | Required  | Default value  | Possible values |
 | ---       | ---          | ---       | ---               | ---            |
@@ -80,8 +80,8 @@ There are plenty of configurable `input` properties available to tune the `Gauge
 | `cap`       | The style of line ending at the gauge's end.    | No        | `"butt"`    | `"round"`, `"butt"`           |
 | `thick`        | Specified the thickness of the gauge's bar.            | No        | `6`        | Any Positive Integer |
 | `label`       | Specifies the text to display below the Gauge's reading.  | No  | `undefined`                | Any String           |
-| `foreground-color`         | Specifies the foreground color of the Gauge's scale.                    | No       | `rgba(0, 150, 136, 1)`             |   Any color value string       |
-| `background-color`    | Specifies the background color of the Gauge's scale.| No        |    `rgba(0, 0, 0, 0.1)`           |    Any color value string        |
+| `foregroundColor`         | Specifies the foreground color of the Gauge's scale.                    | No       | `rgba(0, 150, 136, 1)`             |   Any color value string       |
+| `backgroundColor`    | Specifies the background color of the Gauge's scale.| No        |    `rgba(0, 0, 0, 0.1)`           |    Any color value string        |
 | `append`   | Specifies a `string` appended to the Gauge's reading. For example `"%"` most commonly used. | No        | `undefined`        | Any string           |
 | `prepend`      | Specifies a `string` prepended to the Gauge's reading. For example `"$"` in case of financial data displayed in Gauge.                                        | No        | `undefined`            | Any String           |
 | `duration`    | Specifies the duration (in milliseconds) of the Gauge's animation | No       | `1500` | Positive Integer           |
@@ -91,31 +91,33 @@ There are plenty of configurable `input` properties available to tune the `Gauge
 
 You can customize the colors of the gauge based on the current value being shown. In order to show different colors when gauge crosses certain value, use property `thresholds`. It takes an object with the threshold value  as `key` and an object with `color` property as `value`. For example: 
 
-```js
-....
+```ts
+@Component({ ... })
+export class AppComponent {
+    ...
 
-var thresholdConfig = {
-  '0': {color: 'green'},
-  '40': {color: 'orange'},
-  '75.5': {color: 'red'}
-};
+    thresholdConfig = {
+        '0': {color: 'green'},
+        '40': {color: 'orange'},
+        '75.5': {color: 'red'}
+    };
 
-....
-
+    ...
+}
 ```
 
 ```html
-<ng-gauge ...  [thresholds]="thresholdConfig"></ng-gauge>
+<ngx-gauge ...  [thresholds]="thresholdConfig"></ngx-gauge>
 ```
 The keys in the threshold object signifies the minimum value at which the color will be applied. For instance, if the gauge's current value is `53.2`, then orange color will be applied because after point `40` every value will be displayed as `orange`, until next threshold is encountered. In this example `75.5` is the next threshold.
 
-# Playground
+<!-- # Playground
 
 The examples section is redesigned as a playground where you can play with Gauge by tuning its different parameters. 
 And, you can see the result live on-screen. It is good start to get familiar with Gauge.
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/playground.png)
-
+ -->
 
 # Contribution Welcome!
 
@@ -131,7 +133,7 @@ $> npm install
 2. Use following commands based on what you'd like to do:
 
 ```shell
-$> npm start             # starts the server at port 3000 and hosts the `/examples` directory.
+$> npm start             # builds the project and watch for changes. 
 $> npm test              # runs test suite once and exit.
 $> npm run test:watch    # starts the test framework and watch for changes in code.
 $> npm run build         # triggers a manual build for library, outputs at `/dist` directory.
@@ -140,10 +142,10 @@ $> npm run build         # triggers a manual build for library, outputs at `/dis
 3. To add a new feature or fix a bug, make sure to create a new branch from `master`.
 
 
-First thing first, explore the [issue tracker](https://github.com/ashish-chopra/angular-gauge/issues) to find something to contribute. There are tons of other project setup related issues and activities in which you can help. Your feedback could also be a great contribution.
+First thing first, explore the [issue tracker](https://github.com/ashish-chopra/ngx-gauge/issues) to find something to contribute. There are tons of other project setup related issues and activities in which you can help. Your feedback could also be a great contribution.
 
-If you face any problem, then raise an issue [here](https://github.com/ashish-chopra/angular-gauge/issues).
+If you face any problem, then raise an issue [here](https://github.com/ashish-chopra/ngx-gauge/issues).
 
 # License
 
-[MIT License](https://github.com/ashish-chopra/angular-gauge/blob/master/LICENSE)
+[MIT License](https://github.com/ashish-chopra/ngx-gauge/blob/master/LICENSE)

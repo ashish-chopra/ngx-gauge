@@ -20,7 +20,9 @@ const gulp = require('gulp'),
     pkg = require('./package.json'),
     header = require('gulp-header'),
     tslint = require('gulp-tslint'),
+    ngc = require('gulp-ngc'),
     KarmaServer = require('karma').Server;
+
 
 const config = {
     root: '.',
@@ -32,6 +34,9 @@ const config = {
     src: {
         dir: 'src',
         files: 'src/**/*.ts'
+    },
+    temp: {
+        dir: 'dist/temp'
     },
     dest: {
         dir: 'dist',
@@ -81,10 +86,30 @@ const ROLLUP_CONFIG = {
 };
 
 
-gulp.task('clean', () => {
+gulp.task('clean:dest', () => {
     return sweeper(config.dest.dir);
 });
 
+gulp.task('clean:temp', () => {
+    return sweeper(config.temp.dir);
+})
+
+gulp.task('inline', () => {
+    return gulp.src(config.src.files)
+        .pipe(inlineNg2Template({
+            base: config.src.dir,
+            useRelativePaths: true,
+            removeLineBreaks: true
+        }))
+        .pipe(gulp.dest(config.temp.dir));
+});
+
+
+gulp.task('compile', () => {
+    return gulp.src(config.temp.dir)
+        .pipe(ngc(config.tsConfigFilePath))
+        .pipe(gulp.dest(config.dest.dir));
+});
 
 gulp.task('build', () => {
     var tsProject = ts.createProject(config.tsConfigFilePath);
@@ -92,7 +117,7 @@ gulp.task('build', () => {
         .pipe(inlineNg2Template({
             base: config.src.dir,
             useRelativePaths: true,
-            removeLineBreaks: true
+
         }))
         .pipe(sourcemaps.init())
         .pipe(tsProject())
@@ -105,6 +130,7 @@ gulp.task('bundle', () => {
     gulp.src(config.bundle.src)
         .pipe(sourcemaps.init())
         .pipe(rollup(ROLLUP_CONFIG))
+        .pipe(header(config.banner, { pkg: pkg }))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(config.bundle.dir));
 });
@@ -140,9 +166,10 @@ gulp.task('test:watch', ['lint'], (done) => {
 
 
 gulp.task('build:lib', (done) => {
-    return runSequence('build', 'bundle', 'package', done);
-})
+    return runSequence('clean:dest', 'inline', 'compile', 'bundle', 'package', 'clean:temp', done);
+});
 
 gulp.task('build:watch', ['build:lib'], () => {
     gulp.watch(config.src.dir + '/**/*.*', ['build:lib']);
 });
+
