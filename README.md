@@ -1,10 +1,11 @@
 # ngx-gauge
-
+<!--
 [![npm version](https://badge.fury.io/js/angularjs-gauge.svg)](https://badge.fury.io/js/angularjs-gauge)
 [![Build Status](https://travis-ci.org/ashish-chopra/angular-gauge.png?branch=master)](https://travis-ci.org/ashish-chopra/angular-gauge)
 [![peerDependencies Status](https://david-dm.org/ashish-chopra/angular-gauge/peer-status.svg)](https://david-dm.org/ashish-chopra/angular-gauge?type=peer)
 [![devDependencies Status](https://david-dm.org/ashish-chopra/angular-gauge/dev-status.svg)](https://david-dm.org/ashish-chopra/angular-gauge?type=dev)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+-->
 
 A highly customizable Gauge component for **Angular >= 4.3.x** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
 
@@ -20,7 +21,7 @@ npm install --save ngx-gauge
 ```
 This will install the current stable version of `ngx-gauge` in your `node_modules` directory and save the entry in `package.json`.
 
-#### Step 2: Import the **NgxGaugeModule**
+#### Step 2: Import the _NgxGaugeModule_ 
 
 ```ts
 import { NgxGaugeModule } from 'ngx-gauge';
@@ -35,14 +36,35 @@ export class AppModule { }
 ```
 Be sure to import `NgxGaugeModule` after Angular's `BrowserModule`, as the import order matters for _NgModules_.
 
-#### Step 3: Use component `<ngx-gauge>` in HTML
-By now the module is ready to use in your app. Copy the following code to see a default gauge in action.
+#### Step 3: Use gauge component in HTML
+`NgxGaugeModule` provides a `<ngx-gauge>` component which can be used in any angular template to render a gauge.
+It's configuration properties can be bind to a typescript variable as shown below:
 
-```html
-<ngx-gauge size="200" type="full" thick="5" min="0" max="120" value="68.2" cap="round" label="Speed"  foreground-color="#ffcc66" background-color="rgba(255,255,255, 0.4)" append="mph"></ngx-gauge>
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-component',
+    templateUrl: 'app.html'
+})
+export class AppComponent {
+    
+    gaugeType = "semi";
+    gaugeValue = 28.3;
+    gaugeLabel = "Speed";
+    gaugeAppendText = "km/hr";
+}
 ```
 
-If you face any problem, then raise an issue [here](https://github.com/ashish-chopra/ngx-gauge/issues).
+```html
+<ngx-gauge [type]="gaugeType" 
+           [value]="gaugeValue" 
+           [label]="gaugeLabel"  
+           [append]="gaugeAppendText">
+</ngx-gauge>
+```
+
+Checkout the extensive list of configuration properites given below and try them to acheive your desired customization. In case you face any problem, then raise an issue [here](https://github.com/ashish-chopra/ngx-gauge/issues).
 
 # Configuration Properties
 
