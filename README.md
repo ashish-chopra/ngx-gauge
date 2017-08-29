@@ -13,14 +13,14 @@ A highly customizable Gauge component for **Angular >= 4.3.x** apps and dashboar
 
 # Getting Started
 
-## step 1: Install `ngx-gauge` Module
+#### step 1: Install npm module
 
 ```bash
 npm install --save ngx-gauge 
 ```
-This will install the current stable version in your `node_modules` directory and save the entry in `package.json`.
+This will install the current stable version of `ngx-gauge` in your `node_modules` directory and save the entry in `package.json`.
 
-## Step 2: Import the **NgxGaugeModule**
+#### Step 2: Import the **NgxGaugeModule**
 
 ```ts
 import { NgxGaugeModule } from 'ngx-gauge';
@@ -33,9 +33,9 @@ import { NgxGaugeModule } from 'ngx-gauge';
 export class AppModule { }
 
 ```
-Be sure to import `NgxGaugeModule` after Angular's `BrowserModule`, as the import order matters for `NgModules`.]
+Be sure to import `NgxGaugeModule` after Angular's `BrowserModule`, as the import order matters for _NgModules_.
 
-## Step 3: Use component `<ngx-gauge>` in HTML
+#### Step 3: Use component `<ngx-gauge>` in HTML
 By now the module is ready to use in your app. Copy the following code to see a default gauge in action.
 
 ```html
