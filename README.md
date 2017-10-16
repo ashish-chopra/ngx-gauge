@@ -1,11 +1,11 @@
 # ngx-gauge
-<!--
-[![npm version](https://badge.fury.io/js/angularjs-gauge.svg)](https://badge.fury.io/js/angularjs-gauge)
-[![Build Status](https://travis-ci.org/ashish-chopra/angular-gauge.png?branch=master)](https://travis-ci.org/ashish-chopra/angular-gauge)
-[![peerDependencies Status](https://david-dm.org/ashish-chopra/angular-gauge/peer-status.svg)](https://david-dm.org/ashish-chopra/angular-gauge?type=peer)
-[![devDependencies Status](https://david-dm.org/ashish-chopra/angular-gauge/dev-status.svg)](https://david-dm.org/ashish-chopra/angular-gauge?type=dev)
+
+[![npm version](https://badge.fury.io/js/ngx-gauge.svg)](https://badge.fury.io/js/ngx-gauge)
+<!-- [![Build Status](https://travis-ci.org/ashish-chopra/angular-gauge.png?branch=master)](https://travis-ci.org/ashish-chopra/angular-gauge) -->
+[![peerDependencies Status](https://david-dm.org/ashish-chopra/ngx-gauge/peer-status.svg)](https://david-dm.org/ashish-chopra/angular-gauge?type=peer)
+[![devDependencies Status](https://david-dm.org/ashish-chopra/ngx-gauge/dev-status.svg)](https://david-dm.org/ashish-chopra/angular-gauge?type=dev)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
--->
+
 
 A highly customizable Gauge component for **Angular >= 4.3.x** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
 
