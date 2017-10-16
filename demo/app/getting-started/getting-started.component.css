@@ -1,0 +1,46 @@
+
+.jumbotron {
+    background:#16a085;
+    color: white;
+}
+
+.jumptarget::before {
+  content:"";
+  display:block;
+  height:56px; /* fixed header height*/
+  margin:-56px 0 0; /* negative fixed header height */
+}
+
+.custom-heading {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.2rem;
+}
+
+#jumbo-action .btn {
+    color: white;
+    border-color: #ffe484;
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    background-color: transparent;
+
+}
+
+#jumbo-action .btn:hover {
+    color: #424242;
+    background-color: #ffe484;
+}
+
+#jumbo-action .btn-fill {
+    color: #424242;
+    background-color: #ffe484;
+}
+
+.badge {
+    font-size: 3rem;
+    /* position:absolute; */
+    right: -10rem;
+    top:0;
+    color: #ffe484;
+}

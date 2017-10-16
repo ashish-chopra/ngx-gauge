@@ -1,32 +1,23 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "target": "es5",
-        "lib": [
-            "es2015",
-            "dom"
-        ],
-        "outDir": "./dist",
-        "module": "es2015",
-        "experimentalDecorators": true,
-        "moduleResolution": "node",
-        "inlineSources": true,
-        "stripInternal": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "removeComments": true,
-        "declaration": true
-    },
-    "exclude": [
-        "node_modules",
-        "dist"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "demo",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
     ],
-    "files": [
-        "dist/temp/index.ts"
+    "lib": [
+      "es2016",
+      "dom"
     ],
-    "angularCompilerOptions": {
-        "genDir": "dist",
-        "skipTemplateCodegen": true
+    "paths": {
+      "ngx-gauge": ["./dist/lib/public_api.ts"]
     }
+  }
 }

@@ -1,0 +1,218 @@
+/* 
+   
+   Why i call this override.css, because this is the place where i will override the 
+   ready-to-use frameworks like Bootstrap, Angular Material design as per my needs.
+*/
+
+html, body {
+    color: #424242;
+    background-color: #fff;
+}
+
+.spacer {
+   margin-top: 56px;
+}
+
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+.nav-link {
+    font-weight: bold;
+}
+.nav-item {
+    margin-right: 20px;
+}
+
+#navbarSupportedContent {
+    padding-left: 50px;
+}
+
+footer {
+    background-color: #f7f7f7;
+    padding: 3rem 0;
+    margin-top: 4rem;
+    font-size: 85%;
+}
+
+footer ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer-box > div:first-child {
+    width:75%;
+}
+
+.block {
+    padding: 2rem;
+    padding-left: 0;
+}
+
+.block h2 {
+    font-weight: normal;
+    margin-bottom: 1.3rem;
+}
+
+.column-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+}
+
+.column-item  {
+    width: 50%;
+    padding: 20px;
+    margin-bottom: 3rem;
+}
+
+.column-item:nth-child(1) {
+    padding-left: 0;
+}
+
+.md-default-theme {
+    background-color: #fff;
+}
+
+md-content  {
+    min-height: 250px;
+    background-color: none;
+    padding: 1rem 0;
+}
+
+md-tab code.hljs {
+    background: none;
+}
+
+.output-frame {
+    border: 1px solid #ddd;
+    border-radius: 4px 4px;
+    height: 300px;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+h1 {
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0.5rem;
+}
+
+h1.custom-heading  {
+    padding-bottom:0rem;
+    border: none;
+}
+
+h4 {
+    margin: 1rem 0;
+}
+
+@media screen and (max-width: 500px) {
+    .display-2 {
+        font-size: 2.7em;
+    }
+    .container {
+        margin: 0;
+        width: 100%;
+    }
+    .block {
+        padding: 0.4rem;
+    }
+
+    .column-box {
+        flex-direction: column;
+    }
+    .column-item {
+        width: 100%;
+    }
+
+    .output-frame {
+        flex-wrap: wrap;
+        height: auto;
+    }
+
+    #jumbo-action .btn, #jumbo-action .btn-group {
+        width: 100%;
+    }
+
+    .footer-box {
+        flex-direction: column;
+    }
+    .footer-box div {
+        width: 100%;
+        text-align: center;
+    }
+    .footer-box > div:nth-child(2) {
+        margin-top: 20px;
+    }
+    .footer-box  ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .footer-box li {
+        margin-right: 1rem;
+    }
+
+}
+
+/*@media screen and (max-width: 700px) {
+    .container.block {
+        margin: 0;
+        width: 100%;
+    }
+    .block {
+        padding: 0.4rem;
+    }
+    .output-frame {
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: auto;
+    }
+     .column-box {
+        flex-direction: column;
+    }
+    .column-item {
+        width: 100%;
+    }
+}*/
+
+.playground {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.playground > .playground-section {
+    width: 47%;
+    min-width: 300px;
+    padding: 20px;
+}
+
+.playground > .playground-section:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-width {
+    width: 80%;
+}
+
+@media screen and (max-width: 400px) {
+    .badge {
+        position:relative;
+    }
+    .footer-box {
+        font-size: 0.8rem;
+    }
+}

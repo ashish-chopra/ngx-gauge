@@ -1,0 +1,129 @@
+<div class="container block">
+    <h1>Documentation</h1>
+    <h4>Usage</h4>
+    <p>Once you are setup with angular-gauge and its dependencies, you can straight forward use it on any HTML page like: </p>
+
+    <h4>Config Options</h4>
+    <p>
+        There are plenty of configurable options available to tune the Gauge as per your needs. Following is the extensive list of
+        configurable options <a href="https://github.com/ashish-chopra/angular-gauge#config-options" class="hidden-sm-up">here</a>.
+    </p>
+    <p></p>
+    <table class="table table-striped table-bordered hidden-sm-down">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th width="450">Description</th>
+                <th>Required</th>
+                <th>Default value</th>
+                <th>Possible Values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>size</td>
+                <td>Specifies the size of the canvas in which Gauge will be drawn. It is used as width and height both.</td>
+                <td>No</td>
+                <td>200</td>
+                <td>Positive Integer</td>
+            </tr>
+             <tr>
+                <td>type</td>
+                <td>Specifies the gauge's type.</td>
+                <td>No</td>
+                <td>"full"</td>
+                <td>"full", "semi", "arch"</td>
+            </tr>
+            <tr>
+                <td>min</td>
+                <td>Specifies the minimum numeric value for gauge's scale.</td>
+                <td>No</td>
+                <td>0</td>
+                <td>Any numeric value</td>
+            </tr>
+             <tr>
+                <td>max</td>
+                <td>Specified the maximum numeric value for gauge's scale.</td>
+                <td>No</td>
+                <td>100</td>
+                <td>Any numeric value</td>
+            </tr>
+             <tr>
+                <td>value</td>
+                <td>Specifies the current value of the Gauge in the range specified by min and max. It is a required attribute.</td>
+                <td>Yes</td>
+                <td>undefined</td>
+                <td>A numeric value</td>
+            </tr>
+            <tr>
+                <td>cap</td>
+                <td>The style of line ending at the gauge's end.</td>
+                <td>No</td>
+                <td>"butt"</td>
+                <td>"round", "butt"</td>
+            </tr>
+            <tr>
+                <td>thick</td>
+                <td>Specified the thickness of the gauge's bar.</td>
+                <td>No</td>
+                <td>6</td>
+                <td>Any Positive Integer</td>
+            </tr>
+            <tr>
+                <td>label</td>
+                <td>Specifies the text to display below the Gauge's reading.</td>
+                <td>No</td>
+                <td>undefined</td>
+                <td>Any string</td>
+            </tr>
+            <tr>
+                <td>foreground-color</td>
+                <td>Specifies the foreground color of the Gauge's bar./td>
+                <td>No</td>
+                <td>rgba(0, 150, 136, 1)</td>
+                <td>Any color value string</td>
+            </tr>
+            <tr>
+                <td>background-color</td>
+                <td>Specifies the background color of the Gauge's bar.</td>
+                <td>No</td>
+                <td>rgba(0, 0, 0, 0.1)</td>
+                <td>Any color value string</td>
+            </tr>
+            <tr>
+                <td>append</td>
+                <td>Specifies a string appended to the Gauge's reading. For example "%" most commonly used.</td>
+                <td>No</td>
+                <td>undefined</td>
+                <td>Any string</td>
+            </tr>
+            <tr>
+                <td>prepend</td>
+                <td>Specifies a string prepended to the Gauge's reading. For example "$" in case of financial data displayed
+                    in Gauge.</td>
+                <td>No</td>
+                <td>undefined</td>
+                <td>Any string</td>
+            </tr>
+            <tr>
+                <td>duration</td>
+                <td>Specifies the duration (in milliseconds) of the Gauge's animation</td>
+                <td>No</td>
+                <td>1500</td>
+                <td>A positive integer</td>
+            </tr>
+             <tr>
+                <td>thresholds</td>
+                <td>Specifies an object of threshold values at which the gauge's color changes. Checkout the example given below at 'Configure Threshold color ranges' section.</td>
+                <td>No</td>
+                <td>None</td>
+                <td>A special object</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>CSS</h4>
+    <p>
+        There are no CSS dependencies needs to be included. Even the fonts used in Gauge's text are driven by application-wide font
+        stylings. However, if you like the fonts which are displayed in demos section, use <em><a target="_blank" href="https://fonts.google.com/specimen/Open+Sans">Open Sans</a></em> Google Fonts.
+    </p>
+  </div>

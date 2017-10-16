@@ -1,0 +1,43 @@
+.ngx-gauge-meter {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+
+.reading-block {
+    position: absolute;
+    width: 100%;
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reading-label {
+    font-family: inherit;
+    width: 100%;
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: normal;
+}
+
+.reading-affix {
+    text-decoration: none;
+    font-size: 0.6em;
+    opacity: 0.8;
+    font-weight: 200;
+    padding: 0 0.18em;
+}
+
+.reading-affix:first-child {
+    padding-left: 0;
+}
+
+.reading-affix:last-child {
+    padding-right: 0;
+}

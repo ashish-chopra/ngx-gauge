@@ -1,70 +1,51 @@
 {
   "name": "ngx-gauge",
-  "version": "0.0.1",
-  "description": "A highly customizable Gauge Component for Angular 2+ apps and dashboards",
-  "main": "bundle/index.js",
-  "module": "index.js",
-  "scripts": {
-    "build": "rimraf dist && gulp build:lib",
-    "start": "rimraf dist && gulp build:watch",
-    "test": "gulp test",
-    "test:watch": "gulp test:watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ashish-chopra/ngx-gauge.git"
-  },
-  "keywords": [
-    "angular",
-    "gauge",
-    "dashboard",
-    "meter",
-    "charts",
-    "ng2",
-    "ngx",
-    "ngx-gauge"
-  ],
-  "author": {
-    "name": "Ashish Chopra",
-    "email": "sendtoashishchopra@gmail.com",
-    "url": "https://ashish-chopra.github.io"
-  },
+  "version": "0.0.0",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ashish-chopra/ngx-gauge/issues"
+  "scripts": {
+    "ng": "ng",
+    "start": "npm run build:lib && ng serve",
+    "build": "npm run build:lib && ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "build:lib": "ng-packagr -p ng-package.json"
   },
-  "homepage": "https://github.com/ashish-chopra/ngx-gauge#readme",
-  "devDependencies": {
-   
-    "codelyzer": "^3.0.1",
-    "gulp": "^3.9.1",
-    "gulp-better-rollup": "^1.1.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-header": "^1.8.8",
-    "gulp-inline-ng2-template": "^4.0.0",
-    "gulp-ngc": "^0.3.2",
-    "gulp-tslint": "^8.0.0",
-    "gulp-typescript": "^3.1.6",
-    "jasmine-core": "^2.6.1",
-    "karma": "^1.6.0",
-    "karma-chrome-launcher": "^2.1.0",
-    "karma-jasmine": "^1.1.0",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.41.6",
-    "run-sequence": "^1.2.2",
-    "rxjs": "^5.3.1",
-    "tslint": "^5.2.0",
-    "typescript": "^2.3.2",
-    "zone.js": "^0.8.9"
-  },
+  "private": true,
   "dependencies": {
-    "@angular/core": "^4.3.6",
-    "@angular/animations": "^4.3.6",
-    "@angular/common": "^4.3.6",
-    "@angular/compiler": "^4.3.6",
-    "@angular/compiler-cli": "^4.3.6",
-    "@angular/platform-browser": "^4.3.6",
-    "@angular/platform-browser-dynamic": "^4.3.6",
-    "@angular/platform-server": "^4.3.6"
+    "@angular/animations": "^4.0.0",
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0",
+    "@angular/http": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/router": "^4.0.0",
+    "angular2-highlight-js": "^6.0.1-alpha",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.4.1",
+    "zone.js": "^0.8.14"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.2.6",
+    "@angular/compiler-cli": "^4.0.0",
+    "@angular/language-service": "^4.0.0",
+    "@types/jasmine": "~2.5.53",
+    "@types/jasminewd2": "~2.0.2",
+    "@types/node": "~6.0.60",
+    "codelyzer": "~3.0.1",
+    "jasmine-core": "~2.6.2",
+    "jasmine-spec-reporter": "~4.1.0",
+    "karma": "~1.7.0",
+    "karma-chrome-launcher": "~2.1.1",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "ng-packagr": "^1.4.1",
+    "protractor": "~5.1.2",
+    "ts-node": "~3.0.4",
+    "tslint": "~5.3.2",
+    "typescript": "~2.3.3"
   }
 }
