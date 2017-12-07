@@ -102,7 +102,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     constructor(private _elementRef: ElementRef, private _renderer: Renderer) { }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log('thick value', this.thick);
         const isTextChanged = changes['label'] || changes['append'] || changes['prepend'];
         const isDataChanged = changes['value'] || changes['min'] || changes['max'];
 
@@ -207,9 +206,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _getForegroundColorByRange(value) {
+       
         const match = Object.keys(this.thresholds)
             .filter(function (item) { return isNumber(item) && Number(item) <= value })
-            .sort().reverse()[0];
+            .sort((a, b) => Number(a) - Number(b)).reverse()[0];
 
         return match !== undefined
             ? this.thresholds[match].color || this.foregroundColor
