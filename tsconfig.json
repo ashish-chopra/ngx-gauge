@@ -1,8 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "demo",
-    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -16,8 +14,15 @@
       "es2017",
       "dom"
     ],
+    "baseUrl": ".",
     "paths": {
-      "ngx-gauge": ["./dist/lib/public_api.ts"]
+      "@ngx/*": [
+        "libs/*"
+      ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

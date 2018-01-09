@@ -1,12 +1,52 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "./node_modules/@nrwl/schematics/src/schema.json",
   "project": {
     "name": "ngx-gauge"
   },
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "./tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "apps/demo/src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "apps/demo/e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "schematics": {
+      "collection": "@nrwl/schematics",
+      "postGenerate": "npm run format",
+      "newProject": [
+        "app",
+        "lib"
+      ]
+    },
+    "styleExt": "css",
+    "component": {}
+  },
+  "warnings": {
+    "typescriptMismatch": false
+  },
   "apps": [
     {
-      "root": "demo",
-      "outDir": "dist/demo",
+      "name": "demo",
+      "root": "apps/demo/src",
+      "outDir": "dist/apps/demo",
       "assets": [
         "assets",
         "favicon.ico"
@@ -14,9 +54,9 @@
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
-      "test": "test.ts",
+      "test": "../../../test.js",
       "tsconfig": "tsconfig.app.json",
-      "testTsconfig": "tsconfig.spec.json",
+      "testTsconfig": "../../../tsconfig.spec.json",
       "prefix": "app",
       "styles": [
         "styles.css"
@@ -27,34 +67,12 @@
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
-    }
-  ],
-  "e2e": {
-    "protractor": {
-      "config": "./protractor.conf.js"
-    }
-  },
-  "lint": [
-    {
-      "project": "demo/tsconfig.app.json",
-      "exclude": "**/node_modules/**"
     },
     {
-      "project": "demo/tsconfig.spec.json",
-      "exclude": "**/node_modules/**"
-    },
-    {
-      "project": "e2e/tsconfig.e2e.json",
-      "exclude": "**/node_modules/**"
+      "name": "ngx-gauge",
+      "root": "libs/ngx-gauge/src",
+      "test": "../../../test.js",
+      "appRoot": ""
     }
-  ],
-  "test": {
-    "karma": {
-      "config": "./karma.conf.js"
-    }
-  },
-  "defaults": {
-    "styleExt": "css",
-    "component": {}
-  }
+  ]
 }
