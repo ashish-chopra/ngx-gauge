@@ -107,7 +107,12 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
         if (this._initialized) {
             if (isDataChanged) {
-                this._update();
+                let nv, ov;
+                if (changes['value']) {
+                    nv = changes['value'].currentValue;
+                    ov = changes['value'].previousValue;
+                }
+                this._update(nv, ov);
             } else if (!isTextChanged) {
                 this._destroy();
                 this._init();
@@ -148,6 +153,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _drawShell(start: number, middle: number, tail: number, color: string) {
         let center = this._getCenter(),
             radius = this._getRadius();
+
+        middle = Math.max(middle, start); // never below 0%
+        middle = Math.min(middle, tail); // never exceed 100%
 
         this._clear();
         this._context.beginPath();
@@ -206,17 +214,18 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _getForegroundColorByRange(value) {
-       
+
         const match = Object.keys(this.thresholds)
             .filter(function (item) { return isNumber(item) && Number(item) <= value })
-            .sort((a, b) => Number(a) - Number(b)).reverse()[0];
+            .sort((a, b) => Number(a) - Number(b))
+            .reverse()[0];
 
         return match !== undefined
             ? this.thresholds[match].color || this.foregroundColor
             : this.foregroundColor;
     }
 
-    private _create() {
+    private _create(nv?: number, ov?: number) {
         let self = this,
             type = this.type,
             bounds = this._getBounds(type),
@@ -224,21 +233,25 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             min = this.min,
             max = this.max,
             value = clamp(this.value, this.min, this.max),
-            head = bounds.head,
+            start = bounds.head,
             unit = (bounds.tail - bounds.head) / (max - min),
             displacement = unit * (value - min),
             tail = bounds.tail,
             color = this._getForegroundColorByRange(value),
             requestID,
-            starttime;
+            startTime;
 
+        if (nv != undefined && ov != undefined) {
+            displacement = unit * nv - unit * ov;
+        }
         function animate(timestamp) {
             timestamp = timestamp || new Date().getTime();
-            var runtime = timestamp - starttime;
-            var progress = runtime / duration;
-            progress = Math.min(progress, 1);
+            let runtime = timestamp - startTime;
+            let progress = Math.min(runtime / duration, 1);
+            let previousProgress = ov ? ov * unit : 0;
+            let middle = start + previousProgress + displacement * progress;
 
-            self._drawShell(head, head + displacement * progress, tail, color);
+            self._drawShell(start, middle, tail, color);
             if (runtime < duration) {
                 requestID = window.requestAnimationFrame((timestamp) => animate(timestamp));
             } else {
@@ -247,14 +260,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         }
 
         window.requestAnimationFrame((timestamp) => {
-            starttime = timestamp || new Date().getTime();
+            startTime = timestamp || new Date().getTime();
             animate(timestamp);
         });
     }
 
-    private _update() {
+    private _update(nv: number, ov: number) {
         this._clear();
-        this._create();
+        this._create(nv, ov);
     }
 
 }
