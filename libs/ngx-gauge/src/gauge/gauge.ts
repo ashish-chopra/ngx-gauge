@@ -8,7 +8,9 @@ import {
     ElementRef,
     OnChanges,
     OnDestroy,
-    ViewChild
+    ViewChild,
+    Injector,
+    ReflectiveInjector
 } from '@angular/core';
 import { NgxGaugeError } from './gauge-error';
 import {
@@ -18,6 +20,8 @@ import {
     cssUnit,
     isNumber
 } from '../common/util';
+import { DecimalPipe } from '@angular/common';
+// import { DecimalPipe } from '@angular/common/src/pipes';
 
 const DEFAULTS = {
     MIN: 0,
@@ -44,7 +48,8 @@ export type NgxGaugeCap = 'round' | 'butt';
         '[attr.aria-valuemax]': 'max',
         '[attr.aria-valuenow]': 'value'
     },
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [DecimalPipe]
 })
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
@@ -89,6 +94,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() thresholds: Object = Object.create(null);
 
+    @Input() valueFormat: (value: number) => string | number = (value) => value;
+
     private _value: number = 0;
 
     @Input()
@@ -99,7 +106,23 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() duration: number = 1200;
 
-    constructor(private _elementRef: ElementRef, private _renderer: Renderer) { }
+    constructor(private _elementRef: ElementRef, private _renderer: Renderer
+        //     , parentInjector:Injector){
+        //     let injector = ReflectiveInjector.resolveAndCreate(["DecimalPipe"]);
+        //     let _decimalPipe = injector.get("DecimalPipe", parentInjector);
+        //   }
+        , private _decimalPipe: DecimalPipe) { }
+
+    valueFormatFunc() {
+        if (this.valueFormat && typeof this.valueFormat === "function") {
+            let result = this.valueFormat(this.value);
+            if (typeof result === "number") {
+                return this._decimalPipe.transform(result);
+            }
+            return result;
+        }
+        throw `valueFormat attribute not type function. Type current: ${typeof this.valueFormat}, type expected: "function"`
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         const isTextChanged = changes['label'] || changes['append'] || changes['prepend'];
