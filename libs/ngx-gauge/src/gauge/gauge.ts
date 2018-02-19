@@ -8,7 +8,8 @@ import {
     ElementRef,
     OnChanges,
     OnDestroy,
-    ViewChild
+    ViewChild, 
+    ContentChild
 } from '@angular/core';
 import { NgxGaugeError } from './gauge-error';
 import {
@@ -18,6 +19,7 @@ import {
     cssUnit,
     isNumber
 } from '../common/util';
+import { NgxGaugeLabel, NgxGaugeValue, NgxGaugePrepend, NgxGaugeAppend } from './gauge-directives';
 
 const DEFAULTS = {
     MIN: 0,
@@ -49,6 +51,11 @@ export type NgxGaugeCap = 'round' | 'butt';
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild('canvas') _canvas: ElementRef;
+    
+    @ContentChild(NgxGaugeLabel) _labelChild: NgxGaugeLabel;
+    @ContentChild(NgxGaugePrepend) _prependChild: NgxGaugePrepend;
+    @ContentChild(NgxGaugeAppend) _appendChild: NgxGaugeAppend;
+    @ContentChild(NgxGaugeValue) _valueDisplayChild: NgxGaugeValue;
 
     private _size: number = DEFAULTS.SIZE;
     private _min: number = DEFAULTS.MIN;
