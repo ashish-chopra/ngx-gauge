@@ -89,6 +89,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() thresholds: Object = Object.create(null);
 
+    @Input() showLabel: boolean = true;
+
     private _value: number = 0;
 
     @Input()
@@ -171,6 +173,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _clear() {
+        if (this._context == null)
+            return;
         this._context.clearRect(0, 0, this._getWidth(), this._getHeight());
     }
 
