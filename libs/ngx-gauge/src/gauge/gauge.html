@@ -1,5 +1,24 @@
 <div class="reading-block" #reading [style.fontSize]="size * 0.22 + 'px'" [style.lineHeight]="size + 'px'">
-    <u class="reading-affix">{{prepend}}</u>{{value | number}}<u class="reading-affix">{{append}}</u>
+    <!-- This block can not be indented correctly, because line breaks cause layout spacing, related problem: https://pt.stackoverflow.com/q/276760/2998 -->
+    <u class="reading-affix" [ngSwitch]="_prependChild != null"
+      ><ng-content select="ngx-gauge-prepend" *ngSwitchCase="true"
+      ></ng-content
+      ><ng-container *ngSwitchCase="false">{{prepend}}</ng-container
+    ></u
+    ><ng-container [ngSwitch]="_valueDisplayChild != null"
+      ><ng-content *ngSwitchCase="true" select="ngx-gauge-value"></ng-content
+      ><ng-container *ngSwitchCase="false">{{value | number}}</ng-container
+    ></ng-container
+    ><u class="reading-affix" [ngSwitch]="_appendChild != null"
+      ><ng-content select="ngx-gauge-append" *ngSwitchCase="true"></ng-content
+      ><ng-container *ngSwitchCase="false">{{append}}</ng-container
+    ></u>
 </div>
-<div class="reading-label" [style.fontSize]="size / 13 + 'px'" [style.lineHeight]="(5 * size / 13) + size + 'px'">{{label}}</div>
+<div class="reading-label" 
+     [style.fontSize]="size / 13 + 'px'" 
+     [style.lineHeight]="(5 * size / 13) + size + 'px'"
+     [ngSwitch]="_labelChild != null">
+     <ng-content select="ngx-gauge-label" *ngSwitchCase="true"></ng-content>
+     <ng-container *ngSwitchCase="false">{{label}}</ng-container>
+</div>
 <canvas #canvas [width]="size" [height]="size"></canvas>
