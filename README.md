@@ -110,6 +110,27 @@ export class AppComponent {
 ```
 The keys in the threshold object signifies the minimum value at which the color will be applied. For instance, if the gauge's current value is `53.2`, then orange color will be applied because after point `40` every value will be displayed as `orange`, until next threshold is encountered. In this example `75.5` is the next threshold.
 
+## Custom Directives for display text
+Sometimes setting a property value on `<ngx-gauge>` does not solve your purpose. You may want to add custom HTML for displaying `value`,`append`, `prepend` and `label` texts. In order to provide custom templates for these properties display following directives can be used.
+
+```html
+<ngx-gauge [value]="currentValue">
+    <ngx-gauge-append>
+        <!-- custom append text or HTML goes here -->
+    </ngx-gauge-append>
+    <ngx-gauge-label>
+        <!-- custom label text or HTML goes here -->
+    </ngx-gauge-label>
+    <ngx-gauge-prepend>
+        <!-- custom prepend text or HTML goes here -->
+    </ngx-gauge-prepend>
+    <ngx-gauge-value>
+        {{ currentValue * Math.PI | number }}
+    </ngx-gauge-value>
+</ngx-gauge>
+```
+Note that `value` attribute is still required on `<ngx-gauge>` even when you are providing custom template using `<ngx-gauge-value>`. Because `value` attribute is responsible for calculating the gauge's drawing on a scale.
+
 <!-- # Playground
 
 The examples section is redesigned as a playground where you can play with Gauge by tuning its different parameters. 
