@@ -56,6 +56,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     private _initialized: boolean = false;
     private _context: CanvasRenderingContext2D;
+    private _animationRequestID: number = 0;
 
     @Input()
     get size(): number { return this._size; }
@@ -202,6 +203,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _destroy() {
+        if (this._animationRequestID) {
+            window.cancelAnimationFrame(this._animationRequestID);
+            this._animationRequestID = 0;
+        }
         this._clear();
         this._context = null;
     }
@@ -238,7 +243,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             displacement = unit * (value - min),
             tail = bounds.tail,
             color = this._getForegroundColorByRange(value),
-            requestID,
             startTime;
 
         if (nv != undefined && ov != undefined) {
@@ -252,14 +256,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             let middle = start + previousProgress + displacement * progress;
 
             self._drawShell(start, middle, tail, color);
-            if (runtime < duration) {
-                requestID = window.requestAnimationFrame((timestamp) => animate(timestamp));
+            if (self._animationRequestID && (runtime < duration)) {
+                self._animationRequestID = window.requestAnimationFrame((timestamp) => animate(timestamp));
             } else {
-                window.cancelAnimationFrame(requestID);
+                window.cancelAnimationFrame(self._animationRequestID);
             }
         }
 
-        window.requestAnimationFrame((timestamp) => {
+        self._animationRequestID = window.requestAnimationFrame((timestamp) => {
             startTime = timestamp || new Date().getTime();
             animate(timestamp);
         });
