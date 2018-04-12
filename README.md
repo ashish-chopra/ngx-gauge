@@ -16,11 +16,11 @@ A highly customizable Gauge component for **Angular >= 4.3.x || >=5.0.0**  apps 
 #### step 1: Install npm module
 
 ```bash
-npm install --save ngx-gauge 
+npm install --save ngx-gauge
 ```
 This will install the current stable version of `ngx-gauge` in your `node_modules` directory and save the entry in `package.json`.
 
-#### Step 2: Import the _NgxGaugeModule_ 
+#### Step 2: Import the _NgxGaugeModule_
 
 ```ts
 import { NgxGaugeModule } from 'ngx-gauge';
@@ -47,7 +47,7 @@ import { Component } from '@angular/core';
     templateUrl: 'app.html'
 })
 export class AppComponent {
-    
+
     gaugeType = "semi";
     gaugeValue = 28.3;
     gaugeLabel = "Speed";
@@ -56,8 +56,8 @@ export class AppComponent {
 ```
 
 ```html
-<ngx-gauge [type]="gaugeType" 
-           [value]="gaugeValue" 
+<ngx-gauge [type]="gaugeType"
+           [value]="gaugeValue"
            [label]="gaugeLabel"  
            [append]="gaugeAppendText">
 </ngx-gauge>
@@ -85,10 +85,11 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `prepend`      | Specifies a `string` prepended to the Gauge's reading. For example `"$"` in case of financial data displayed in Gauge.                                        | No        | `undefined`            | Any String           |
 | `duration`    | Specifies the duration (in milliseconds) of the Gauge's animation | No       | `1500` | Positive Integer           |
 | `thresholds` | Specifies an object of threshold values at which the gauge's color changes. Checkout an example [here](#configure-threshold-color-ranges).  | No |  `none` | {}
+| `animate` | Enables/disables animation  | No |  `true` | Boolean
 
 ## Configure Threshold Color Ranges
 
-You can customize the colors of the gauge based on the current value being shown. In order to show different colors when gauge crosses certain value, use property `thresholds`. It takes an object with the threshold value  as `key` and an object with `color` property as `value`. For example: 
+You can customize the colors of the gauge based on the current value being shown. In order to show different colors when gauge crosses certain value, use property `thresholds`. It takes an object with the threshold value  as `key` and an object with `color` property as `value`. For example:
 
 ```ts
 @Component({ ... })
@@ -133,7 +134,7 @@ Note that `value` attribute is still required on `<ngx-gauge>` even when you are
 
 <!-- # Playground
 
-The examples section is redesigned as a playground where you can play with Gauge by tuning its different parameters. 
+The examples section is redesigned as a playground where you can play with Gauge by tuning its different parameters.
 And, you can see the result live on-screen. It is good start to get familiar with Gauge.
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/playground.png)
@@ -153,7 +154,7 @@ $> npm install
 2. Use following commands based on what you'd like to do:
 
 ```shell
-$> npm start             # builds the project and watch for changes. 
+$> npm start             # builds the project and watch for changes.
 $> npm test              # runs test suite once and exit.
 $> npm run test:watch    # starts the test framework and watch for changes in code.
 $> npm run build         # triggers a manual build for library, outputs at `/dist` directory.

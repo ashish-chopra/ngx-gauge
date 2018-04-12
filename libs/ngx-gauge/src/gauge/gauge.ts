@@ -8,7 +8,7 @@ import {
     ElementRef,
     OnChanges,
     OnDestroy,
-    ViewChild, 
+    ViewChild,
     ContentChild
 } from '@angular/core';
 import { NgxGaugeError } from './gauge-error';
@@ -51,7 +51,7 @@ export type NgxGaugeCap = 'round' | 'butt';
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild('canvas') _canvas: ElementRef;
-    
+
     @ContentChild(NgxGaugeLabel) _labelChild: NgxGaugeLabel;
     @ContentChild(NgxGaugePrepend) _prependChild: NgxGaugePrepend;
     @ContentChild(NgxGaugeAppend) _appendChild: NgxGaugeAppend;
@@ -106,6 +106,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     @Input() duration: number = 1200;
+
+    @Input() animate = true;
 
     constructor(private _elementRef: ElementRef, private _renderer: Renderer) { }
 
@@ -257,7 +259,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         }
         function animate(timestamp) {
             timestamp = timestamp || new Date().getTime();
-            let runtime = timestamp - startTime;
+            let runtime = self.animate ? timestamp - startTime : duration;
             let progress = Math.min(runtime / duration, 1);
             let previousProgress = ov ? ov * unit : 0;
             let middle = start + previousProgress + displacement * progress;
