@@ -99,6 +99,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     private _value: number = 0;
 
+    @Input() animation: boolean = true;
+
+
     @Input()
     get value() { return this._value; }
     set value(val: number) {
@@ -240,6 +243,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _create(nv?: number, ov?: number) {
         let self = this,
             type = this.type,
+            animation=this.animation,
             bounds = this._getBounds(type),
             duration = this.duration,
             min = this.min,
@@ -255,6 +259,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         if (nv != undefined && ov != undefined) {
             displacement = unit * nv - unit * ov;
         }
+
         function animate(timestamp) {
             timestamp = timestamp || new Date().getTime();
             let runtime = timestamp - startTime;
@@ -270,10 +275,16 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             }
         }
 
-        self._animationRequestID = window.requestAnimationFrame((timestamp) => {
-            startTime = timestamp || new Date().getTime();
-            animate(timestamp);
-        });
+        if(animation){
+            self._animationRequestID = window.requestAnimationFrame((timestamp) => {
+                startTime = timestamp || new Date().getTime();
+                animate(timestamp);
+            });
+        } else {
+            let previousProgress = ov ? ov * unit : 0;
+            let middle = start + previousProgress + displacement * 1;
+            self._drawShell(start, middle, tail, color);
+        }
     }
 
     private _update(nv: number, ov: number) {
