@@ -256,6 +256,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             displacement = unit * nv - unit * ov;
         }
         function animate(timestamp) {
+            const requestID = requestAnimationFrame(animate);
             timestamp = timestamp || new Date().getTime();
             let runtime = timestamp - startTime;
             let progress = Math.min(runtime / duration, 1);
@@ -263,14 +264,12 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             let middle = start + previousProgress + displacement * progress;
 
             self._drawShell(start, middle, tail, color);
-            if (self._animationRequestID && (runtime < duration)) {
-                self._animationRequestID = window.requestAnimationFrame((timestamp) => animate(timestamp));
-            } else {
-                window.cancelAnimationFrame(self._animationRequestID);
+            if (progress === 1) {
+                cancelAnimationFrame(requestID);
             }
         }
 
-        self._animationRequestID = window.requestAnimationFrame((timestamp) => {
+        requestAnimationFrame((timestamp) => {
             startTime = timestamp || new Date().getTime();
             animate(timestamp);
         });
