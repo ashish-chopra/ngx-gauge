@@ -262,8 +262,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             let progress = Math.min(runtime / duration, 1);
             let previousProgress = ov ? ov * unit : 0;
             let middle = start + previousProgress + displacement * progress;
-
-            self._drawShell(start, middle, tail, color);
+            if (self._context) {
+                self._drawShell(start, middle, tail, color);
+            }
             if (progress === 1) {
                 cancelAnimationFrame(requestID);
             }
