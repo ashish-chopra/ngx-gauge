@@ -1,9 +1,0 @@
-{
-    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
-    "src": "libs/ngx-gauge",
-    "dest": "dist/lib/ngx-gauge",
-    "lib": {
-      "entryFile": "index.ts",
-      "flatModuleFile": "ngx.gauge"
-    }
-  }

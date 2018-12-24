@@ -1,0 +1,33 @@
+{
+  "name": "ngx-gauge",
+  "version": "1.0.0-beta",
+  "description": "A highly customizable Gauge Component for Angular 4+ apps and dashboards",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashish-chopra/ngx-gauge.git"
+  },
+  "peerDependencies": {
+    "@angular/common": "^7.1.0",
+    "@angular/core": "^7.1.0"
+  },
+  "keywords": [
+    "angular",
+    "gauge",
+    "dashboard",
+    "meter",
+    "charts",
+    "ng2",
+    "ngx",
+    "ngx-gauge"
+  ],
+  "author": {
+    "name": "Ashish Chopra",
+    "email": "sendtoashishchopra@gmail.com",
+    "url": "https://ashish-chopra.github.io"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ashish-chopra/ngx-gauge/issues"
+  },
+  "homepage": "https://github.com/ashish-chopra/ngx-gauge#readme"
+}

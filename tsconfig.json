@@ -1,28 +1,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "importHelpers": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
-    "baseUrl": ".",
     "paths": {
-      "@ngx/*": [
-        "libs/*"
+      "ngx-gauge": [
+        "dist/ngx-gauge"
+      ],
+      "ngx-gauge/*": [
+        "dist/ngx-gauge/*"
       ]
     }
-  },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  }
 }
