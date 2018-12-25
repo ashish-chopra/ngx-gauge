@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'demo';
+  currentValue: number = 0;
+  changeValue() {
+    this.currentValue = parseFloat((Math.random() * 100).toFixed(2));
+  }
 }

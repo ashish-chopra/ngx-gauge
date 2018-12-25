@@ -85,6 +85,7 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `prepend`      | Specifies a `string` prepended to the Gauge's reading. For example `"$"` in case of financial data displayed in Gauge.                                        | No        | `undefined`            | Any String           |
 | `duration`    | Specifies the duration (in milliseconds) of the Gauge's animation | No       | `1500` | Positive Integer           |
 | `thresholds` | Specifies an object of threshold values at which the gauge's color changes. Checkout an example [here](#configure-threshold-color-ranges).  | No |  `none` | {}
+| `animate` | toggles the gauge animation.  | No |  `true` | boolean
 
 ## Configure Threshold Color Ranges
 

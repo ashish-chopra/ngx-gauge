@@ -8,7 +8,7 @@ import {
     ElementRef,
     OnChanges,
     OnDestroy,
-    ViewChild, 
+    ViewChild,
     ContentChild
 } from '@angular/core';
 import { NgxGaugeError } from './gauge-error';
@@ -51,7 +51,7 @@ export type NgxGaugeCap = 'round' | 'butt';
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild('canvas') _canvas: ElementRef;
-    
+
     @ContentChild(NgxGaugeLabel) _labelChild: NgxGaugeLabel;
     @ContentChild(NgxGaugePrepend) _prependChild: NgxGaugePrepend;
     @ContentChild(NgxGaugeAppend) _appendChild: NgxGaugeAppend;
@@ -60,6 +60,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _size: number = DEFAULTS.SIZE;
     private _min: number = DEFAULTS.MIN;
     private _max: number = DEFAULTS.MAX;
+    private _animate: boolean = true;
 
     private _initialized: boolean = false;
     private _context: CanvasRenderingContext2D;
@@ -75,6 +76,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     get min(): number { return this._min; }
     set min(value: number) {
         this._min = coerceNumberProperty(value, DEFAULTS.MIN);
+    }
+    @Input()
+    get animate(): boolean { return this._animate; }
+    set animate(value) {
+        this._animate = coerceBooleanProperty(value); 
     }
 
     @Input() max: number = DEFAULTS.MAX;
@@ -252,9 +258,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             color = this._getForegroundColorByRange(value),
             startTime;
 
-        if (nv != undefined && ov != undefined) {
-            displacement = unit * nv - unit * ov;
-        }
+
         function animate(timestamp) {
             timestamp = timestamp || new Date().getTime();
             let runtime = timestamp - startTime;
@@ -269,11 +273,17 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
                 window.cancelAnimationFrame(self._animationRequestID);
             }
         }
-
-        self._animationRequestID = window.requestAnimationFrame((timestamp) => {
-            startTime = timestamp || new Date().getTime();
-            animate(timestamp);
-        });
+        if (this._animate) {
+            if (nv != undefined && ov != undefined) {
+                displacement = unit * nv - unit * ov;
+            }
+            self._animationRequestID = window.requestAnimationFrame((timestamp) => {
+                startTime = timestamp || new Date().getTime();
+                animate(timestamp);
+            });
+        } else {
+            self._drawShell(start, start + displacement, tail, color);
+        }
     }
 
     private _update(nv: number, ov: number) {
