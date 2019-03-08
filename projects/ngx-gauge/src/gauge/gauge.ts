@@ -80,7 +80,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     @Input()
     get animate(): boolean { return this._animate; }
     set animate(value) {
-        this._animate = coerceBooleanProperty(value); 
+        this._animate = coerceBooleanProperty(value);
     }
 
     @Input() max: number = DEFAULTS.MAX;
@@ -185,7 +185,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _clear() {
+      if(this._context) {
         this._context.clearRect(0, 0, this._getWidth(), this._getHeight());
+      }
     }
 
     private _getWidth() {
