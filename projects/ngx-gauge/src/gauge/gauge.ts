@@ -102,6 +102,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     @Input() backgroundColor: string = DEFAULTS.BACKGROUND_COLOR;
 
     @Input() thresholds: Object = Object.create(null);
+  
+    @Input() borderWidth = 0;
+    @Input() borderColor = 'yellow';
 
     private _value: number = 0;
 
@@ -166,20 +169,32 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     private _drawShell(start: number, middle: number, tail: number, color: string) {
         let center = this._getCenter(),
-            radius = this._getRadius();
+            radius = this._getRadius(),
+            borderWidth = this._getBorderWidth(),
+            borderColor = this._getBorderColor(),
+            borderRadius = this._getBorderRadius();
 
         middle = Math.max(middle, start); // never below 0%
         middle = Math.min(middle, tail); // never exceed 100%
 
         this._clear();
+        if (borderWidth > 0) {
+            this._context.lineWidth = borderWidth;
+            this._context.beginPath();
+            this._context.strokeStyle = borderColor;
+            this._context.arc(center.x, center.y, borderRadius, start, tail, false);
+            this._context.stroke();
+        }
+      
+        this._context.lineWidth = this.thick;
         this._context.beginPath();
         this._context.strokeStyle = this.backgroundColor;
-        this._context.arc(center.x, center.y, radius, middle, tail, false);
+        this._context.arc(center.x, center.y, radius - borderWidth, middle, tail, false);
         this._context.stroke();
 
         this._context.beginPath();
         this._context.strokeStyle = color;
-        this._context.arc(center.x, center.y, radius, start, middle, false);
+        this._context.arc(center.x, center.y, radius - borderWidth, start, middle, false);
         this._context.stroke();
 
     }
@@ -198,7 +213,20 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     private _getRadius() {
         var center = this._getCenter();
-        return center.x - this.thick;
+        return center.x - this.thick / 2;
+    }
+  
+    private _getBorderRadius() {
+        var center = this._getCenter();
+        return center.x - this._getBorderWidth() / 2;
+    }
+
+    private _getBorderWidth() {
+        return this.borderWidth;
+    }
+
+    private _getBorderColor() {
+        return this.borderColor;
     }
 
     private _getCenter() {
