@@ -158,8 +158,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             head = Math.PI;
             tail = 2 * Math.PI;
         } else if (type == 'full') {
-            head = 1.5 * Math.PI;
-            tail = 3.5 * Math.PI;
+            head = Math.PI;
+            tail = 3 * Math.PI;
         } else if (type === 'arch') {
             head = 0.8 * Math.PI;
             tail = 2.2 * Math.PI;
