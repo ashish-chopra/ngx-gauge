@@ -83,7 +83,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         this._animate = coerceBooleanProperty(value);
     }
 
-    @Input() max: number = DEFAULTS.MAX;
+    @Input()
+    get max(): number { return this._max; }
+    set max(value: number) {
+        this._max = coerceNumberProperty(value, DEFAULTS.MAX);
+    }
 
     @Input() type: NgxGaugeType = DEFAULTS.TYPE as NgxGaugeType;
 
@@ -267,7 +271,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             timestamp = timestamp || new Date().getTime();
             let runtime = timestamp - startTime;
             let progress = Math.min(runtime / duration, 1);
-            let previousProgress = ov ? ov * unit : 0;
+            let previousProgress = ov ? (ov - min) * unit : 0;
             let middle = start + previousProgress + displacement * progress;
 
             self._drawShell(start, middle, tail, color);
