@@ -80,7 +80,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     @Input()
     get animate(): boolean { return this._animate; }
     set animate(value) {
-        this._animate = coerceBooleanProperty(value); 
+        this._animate = coerceBooleanProperty(value);
     }
 
     @Input() max: number = DEFAULTS.MAX;
@@ -171,17 +171,18 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         middle = Math.max(middle, start); // never below 0%
         middle = Math.min(middle, tail); // never exceed 100%
 
-        this._clear();
-        this._context.beginPath();
-        this._context.strokeStyle = this.backgroundColor;
-        this._context.arc(center.x, center.y, radius, middle, tail, false);
-        this._context.stroke();
+        if (this._initialized) {
+            this._clear();
+            this._context.beginPath();
+            this._context.strokeStyle = this.backgroundColor;
+            this._context.arc(center.x, center.y, radius, middle, tail, false);
+            this._context.stroke();
 
-        this._context.beginPath();
-        this._context.strokeStyle = color;
-        this._context.arc(center.x, center.y, radius, start, middle, false);
-        this._context.stroke();
-
+            this._context.beginPath();
+            this._context.strokeStyle = color;
+            this._context.arc(center.x, center.y, radius, start, middle, false);
+            this._context.stroke();
+        }
     }
 
     private _clear() {
@@ -258,6 +259,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             color = this._getForegroundColorByRange(value),
             startTime;
 
+        if (self._animationRequestID) {
+            window.cancelAnimationFrame(self._animationRequestID);
+        }
 
         function animate(timestamp) {
             timestamp = timestamp || new Date().getTime();
@@ -279,7 +283,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             }
             self._animationRequestID = window.requestAnimationFrame((timestamp) => {
                 startTime = timestamp || new Date().getTime();
-                animate(timestamp);
+                animate(startTime);
             });
         } else {
             self._drawShell(start, start + displacement, tail, color);
