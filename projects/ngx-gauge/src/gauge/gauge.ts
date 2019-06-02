@@ -40,11 +40,15 @@ export type NgxGaugeCap = 'round' | 'butt';
     templateUrl: 'gauge.html',
     styleUrls: ['gauge.css'],
     host: {
-        'role': 'meter',
+        'role': 'slider',
+        'aria-readonly': 'true',
         '[class.ngx-gauge-meter]': 'true',
         '[attr.aria-valuemin]': 'min',
         '[attr.aria-valuemax]': 'max',
-        '[attr.aria-valuenow]': 'value'
+        '[attr.aria-valuenow]': 'value',
+        '[attr.aria-label]': 'ariaLabel',
+        '[attr.aria-labelledby]': 'ariaLabelledby'
+
     },
     encapsulation: ViewEncapsulation.None
 })
@@ -65,6 +69,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _initialized: boolean = false;
     private _context: CanvasRenderingContext2D;
     private _animationRequestID: number = 0;
+
+    @Input('aria-label') ariaLabel: string = '';
+
+    @Input('aria-labelledby') ariaLabelledby: string | null = null;
 
     @Input()
     get size(): number { return this._size; }
