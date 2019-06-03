@@ -128,7 +128,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     constructor(private _elementRef: ElementRef, private _renderer: Renderer) { }
 
     ngOnChanges(changes: SimpleChanges) {
-        const isTextChanged = changes['label'] || changes['append'] || changes['prepend'];
+        const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'];
         const isDataChanged = changes['value'] || changes['min'] || changes['max'];
 
         if (this._initialized) {
@@ -139,7 +139,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
                     ov = changes['value'].previousValue;
                 }
                 this._update(nv, ov);
-            } else if (!isTextChanged) {
+            } 
+            if (isCanvasPropertyChanged) {
                 this._destroy();
                 this._init();
             }
@@ -149,6 +150,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _updateSize() {
         this._renderer.setElementStyle(this._elementRef.nativeElement, 'width', cssUnit(this._size));
         this._renderer.setElementStyle(this._elementRef.nativeElement, 'height', cssUnit(this._size));
+        this._canvas.nativeElement.width = this.size;
+        this._canvas.nativeElement.height = this.size;
     }
 
     ngAfterViewInit() {
@@ -182,7 +185,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
         middle = Math.max(middle, start); // never below 0%
         middle = Math.min(middle, tail); // never exceed 100%
-
         if (this._initialized) {
             this._clear();
             this._context.beginPath();
@@ -235,11 +237,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         }
         this._clear();
         this._context = null;
+        this._initialized = false;
     }
 
     private _setupStyles() {
-        this._context.canvas.width = this.size;
-        this._context.canvas.height = this.size;
         this._context.lineCap = this.cap;
         this._context.lineWidth = this.thick;
     }
