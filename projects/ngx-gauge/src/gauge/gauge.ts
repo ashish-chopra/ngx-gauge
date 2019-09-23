@@ -55,6 +55,8 @@ export type NgxGaugeCap = 'round' | 'butt';
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild('canvas', { static: true }) _canvas: ElementRef;
+    @ViewChild('rLabel', {static: true}) _label: ElementRef;
+    @ViewChild('reading', {static: true}) _reading: ElementRef;
 
     @ContentChild(NgxGaugeLabel, {static: false}) _labelChild: NgxGaugeLabel;
     @ContentChild(NgxGaugePrepend, {static: false}) _prependChild: NgxGaugePrepend;
@@ -139,7 +141,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
                     ov = changes['value'].previousValue;
                 }
                 this._update(nv, ov);
-            } 
+            }
             if (isCanvasPropertyChanged) {
                 this._destroy();
                 this._init();
@@ -152,6 +154,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         this._renderer.setElementStyle(this._elementRef.nativeElement, 'height', cssUnit(this._size));
         this._canvas.nativeElement.width = this.size;
         this._canvas.nativeElement.height = this.size;
+        this._renderer.setElementStyle(this._label.nativeElement,
+          'transform', 'translateY(' + (this.size / 3 * 2 - this.size / 13 / 4) + 'px)');
+        this._renderer.setElementStyle(this._reading.nativeElement,
+          'transform', 'translateY(' + (this.size / 2 - this.size * 0.22 / 2) + 'px)');
     }
 
     ngAfterViewInit() {
