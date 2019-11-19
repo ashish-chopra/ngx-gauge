@@ -85,6 +85,7 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `prepend`      | Specifies a `string` prepended to the Gauge's reading. For example `"$"` in case of financial data displayed in Gauge.                                        | No        | `undefined`            | Any String           |
 | `duration`    | Specifies the duration (in milliseconds) of the Gauge's animation | No       | `1500` | Positive Integer           |
 | `thresholds` | Specifies an object of threshold values at which the gauge's color changes. Checkout an example [here](#configure-threshold-color-ranges).  | No |  `none` | {}
+| `preserveThresholds` | Toggles threshold preservation. With this turned on, thresholds always stay their defined color, even when the `value` is not in it's range. Checkout an example [here].(#configure-preserve-thresholds) | No | `false` | boolean
 | `animate` | toggles the gauge animation.  | No |  `true` | boolean
 | `aria-label` | Specifies the label used by screen readers | No | `undefined` | Any String
 | `aria-labelledby` | Specifies the ID of any external element to be used as label by screen readers | No | `null` | Any ID String
@@ -113,6 +114,32 @@ export class AppComponent {
 <ngx-gauge ...  [thresholds]="thresholdConfig"></ngx-gauge>
 ```
 The keys in the threshold object signifies the minimum value at which the color will be applied. For instance, if the gauge's current value is `53.2`, then orange color will be applied because after point `40` every value will be displayed as `orange`, until next threshold is encountered. In this example `75.5` is the next threshold.
+
+## Configure Preserve Thresholds
+
+By default, the whole arc will take on the color of its current threshold. If you set the `preserveThresholds` toggle to `true`, the ranges specified by your thresholds will be their configured color even if the arc is not within its range.
+
+The configuration is similar to the `thresholdConfig` above, although each threshold has an additional (optional) parameter, `fallbackColor`. Fallback color and color serve to highlight "active" and "inactive" portions of the gauge for each defined threshold. For example:
+
+```ts
+@Component({ ... })
+export class AppComponent {
+    ...
+    thresholdConfig = {
+        '0': {
+            color: 'red',
+            fallbackColor: 'lightRed'
+        }
+    }
+    ...
+}
+```
+
+```html
+<ngx-gauge ...  [thresholds]="thresholdConfig" [preserveThresholds]="true"></ngx-gauge>
+```
+
+If you are choosing to preserve thresholds, you may want to use the `"butt"` style cap. Threshold Preservation will work with `"round"`, but it looks a bit odd.
 
 ## Custom Directives for display text
 Sometimes setting a property value on `<ngx-gauge>` does not solve your purpose. You may want to add custom HTML for displaying `value`,`append`, `prepend` and `label` texts. In order to provide custom templates for these properties display following directives can be used.
