@@ -220,7 +220,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
                     percentageToTravel = (nextPercentage - startPercentage),
                     valuePercent = this.value / 100,
                     color = this.thresholds[percentages[i]].color,
-                    fallbackColor = this.thresholds[percentages[i]].fallbackColor;
+                    fallbackColor = this.thresholds[percentages[i]].fallbackColor || this.backgroundColor;
 
                 if (valuePercent >= startPercentage && valuePercent <= nextPercentage) {
                     let percentageOfCurrentArc = (valuePercent - startPercentage ) / percentageToTravel;
