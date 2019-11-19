@@ -115,6 +115,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() thresholds: Object = Object.create(null);
 
+    // If set to true, thresholds will remain their color even if the gauge is in another threshold
+    @Input() preserveThresholds: Object = false;
+
     private _value: number = 0;
 
     @Input()
@@ -180,6 +183,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _drawShell(start: number, middle: number, tail: number, color: string) {
+        if (this.preserveThresholds) {
+            this._drawShellWithSegments(start, tail);
+            return;
+        }
+
         let center = this._getCenter(),
             radius = this._getRadius();
 
@@ -197,6 +205,50 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             this._context.arc(center.x, center.y, radius, start, middle, false);
             this._context.stroke();
         }
+    }
+
+    private _drawShellWithSegments(start: number, tail: number) {
+        if (this.thresholds && this._initialized) {
+            let percentages = Object.keys(this.thresholds),
+                arcLength = tail - start;
+
+            this._clear();
+
+            for (let i = 0; i < percentages.length; i++) {
+                let startPercentage = (Number(percentages[i]) / 100),
+                    nextPercentage = (Number(percentages[i + 1]) / 100) || 1,
+                    percentageToTravel = (nextPercentage - startPercentage),
+                    valuePercent = this.value / 100,
+                    color = this.thresholds[percentages[i]].color,
+                    fallbackColor = this.thresholds[percentages[i]].fallbackColor;
+
+                if (valuePercent >= startPercentage && valuePercent <= nextPercentage) {
+                    let percentageOfCurrentArc = (valuePercent - startPercentage ) / percentageToTravel;
+                    let activeArcEnd = start + (arcLength * percentageToTravel * percentageOfCurrentArc);
+                    this._drawArc(start, activeArcEnd, color);
+                    
+                    let inactiveArcEnd = activeArcEnd + (arcLength * percentageToTravel * (1 - percentageOfCurrentArc));
+                    this._drawArc(activeArcEnd, inactiveArcEnd, fallbackColor);
+
+                    start = inactiveArcEnd;
+                } else {
+                    let arcColor = (startPercentage >= valuePercent) ? fallbackColor : color;
+                    let end = start + (arcLength * percentageToTravel);
+                    this._drawArc(start, end, arcColor);
+
+                    start = end;
+                }
+            }
+        }
+    }
+
+    private _drawArc(start: number, end: number, color: string) {
+        let center = this._getCenter();
+        let radius = this._getRadius();
+        this._context.beginPath();
+        this._context.strokeStyle = color;
+        this._context.arc(center.x, center.y, radius, start, end, false);
+        this._context.stroke();    
     }
 
     private _clear() {
