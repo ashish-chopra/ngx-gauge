@@ -7,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'demo';
-  currentValue: number = 0;
+  thresholdValue: number = 10;
   time = 700;
+
+  defaultExampleValue: number = 10;
 
   thresholds = {
     '0': { 
@@ -28,15 +30,14 @@ export class AppComponent implements OnInit {
       fallbackColor: '#99cc99'
     }
   };
+
   changeValue(value: number) {
-    this.currentValue = value;
-    console.log(this.currentValue);
+    this.thresholdValue = value;
   }
 
   ngOnInit() {
-    this.currentValue = 10;
-    // setInterval(() => {
-    //   this.currentValue = Math.floor(Math.random() * 100);
-    // }, this.time);
+    setInterval(() => {
+      this.defaultExampleValue = Math.floor(Math.random() * 100);
+    }, this.time);
   }
 }

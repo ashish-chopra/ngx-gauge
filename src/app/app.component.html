@@ -1,9 +1,17 @@
-<ngx-gauge [value]="currentValue" 
-           [thresholds]="thresholds" 
-           [preserveThresholds]="true" 
-           [animate]="false" 
-           [thick]="'10'"></ngx-gauge> 
-<div class="gauge-controls">
-    <input type="number" #gaugeInput (keyup.enter)="changeValue(gaugeInput.value)"> 
-    <button class="btn btn-lg" (click)="changeValue(gaugeInput.value)">Update Value</button>
+<div class="showcase">
+  <div class="example-container">
+    <h2>Defaults Example</h2>
+    <ngx-gauge [value]="40"></ngx-gauge>
+  </div>
+  <div class="example-container">
+    <h2>Preserve Threshold Example</h2>
+      <ngx-gauge [value]="thresholdValue" 
+          [thresholds]="thresholds" 
+          [preserveThresholds]="true" 
+          [animate]="true"></ngx-gauge>
+      <div class="gauge-controls">
+        <input type="number" #gaugeInput (keyup.enter)="changeValue(gaugeInput.value)"> 
+        <button class="btn btn-lg" (click)="changeValue(gaugeInput.value)">Update Value</button>
+      </div>
+  </div>
 </div>
