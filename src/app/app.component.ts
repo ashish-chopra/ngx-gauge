@@ -13,19 +13,19 @@ export class AppComponent implements OnInit {
   defaultExampleValue: number = 10;
 
   thresholds = {
-    '0': { 
+    '0': {
       color: '#cc0000',
       fallbackColor: '#ff9999'
     },
-    '25': { 
+    '50': {
       color: '#ffa500',
       fallbackColor: '#ffc966'
     },
-    '50': { 
+    '75': {
       color: '#e5e500',
-      fallbackColor: '#ffffe5' 
+      fallbackColor: '#ffffe5'
     },
-    '75': { 
+    '90': {
       color: '#006600',
       fallbackColor: '#99cc99'
     }
