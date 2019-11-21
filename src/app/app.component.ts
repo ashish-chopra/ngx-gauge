@@ -17,15 +17,15 @@ export class AppComponent implements OnInit {
       color: '#cc0000',
       fallbackColor: '#ff9999'
     },
-    '50': {
+    '25': {
       color: '#ffa500',
       fallbackColor: '#ffc966'
     },
-    '75': {
+    '50': {
       color: '#e5e500',
       fallbackColor: '#ffffe5'
     },
-    '90': {
+    '75': {
       color: '#006600',
       fallbackColor: '#99cc99'
     }
