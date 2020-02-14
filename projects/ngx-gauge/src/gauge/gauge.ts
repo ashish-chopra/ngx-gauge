@@ -56,10 +56,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @ViewChild('canvas', { static: true }) _canvas: ElementRef;
 
-    @ContentChild(NgxGaugeLabel, {static: false}) _labelChild: NgxGaugeLabel;
-    @ContentChild(NgxGaugePrepend, {static: false}) _prependChild: NgxGaugePrepend;
-    @ContentChild(NgxGaugeAppend, {static: false}) _appendChild: NgxGaugeAppend;
-    @ContentChild(NgxGaugeValue, {static: false}) _valueDisplayChild: NgxGaugeValue;
+    @ContentChild(NgxGaugeLabel) _labelChild: NgxGaugeLabel;
+    @ContentChild(NgxGaugePrepend) _prependChild: NgxGaugePrepend;
+    @ContentChild(NgxGaugeAppend) _appendChild: NgxGaugeAppend;
+    @ContentChild(NgxGaugeValue) _valueDisplayChild: NgxGaugeValue;
 
     private _size: number = DEFAULTS.SIZE;
     private _min: number = DEFAULTS.MIN;
