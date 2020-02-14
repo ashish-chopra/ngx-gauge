@@ -6,7 +6,7 @@
 ![NPM](https://img.shields.io/npm/l/ngx-gauge)
 
 
-A highly customizable Gauge component for **Angular 6+** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
+A highly customizable Gauge component for **Angular 9** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
 
 For Angular 8, use version ` ngx-gauge@v1.0.0-beta.13`.
 
