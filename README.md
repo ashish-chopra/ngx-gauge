@@ -1,12 +1,14 @@
 # ngx-gauge
 <!-- [![Build Status](https://travis-ci.org/ashish-chopra/ngx-gauge.png?branch=master)](https://travis-ci.org/ashish-chopra/ngx-gauge) -->
-[![npm version](https://badge.fury.io/js/ngx-gauge.svg)](https://badge.fury.io/js/ngx-gauge)
-<!-- [![peerDependencies Status](https://david-dm.org/ashish-chopra/ngx-gauge/peer-status.svg)](https://david-dm.org/ashish-chopra/ngx-gauge?type=peer) -->
-<!-- [![devDependencies Status](https://david-dm.org/ashish-chopra/ngx-gauge/dev-status.svg)](https://david-dm.org/ashish-chopra/ngx-gauge?type=dev) -->
+![npm](https://img.shields.io/npm/v/ngx-gauge)
+![npm](https://img.shields.io/npm/dm/ngx-gauge)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ashish-chopra/ngx-gauge/issues)
+![NPM](https://img.shields.io/npm/l/ngx-gauge)
 
 
 A highly customizable Gauge component for **Angular 6+** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
+
+For Angular 8, use version ` ngx-gauge@v1.0.0-beta.13`.
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
 

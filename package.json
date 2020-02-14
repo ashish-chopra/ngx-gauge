@@ -6,7 +6,7 @@
     "start": "ng serve",
     "start:lib": "ng build ngx-gauge --watch",
     "build": "ng build",
-    "build:lib": "ng build ngx-gauge",
+    "build:lib": "ng build ngx-gauge --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
