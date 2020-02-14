@@ -3,7 +3,7 @@ import {
     Input,
     SimpleChanges,
     ViewEncapsulation,
-    Renderer,
+    Renderer2,
     AfterViewInit,
     ElementRef,
     OnChanges,
@@ -125,7 +125,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() duration: number = 1200;
 
-    constructor(private _elementRef: ElementRef, private _renderer: Renderer) { }
+    constructor(private _elementRef: ElementRef, private _renderer: Renderer2) { }
 
     ngOnChanges(changes: SimpleChanges) {
         const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'];
@@ -148,8 +148,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _updateSize() {
-        this._renderer.setElementStyle(this._elementRef.nativeElement, 'width', cssUnit(this._size));
-        this._renderer.setElementStyle(this._elementRef.nativeElement, 'height', cssUnit(this._size));
+        this._renderer.setStyle(this._elementRef.nativeElement, 'width', cssUnit(this._size));
+        this._renderer.setStyle(this._elementRef.nativeElement, 'height', cssUnit(this._size));
         this._canvas.nativeElement.width = this.size;
         this._canvas.nativeElement.height = this.size;
     }
