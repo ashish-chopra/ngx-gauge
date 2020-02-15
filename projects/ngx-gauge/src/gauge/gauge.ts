@@ -154,9 +154,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         this._renderer.setStyle(this._elementRef.nativeElement, 'height', cssUnit(this._size));
         this._canvas.nativeElement.width = this.size;
         this._canvas.nativeElement.height = this.size;
-        this._renderer.setElementStyle(this._label.nativeElement,
+        this._renderer.setStyle(this._label.nativeElement,
           'transform', 'translateY(' + (this.size / 3 * 2 - this.size / 13 / 4) + 'px)');
-        this._renderer.setElementStyle(this._reading.nativeElement,
+        this._renderer.setStyle(this._reading.nativeElement,
           'transform', 'translateY(' + (this.size / 2 - this.size * 0.22 / 2) + 'px)');
     }
 
