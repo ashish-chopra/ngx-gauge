@@ -200,7 +200,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         if (this._initialized) {
             this._clear();
 
-            f (borderWidth > 0) {
+            if (borderWidth > 0) {
                 this._context.lineWidth = borderWidth;
                 this._context.beginPath();
                 this._context.strokeStyle = borderColor;
@@ -209,7 +209,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             }
           
             this._context.lineWidth = this.thick;
-            
+
             this._context.beginPath();
             this._context.strokeStyle = this.backgroundColor;
             this._context.arc(center.x, center.y, radius, middle, tail, false);
@@ -314,8 +314,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             color = this._getForegroundColorByRange(value),
             startTime;
 
-        if (self._animationRequestID) {
-            window.cancelAnimationFrame(self._animationRequestID);
+        if (this._animationRequestID) {
+            window.cancelAnimationFrame(this._animationRequestID);
         }
 
         const animate = timestamp => {
