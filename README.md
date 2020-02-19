@@ -6,21 +6,33 @@
 ![NPM](https://img.shields.io/npm/l/ngx-gauge)
 
 
-A highly customizable Gauge component for **Angular 9** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
-
-For Angular 8, use version ` ngx-gauge@v1.0.0-beta.13`.
+A highly customizable Gauge component for **Angular 9** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge). (For older versions of Angular, check out the [compatibility matrix](#compatibility) below).
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
 
 
 # Getting Started
 
-#### step 1: Install npm module
+#### <a name="compatibility"></a>Angular Version Compatibility Table
 
+| Angular Version | ngx-gauge Version |
+|--- |--- |
+|6.0 | - |
+|7.0 | - |
+|8.0| 1.0.0-beta.12 |
+|9.0 | 1.0.0 |
+
+#### Step 1: Install npm module
+
+For latest version use the command: 
 ```bash
-npm install --save ngx-gauge 
+npm install ngx-gauge
 ```
-This will install the current stable version of `ngx-gauge` in your `node_modules` directory and save the entry in `package.json`.
+
+For a specific version for an older Angular version as per [Compatibility table](#compatibility) above, use command:
+```bash
+npm install --save ngx-gauge@<version>
+```
 
 #### Step 2: Import the _NgxGaugeModule_ 
 
