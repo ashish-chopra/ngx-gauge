@@ -3,7 +3,7 @@ import {
     Input,
     SimpleChanges,
     ViewEncapsulation,
-    Renderer,
+    Renderer2,
     AfterViewInit,
     ElementRef,
     OnChanges,
@@ -40,17 +40,23 @@ export type NgxGaugeCap = 'round' | 'butt';
     templateUrl: 'gauge.html',
     styleUrls: ['gauge.css'],
     host: {
-        'role': 'meter',
+        'role': 'slider',
+        'aria-readonly': 'true',
         '[class.ngx-gauge-meter]': 'true',
         '[attr.aria-valuemin]': 'min',
         '[attr.aria-valuemax]': 'max',
-        '[attr.aria-valuenow]': 'value'
+        '[attr.aria-valuenow]': 'value',
+        '[attr.aria-label]': 'ariaLabel',
+        '[attr.aria-labelledby]': 'ariaLabelledby'
+
     },
     encapsulation: ViewEncapsulation.None
 })
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
-    @ViewChild('canvas') _canvas: ElementRef;
+    @ViewChild('canvas', { static: true }) _canvas: ElementRef;
+    @ViewChild('rLabel', { static: true }) _label: ElementRef;
+    @ViewChild('reading', { static: true }) _reading: ElementRef;
 
     @ContentChild(NgxGaugeLabel) _labelChild: NgxGaugeLabel;
     @ContentChild(NgxGaugePrepend) _prependChild: NgxGaugePrepend;
@@ -66,6 +72,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _context: CanvasRenderingContext2D;
     private _animationRequestID: number = 0;
 
+    @Input('aria-label') ariaLabel: string = '';
+
+    @Input('aria-labelledby') ariaLabelledby: string | null = null;
+
     @Input()
     get size(): number { return this._size; }
     set size(value: number) {
@@ -80,10 +90,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     @Input()
     get animate(): boolean { return this._animate; }
     set animate(value) {
-        this._animate = coerceBooleanProperty(value); 
+        this._animate = coerceBooleanProperty(value);
     }
 
-    @Input() max: number = DEFAULTS.MAX;
+    @Input()
+    get max(): number { return this._max; }
+    set max(value: number) {
+        this._max = coerceNumberProperty(value, DEFAULTS.MAX);
+    }
 
     @Input() type: NgxGaugeType = DEFAULTS.TYPE as NgxGaugeType;
 
@@ -116,10 +130,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() duration: number = 1200;
 
-    constructor(private _elementRef: ElementRef, private _renderer: Renderer) { }
+    constructor(private _elementRef: ElementRef, private _renderer: Renderer2) { }
 
     ngOnChanges(changes: SimpleChanges) {
-        const isTextChanged = changes['label'] || changes['append'] || changes['prepend'];
+        const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'];
         const isDataChanged = changes['value'] || changes['min'] || changes['max'];
 
         if (this._initialized) {
@@ -130,7 +144,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
                     ov = changes['value'].previousValue;
                 }
                 this._update(nv, ov);
-            } else if (!isTextChanged) {
+            }
+            if (isCanvasPropertyChanged) {
                 this._destroy();
                 this._init();
             }
@@ -138,8 +153,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _updateSize() {
-        this._renderer.setElementStyle(this._elementRef.nativeElement, 'width', cssUnit(this._size));
-        this._renderer.setElementStyle(this._elementRef.nativeElement, 'height', cssUnit(this._size));
+        this._renderer.setStyle(this._elementRef.nativeElement, 'width', cssUnit(this._getWidth()));
+        this._renderer.setStyle(this._elementRef.nativeElement, 'height', cssUnit(this._getCanvasHeight()));
+        this._canvas.nativeElement.width = this._getWidth();
+        this._canvas.nativeElement.height = this._getCanvasHeight();
+        this._renderer.setStyle(this._label.nativeElement,
+            'transform', 'translateY(' + (this.size / 3 * 2 - this.size / 13 / 4) + 'px)');
+        this._renderer.setStyle(this._reading.nativeElement,
+            'transform', 'translateY(' + (this.size / 2 - this.size * 0.22 / 2) + 'px)');
     }
 
     ngAfterViewInit() {
@@ -176,27 +197,29 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
         middle = Math.max(middle, start); // never below 0%
         middle = Math.min(middle, tail); // never exceed 100%
+        if (this._initialized) {
+            this._clear();
 
-        this._clear();
-        if (borderWidth > 0) {
-            this._context.lineWidth = borderWidth;
+            f (borderWidth > 0) {
+                this._context.lineWidth = borderWidth;
+                this._context.beginPath();
+                this._context.strokeStyle = borderColor;
+                this._context.arc(center.x, center.y, borderRadius, start, tail, false);
+                this._context.stroke();
+            }
+          
+            this._context.lineWidth = this.thick;
+            
             this._context.beginPath();
-            this._context.strokeStyle = borderColor;
-            this._context.arc(center.x, center.y, borderRadius, start, tail, false);
+            this._context.strokeStyle = this.backgroundColor;
+            this._context.arc(center.x, center.y, radius, middle, tail, false);
+            this._context.stroke();
+
+            this._context.beginPath();
+            this._context.strokeStyle = color;
+            this._context.arc(center.x, center.y, radius, start, middle, false);
             this._context.stroke();
         }
-      
-        this._context.lineWidth = this.thick;
-        this._context.beginPath();
-        this._context.strokeStyle = this.backgroundColor;
-        this._context.arc(center.x, center.y, radius - borderWidth, middle, tail, false);
-        this._context.stroke();
-
-        this._context.beginPath();
-        this._context.strokeStyle = color;
-        this._context.arc(center.x, center.y, radius - borderWidth, start, middle, false);
-        this._context.stroke();
-
     }
 
     private _clear() {
@@ -209,6 +232,13 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     private _getHeight() {
         return this.size;
+    }
+
+    // canvas height will be shorter for type 'semi' and 'arch'
+    private _getCanvasHeight() {
+        return (this.type == 'arch' || this.type == 'semi')
+            ? 0.85 * this._getHeight()
+            : this._getHeight();
     }
 
     private _getRadius() {
@@ -250,11 +280,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         }
         this._clear();
         this._context = null;
+        this._initialized = false;
     }
 
     private _setupStyles() {
-        this._context.canvas.width = this.size;
-        this._context.canvas.height = this.size;
         this._context.lineCap = this.cap;
         this._context.lineWidth = this.thick;
     }
@@ -285,6 +314,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             color = this._getForegroundColorByRange(value),
             startTime;
 
+        if (self._animationRequestID) {
+            window.cancelAnimationFrame(self._animationRequestID);
+        }
 
         const animate = timestamp => {
             this._setupStyles();
@@ -292,7 +324,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             timestamp = timestamp || new Date().getTime();
             let runtime = timestamp - startTime;
             let progress = Math.min(runtime / duration, 1);
-            let previousProgress = ov ? ov * unit : 0;
+            let previousProgress = ov ? (ov - min) * unit : 0;
             let middle = start + previousProgress + displacement * progress;
 
             this._drawShell(start, middle, tail, color);
@@ -308,7 +340,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             }
             this._animationRequestID = window.requestAnimationFrame((timestamp) => {
                 startTime = timestamp || new Date().getTime();
-                animate(timestamp);
+                animate(startTime);
             });
         } else {
             this._drawShell(start, start + displacement, tail, color);

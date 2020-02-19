@@ -1,12 +1,14 @@
 # ngx-gauge
 <!-- [![Build Status](https://travis-ci.org/ashish-chopra/ngx-gauge.png?branch=master)](https://travis-ci.org/ashish-chopra/ngx-gauge) -->
-[![npm version](https://badge.fury.io/js/ngx-gauge.svg)](https://badge.fury.io/js/ngx-gauge)
-<!-- [![peerDependencies Status](https://david-dm.org/ashish-chopra/ngx-gauge/peer-status.svg)](https://david-dm.org/ashish-chopra/ngx-gauge?type=peer) -->
-<!-- [![devDependencies Status](https://david-dm.org/ashish-chopra/ngx-gauge/dev-status.svg)](https://david-dm.org/ashish-chopra/ngx-gauge?type=dev) -->
+![npm](https://img.shields.io/npm/v/ngx-gauge)
+![npm](https://img.shields.io/npm/dm/ngx-gauge)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ashish-chopra/ngx-gauge/issues)
+![NPM](https://img.shields.io/npm/l/ngx-gauge)
 
 
-A highly customizable Gauge component for **Angular 6 and 7+** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
+A highly customizable Gauge component for **Angular 9** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge).
+
+For Angular 8, use version ` ngx-gauge@v1.0.0-beta.13`.
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
 
@@ -86,6 +88,9 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `duration`    | Specifies the duration (in milliseconds) of the Gauge's animation | No       | `1500` | Positive Integer           |
 | `thresholds` | Specifies an object of threshold values at which the gauge's color changes. Checkout an example [here](#configure-threshold-color-ranges).  | No |  `none` | {}
 | `animate` | toggles the gauge animation.  | No |  `true` | boolean
+| `aria-label` | Specifies the label used by screen readers | No | `undefined` | Any String
+| `aria-labelledby` | Specifies the ID of any external element to be used as label by screen readers | No | `null` | Any ID String
+
 
 ## Configure Threshold Color Ranges
 
