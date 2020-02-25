@@ -133,7 +133,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     constructor(private _elementRef: ElementRef, private _renderer: Renderer2) { }
 
     ngOnChanges(changes: SimpleChanges) {
-        const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'];
+        const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'] || changes['borderWidth'];
         const isDataChanged = changes['value'] || changes['min'] || changes['max'];
 
         if (this._initialized) {
@@ -210,14 +210,15 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
           
             this._context.lineWidth = this.thick;
 
+            this._context.lineWidth = this.thick;
             this._context.beginPath();
             this._context.strokeStyle = this.backgroundColor;
-            this._context.arc(center.x, center.y, radius, middle, tail, false);
+            this._context.arc(center.x, center.y, radius - borderWidth, middle, tail, false);
             this._context.stroke();
-
+            
             this._context.beginPath();
             this._context.strokeStyle = color;
-            this._context.arc(center.x, center.y, radius, start, middle, false);
+            this._context.arc(center.x, center.y, radius - borderWidth, start, middle, false);
             this._context.stroke();
         }
     }
