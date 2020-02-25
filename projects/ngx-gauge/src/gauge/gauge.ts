@@ -209,13 +209,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             }
           
             this._context.lineWidth = this.thick;
-
-            this._context.lineWidth = this.thick;
             this._context.beginPath();
             this._context.strokeStyle = this.backgroundColor;
             this._context.arc(center.x, center.y, radius - borderWidth, middle, tail, false);
             this._context.stroke();
-            
+
             this._context.beginPath();
             this._context.strokeStyle = color;
             this._context.arc(center.x, center.y, radius - borderWidth, start, middle, false);
