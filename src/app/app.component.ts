@@ -9,8 +9,11 @@ export class AppComponent implements OnInit {
   title = 'demo';
   currentValue: number = 0;
   time = 700;
+  value = 40;
+  borderWidth = 0;
   changeValue() {
-    //nothing
+    this.value = 80;
+    this.borderWidth=3;
   }
 
   ngOnInit() {
