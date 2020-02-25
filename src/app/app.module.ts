@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgxGaugeModule } from 'projects/ngx-gauge/src/ngx-gauge.module';
+import { NgxGaugeModule } from 'ngx-gauge';
 
 @NgModule({
   declarations: [
