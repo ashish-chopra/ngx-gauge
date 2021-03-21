@@ -6,7 +6,7 @@
 ![NPM](https://img.shields.io/npm/l/ngx-gauge)
 
 
-A highly customizable Gauge component for **Angular 9** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge). (For older versions of Angular, check out the [compatibility matrix](#compatibility) below).
+A highly customizable Gauge component for **Angular** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge). (For older versions of Angular, check out the [compatibility matrix](#compatibility) below).
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
 
@@ -21,6 +21,8 @@ A highly customizable Gauge component for **Angular 9** apps and dashboards. It 
 |7.0 | - |
 |8.0| 1.0.0-beta.12 |
 |9.0 | 1.0.0 |
+|10.0.x | 2.0.0 |
+ 
 
 #### Step 1: Install npm module
 
