@@ -20,9 +20,9 @@ A highly customizable Gauge component for **Angular** apps and dashboards. It pr
 |6.0 | - |
 |7.0 | - |
 |8.0| 1.0.0-beta.12 |
-|9.0 | 1.0.0 |
-|10.0.x | 2.0.0 |
- 
+|9.0 | 1.1.0 |
+|10.x.x | 2.0.0 |
+|11.x.x | 3.0.0 |
 
 #### Step 1: Install npm module
 
