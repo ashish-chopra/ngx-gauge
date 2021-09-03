@@ -5,7 +5,7 @@
   "projects": {
     "demo": {
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "apps/demo",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -14,16 +14,19 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/demo",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "index": "apps/demo/src/index.html",
+            "main": "apps/demo/src/main.ts",
+            "polyfills": "apps/demo/src/polyfills.ts",
+            "tsConfig": "apps/demo/src/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "apps/demo/src/favicon.ico",
+              "apps/demo/src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "apps/demo/src/styles.css",
+              "node_modules/highlight.js/styles/github.css",
+              "@angular/material/prebuilt-themes/deeppurple-amber.css"
+
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -37,8 +40,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "apps/demo/src/environments/environment.ts",
+                  "with": "apps/demo/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -87,17 +90,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "main": "apps/demo/src/test.ts",
+            "polyfills": "apps/demo/src/polyfills.ts",
+            "tsConfig": "apps/demo/src/tsconfig.spec.json",
+            "karmaConfig": "apps/demo/rc/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "apps/demo/src/styles.css"
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "apps/demo/src/favicon.ico",
+              "apps/demo/src/assets"
             ]
           }
         },

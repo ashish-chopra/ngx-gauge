@@ -1,0 +1,45 @@
+.block {
+    padding: 2rem;
+    padding-left: 0;
+}
+
+.block h2 {
+    font-weight: normal;
+    margin-bottom: 1.3rem;
+}
+
+.column-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+}
+
+.column-item  {
+    width: 50%;
+    padding: 20px;
+    margin-bottom: 3rem;
+}
+
+.column-item:nth-child(1) {
+    padding-left: 0;
+}
+
+.content  {
+    min-height: 250px;
+    background-color: rgb(250,250,250);
+    padding: 1rem;
+    padding-top: 0;
+}
+
+mat-tab code.hljs {
+    background: none;
+}
+
+.output-frame {
+    border: 1px solid #ddd;
+    border-radius: 4px 4px;
+    height: 300px;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}

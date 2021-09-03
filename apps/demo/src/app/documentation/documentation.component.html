@@ -1,12 +1,11 @@
 <div class="container block">
     <h1>Documentation</h1>
-    <h4>Usage</h4>
-    <p>Once you are setup with angular-gauge and its dependencies, you can straight forward use it on any HTML page like: </p>
-
-    <h4>Config Options</h4>
+    <h4>Configuration Options</h4>
     <p>
-        There are plenty of configurable options available to tune the Gauge as per your needs. Following is the extensive list of
-        configurable options <a href="https://github.com/ashish-chopra/angular-gauge#config-options" class="hidden-sm-up">here</a>.
+        There are plenty of configurable options available to tune the Gauge as per your needs. Following is the
+        extensive list of
+        configurable options <a href="https://github.com/ashish-chopra/ngx-gauge#configuration-properties"
+            class="hidden-sm-up">here</a>.
     </p>
     <p></p>
     <table class="table table-striped table-bordered hidden-sm-down">
@@ -22,12 +21,13 @@
         <tbody>
             <tr>
                 <td>size</td>
-                <td>Specifies the size of the canvas in which Gauge will be drawn. It is used as width and height both.</td>
+                <td>Specifies the size of the canvas in which Gauge will be drawn. It is used as width and height both.
+                </td>
                 <td>No</td>
                 <td>200</td>
                 <td>Positive Integer</td>
             </tr>
-             <tr>
+            <tr>
                 <td>type</td>
                 <td>Specifies the gauge's type.</td>
                 <td>No</td>
@@ -41,16 +41,17 @@
                 <td>0</td>
                 <td>Any numeric value</td>
             </tr>
-             <tr>
+            <tr>
                 <td>max</td>
                 <td>Specified the maximum numeric value for gauge's scale.</td>
                 <td>No</td>
                 <td>100</td>
                 <td>Any numeric value</td>
             </tr>
-             <tr>
+            <tr>
                 <td>value</td>
-                <td>Specifies the current value of the Gauge in the range specified by min and max. It is a required attribute.</td>
+                <td>Specifies the current value of the Gauge in the range specified by min and max. It is a required
+                    attribute.</td>
                 <td>Yes</td>
                 <td>undefined</td>
                 <td>A numeric value</td>
@@ -77,14 +78,14 @@
                 <td>Any string</td>
             </tr>
             <tr>
-                <td>foreground-color</td>
+                <td>foregroundColor</td>
                 <td>Specifies the foreground color of the Gauge's bar./td>
                 <td>No</td>
                 <td>rgba(0, 150, 136, 1)</td>
                 <td>Any color value string</td>
             </tr>
             <tr>
-                <td>background-color</td>
+                <td>backgroundColor</td>
                 <td>Specifies the background color of the Gauge's bar.</td>
                 <td>No</td>
                 <td>rgba(0, 0, 0, 0.1)</td>
@@ -99,7 +100,8 @@
             </tr>
             <tr>
                 <td>prepend</td>
-                <td>Specifies a string prepended to the Gauge's reading. For example "$" in case of financial data displayed
+                <td>Specifies a string prepended to the Gauge's reading. For example "$" in case of financial data
+                    displayed
                     in Gauge.</td>
                 <td>No</td>
                 <td>undefined</td>
@@ -112,18 +114,42 @@
                 <td>1500</td>
                 <td>A positive integer</td>
             </tr>
-             <tr>
+            <tr>
                 <td>thresholds</td>
-                <td>Specifies an object of threshold values at which the gauge's color changes. Checkout the example given below at 'Configure Threshold color ranges' section.</td>
+                <td>Specifies an object of threshold values at which the gauge's color changes.</td>
                 <td>No</td>
                 <td>None</td>
                 <td>A special object</td>
             </tr>
+            <tr>
+                <td>animate</td>
+                <td>toggles the gauge animation</td>
+                <td>No</td>
+                <td>true</td>
+                <td>boolean</td>
+            </tr>
+            <tr>
+                <td>aria-label</td>
+                <td>Specifies the label used by screen readers.</td>
+                <td>No</td>
+                <td>undefined</td>
+                <td>Any string</td>
+            </tr>
+            <tr>
+                <td>aria-labelledby</td>
+                <td>specifies the ID of any external element to be used as label by screen readers.</td>
+                <td>No</td>
+                <td>null</td>
+                <td>Any ID string</td>
+            </tr>
         </tbody>
     </table>
-    <h4>CSS</h4>
+    <h4>Configuring Threshold Colors</h4>
     <p>
-        There are no CSS dependencies needs to be included. Even the fonts used in Gauge's text are driven by application-wide font
-        stylings. However, if you like the fonts which are displayed in demos section, use <em><a target="_blank" href="https://fonts.google.com/specimen/Open+Sans">Open Sans</a></em> Google Fonts.
+        You can customize the colors of the gauge based on the current value being shown. In order to show different
+        colors when gauge crosses certain value, use property thresholds. It takes an object with the threshold value as
+        key and an object with color property as value. For example:
     </p>
-  </div>
+    <pre [highlight]="thresholdColors1"></pre>
+    <pre [highlight]="thresholdColors2"></pre>
+</div>

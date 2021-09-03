@@ -12,4 +12,18 @@ export class DocumentationComponent implements OnInit {
   ngOnInit() {
   }
 
+  thresholdColors1 = `@Component({ ... })
+  export class AppComponent {
+      ...
+  
+      thresholdConfig = {
+          '0': {color: 'green'},
+          '40': {color: 'orange'},
+          '75.5': {color: 'red'}
+      };
+  
+      ...
+  }`;
+
+  thresholdColors2 = `<ngx-gauge ...  [thresholds]="thresholdConfig"></ngx-gauge>`;
 }

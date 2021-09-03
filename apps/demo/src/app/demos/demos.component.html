@@ -1,0 +1,239 @@
+<div class="container block">
+    <h1>Demos</h1>
+    <p>
+        In this section, basic styles of using angular-gauge directive in any application has been demonstrated. To name
+        a few, you
+        can apply themes, colors, thickness, styles, i18n and many more as per your business needs.
+    </p>
+
+    <div class="column-box">
+        <div class="column-item">
+            <mat-tab-group dynamicHeight=true dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Intelligent Defaults</h4>
+                        <p>Gauge has many default options. With bare minimum required parameters set, you will get a
+                            ready-to-use gauge as shown.
+                        </p>
+                        <pre [highlight]="intelligentDefaults1"></pre>
+                        <p>To know about default parameters, checkout <a href="#documentation"
+                                target="_self">documentation</a>.</p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="More">
+                    <div class="content">
+                        <p>We can, however set some more bits to the default code to make it more usable (readable) in
+                            our apps,
+                            like:
+                        <pre [highlight]="intelligentDefaults2"></pre>
+                        <button mat-raised-button color="accent" (click)="showNewGauge = true">Run</button>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge value="68.2" *ngIf="!showNewGauge"></ngx-gauge>
+                <ngx-gauge value="68.2" thick="15" label="Disk Usage" append="GB" *ngIf="showNewGauge">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Gauge Types</h4>
+                        Gauge directive lets you create three distinct types of gauges:
+                        <ul>
+                            <li><b>full</b> (default) - a circular gauge</li>
+                            <li><b>semi</b> - a semi-circular gauge</li>
+                            <li><b>arch</b> - arc like gauge less than a full circle.</li>
+                        </ul>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        <pre [highlight]="gaugeType1"></pre>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <!-- full type gauge -->
+                <ngx-gauge type="full" value="68" thick="5" size="120" label="Speed" append="mph"></ngx-gauge>
+
+                <!-- semi type gauge -->
+                <ngx-gauge type="semi" value="68" thick="5" size="120" label="Speed" append="mph"></ngx-gauge>
+
+                <!-- arch type gauge -->
+                <ngx-gauge type="arch" value="68" thick="5" size="120" label="Speed" append="mph"></ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Gauge Styles</h4>
+                        Gauge directive provides two cap styles for Gauge lines:
+                        <ul>
+                            <li> <b>butt</b> (default) - gives a flat edge to gauge line</li>
+                            <li><b>round</b> - gives a rounded edge to gauge line</li>
+                        </ul>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        <pre [highlight]="gaugeStyle1"></pre>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge size="180" type="arch" thick="15" value="68" cap="butt" label="Speed" append="mph">
+                </ngx-gauge>
+                <ngx-gauge size="180" type="arch" thick="15" value="68" cap="round" label="Speed" append="mph">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Gauge Thickness</h4>
+                        <p>
+                            Thickness of gauge can be set using `thick` attribute. It takes a positive integer value.
+                        </p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        <pre [highlight]="gaugeThickness1"></pre>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <!-- thickness = 5 -->
+                <ngx-gauge type="arch" value="68" thick="5" size="150" label="Speed" append="mph"></ngx-gauge>
+
+                <!-- thickness = 10 -->
+                <ngx-gauge type="arch" value="68" thick="10" size="150" label="Speed" append="mph"></ngx-gauge>
+
+                <!-- thickness = 15 -->
+                <ngx-gauge type="arch" value="68" thick="15" size="150" label="Speed" append="mph"></ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Gauge's Scale</h4>
+                        <p>
+                            The range of Gauge's scale can be specified using "min" and "max" attribute. The "value"
+                            attribute specifies the
+                            current value that lies between the given range is rendered on the gauge's scale.
+                        </p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        <pre [highlight]="gaugeScale1"></pre>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge size="250" type="arch" thick="10" min="0" max="250" value="105.8" cap="butt" label="Speed"
+                    append="mph">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Dynamic Gauge Value</h4>
+                        <p>
+                            The gauge value can be specified directly or bound to a scope variable defined in the
+                            controller. The gauge will udpate the display when the value is updated in the scope.
+                            Click the button to see its working.
+                        </p>
+                        <button mat-raised-button color="accent" (click)="onUpdateClick()">Update</button>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        <pre [highlight]="dynamicGaugeDemoMarkup1"></pre>
+                    </div>
+                    <mat-tab label="TypeScript">
+                        <div class="content">
+                            <pre [highlight]="dynamicGaugeDemoTS1"></pre>
+                        </div>
+                    </mat-tab>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge type="arch" [value]="dynamicGaugeDemoValue" thick="13" cap="round" size="200"
+                    label="I/O Utilization" append="%">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Gauge Themes</h4>
+                        Themes for gauge widget can be set manually using foreground color and background color
+                        attributes. In upcoming releases,
+                        it will contain set of named themes which can be applied based on choice.
+                        <ul>
+                            <li> <b>foregroundColor</b> - rgba(0, 150, 136, 1) (default)</li>
+                            <li><b>backgroundColor</b> - rgba(0, 0, 0, 0.1) (default)</li>
+                        </ul>
+                        <p>It can accept any valid <a href="https://www.w3schools.com/css/css_colors.asp"
+                                target="_blank">CSS color value</a>.
+                        </p>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        <pre [highlight]="themesMarkup1"></pre>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge size="150" type="arch" thick="7" value="68.2" cap="round" label="Speed" append="mph"
+                    foreground-color="#2980b9" background-color="#ecf0f1">
+                </ngx-gauge>
+                <ngx-gauge size="150" type="arch" thick="7" value="68.2" cap="round" label="Speed" append="mph"
+                    foreground-color="#2ecc71" background-color="#ecf0f1">
+                </ngx-gauge>
+                <ngx-gauge size="150" type="arch" thick="7" value="68.2" cap="round" label="Speed" append="mph"
+                    foreground-color="#e74c3c" background-color="#ecf0f1">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
+</div>

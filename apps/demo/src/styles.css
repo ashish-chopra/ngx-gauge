@@ -1,1 +1,66 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+    color: #424242;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', 'sans-serif' !important;
+}
+
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+
+.spacer {
+    margin: 0 auto;
+    margin-top: 70px;
+}
+
+.navbar-container {
+    margin: 0 auto;
+    width: 80%;
+}
+
+h2 {
+    font-weight: normal;
+    margin-bottom: 1.2rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+.custom-width {
+    width: 80%;
+}
+
+.nav-link {
+    font-weight: bold;
+    margin-right: 1.5rem;
+}
+
+.main-color {
+    color: rgb(0, 150, 136);
+    font-weight: 600;
+}
+
+.threshold-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+
+.hljs {
+    background-color: #f8f8f8 !important;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+}
+
+h1 {
+    margin-top: 80px;
+    margin-bottom: 25px;
+}
+
+h4 {
+    margin-top: 2.5rem;
+    margin-bottom: 15px;
+}

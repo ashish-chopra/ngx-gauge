@@ -15,6 +15,7 @@
     position: relative;
     display: inline-block;
     margin-bottom: 1.2rem;
+    margin-top: 0;
 }
 
 #jumbo-action .btn {
@@ -38,9 +39,9 @@
 }
 
 .badge {
-    font-size: 3rem;
-    /* position:absolute; */
-    right: -10rem;
+    font-size: 2rem;
+    position:absolute;
+    right: -7rem;
     top:0;
     color: #ffe484;
 }
