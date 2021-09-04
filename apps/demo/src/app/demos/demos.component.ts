@@ -100,6 +100,29 @@ export class DemosComponent {
 
 }
 `
+const customMarkup1=  `
+<ngx-gauge [value]="currentValue">
+    <ngx-gauge-append>
+        <!-- custom append text or HTML goes here -->
+    </ngx-gauge-append>
+    <ngx-gauge-label>
+        <!-- custom label text or HTML goes here -->
+    </ngx-gauge-label>
+    <ngx-gauge-prepend>
+        <!-- custom prepend text or HTML goes here -->
+    </ngx-gauge-prepend>
+    <ngx-gauge-value>
+        {{ currentValue * Math.PI | number }}
+    </ngx-gauge-value>
+</ngx-gauge>
+`;
+const customMarkup2 = `<ngx-gauge size="180" type="arch" thick="7" 
+          value="68.2" cap="round" 
+          label="Revenue" append="%">
+    <ngx-gauge-prepend>
+        <i class="fa fa-caret-up" style="color: green"></i>
+    </ngx-gauge-prepend>
+</ngx-gauge>`;
 
 @Component({
   selector: 'app-demos',
@@ -124,6 +147,8 @@ export class DemosComponent implements OnInit {
   themesMarkup1 = themesMarkup1;
   dynamicGaugeDemoMarkup1 = dynamicGaugeDemoMarkup1;
   dynamicGaugeDemoTS1 = dynamicGaugeDemoTS1;
+  customMarkup1 = customMarkup1;
+  customMarkup2 = customMarkup2;
 
   dynamicGaugeDemoValue = 10.2;
 

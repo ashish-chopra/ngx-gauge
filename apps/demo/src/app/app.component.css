@@ -29,10 +29,11 @@ html, body {
 }
 
 footer {
-    background-color: #f7f7f7;
+    background-color: #d7d7d7;
     padding: 3rem 0;
     margin-top: 4rem;
-    font-size: 85%;
+    min-height: 500px;
+    /* font-size: 85%; */
 }
 
 footer ul {

@@ -225,13 +225,44 @@
         <div class="column-item">
             <div class="output-frame">
                 <ngx-gauge size="150" type="arch" thick="7" value="68.2" cap="round" label="Speed" append="mph"
-                    foreground-color="#2980b9" background-color="#ecf0f1">
+                    foregroundColor="#2980b9" backgroundColor="#ecf0f1">
                 </ngx-gauge>
                 <ngx-gauge size="150" type="arch" thick="7" value="68.2" cap="round" label="Speed" append="mph"
-                    foreground-color="#2ecc71" background-color="#ecf0f1">
+                    foregroundColor="#2ecc71" backgroundColor="#ecf0f1">
                 </ngx-gauge>
                 <ngx-gauge size="150" type="arch" thick="7" value="68.2" cap="round" label="Speed" append="mph"
-                    foreground-color="#e74c3c" background-color="#ecf0f1">
+                    foregroundColor="#e74c3c" backgroundColor="#ecf0f1">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
+    <div class="column-box">
+
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Custom Directive for Display</h4>
+                        The gauge has three custom directives which can be used to modify the representation of the content displayed in the gauge
+                        which is beyond configuring just properties. For example, if you want to show an icon with the value to indicate increase or decrease is shown at the right.
+                       <pre [highlight]="customMarkup1"></pre>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        This is the code for the demo shown on the right:
+
+                        <pre [highlight]="customMarkup2"></pre>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge size="180" type="arch" thick="7" value="68.2" cap="round" label="Revenue" append="%">
+                    <ngx-gauge-prepend>
+                        <i class="fa fa-caret-up" style="color: green"></i>
+                    </ngx-gauge-prepend>
                 </ngx-gauge>
             </div>
         </div>
