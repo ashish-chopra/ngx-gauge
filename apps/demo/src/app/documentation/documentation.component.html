@@ -116,7 +116,7 @@
             </tr>
             <tr>
                 <td>thresholds</td>
-                <td>Specifies an object of threshold values at which the gauge's color changes. Also if you specify a bgOpacity, this color will be applied the opacity value and shown as the background for that range.</td>
+                <td>Specifies an object of threshold values at which the gauge's color changes. Also if you specify a bgOpacity, this color will be applied the opacity value and shown as the background for that range, otherwise the backgroundColor is used.</td>
                 <td>No</td>
                 <td>None</td>
                 <td>A special object of the format 
@@ -127,8 +127,8 @@
                 <td>Specifies an object of marker values at which value to place a marker. Can be a line or triangle and optionally may specify color, size and label. Note if you use labels you should add to margin value to the gauge using the margin option.</td>
                 <td>No</td>
                 <td>None</td>
-                <td>A special object of the format 
-                    <code>{{ '{ "50": { color: "#555", type: "triangle", size: 8, label: "Goal" }  , ... }' }}</code>
+                <td>A special object of the format shown. Currently type supports "line" or "triangle" marker.<br> 
+                    <code>{{ '{ "50": { color: "#555", type: "triangle", size: 8, label: "Goal", font: "12px arial" }  , ... }' }}</code>
                 </td>
             </tr>  
             <tr>
