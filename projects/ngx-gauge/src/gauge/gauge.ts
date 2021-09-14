@@ -227,7 +227,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
                 for(let i = 0; i < ranges.length; ++i) {
                     let r = ranges[i];
                     this._context.beginPath();
-                    this._context.strokeStyle = r.backgroundColor ? r.backgroundColor : r.color;
+                    this._context.strokeStyle = r.backgroundColor ? r.backgroundColor : (r.bgOpacity) ? r.color : this.backgroundColor;
                     if (r.bgOpacity !== undefined && r.bgOpacity !== null) {
                         this._context.globalAlpha = r.bgOpacity;
                     }
@@ -266,7 +266,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     }
 
-    private _addMarker(angle,color,label?,type?,len?) {
+    private _addMarker(angle,color,label?,type?,len?,font?) {
 
         var rad = angle * Math.PI / 180; 
 
@@ -339,7 +339,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             this._context.translate(x2, y2);
             this._context.rotate((angle + 90) * (Math.PI / 180));
             this._context.textAlign = "center";
-            this._context.font = '13px Arial';
+            this._context.font = (font) ? font : '13px Arial';
             this._context.fillText(label,0,-3);
             this._context.restore();
         }
@@ -523,6 +523,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
                 color: '#555',
                 size: 5,
                 label: '10',
+                font: '11px verdana'
                 type: 'line',
             },
             '20': {
@@ -542,7 +543,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             var angle = bounds.start + (n * perD);
 
             var m = this.markers[mv];
-            this._addMarker(angle,m.color,m.label,m.type,m.size);
+            this._addMarker(angle,m.color,m.label,m.type,m.size,m.font);
         }
     }
 
