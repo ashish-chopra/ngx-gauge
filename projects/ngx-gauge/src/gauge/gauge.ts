@@ -9,7 +9,8 @@ import {
     OnChanges,
     OnDestroy,
     ViewChild,
-    ContentChild
+    ContentChild,
+    OnInit
 } from '@angular/core';
 import { NgxGaugeError } from './gauge-error';
 import {
@@ -52,7 +53,7 @@ export type NgxGaugeCap = 'round' | 'butt';
     },
     encapsulation: ViewEncapsulation.None
 })
-export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
+export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     @ViewChild('canvas', { static: true }) _canvas: ElementRef;
     @ViewChild('rLabel', { static: true }) _label: ElementRef;
@@ -67,6 +68,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     private _min: number = DEFAULTS.MIN;
     private _max: number = DEFAULTS.MAX;
     private _animate: boolean = true;
+    private _margin: number = 0;
 
     private _initialized: boolean = false;
     private _context: CanvasRenderingContext2D;
@@ -81,6 +83,12 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     set size(value: number) {
         this._size = coerceNumberProperty(value);
     }
+
+    @Input()
+    get margin(): number { return this._margin; }
+    set margin(value: number) {
+        this._margin = coerceNumberProperty(value);
+    }    
 
     @Input()
     get min(): number { return this._min; }
@@ -115,8 +123,12 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
 
     @Input() backgroundColor: string = DEFAULTS.BACKGROUND_COLOR;
 
+    // { "40" : { color: "green", bgOpacity: .2 }, ... }
     @Input() thresholds: Object = Object.create(null);
 
+    // { "25": { color: '#ccc', type: 'line', size: 8, label: "25 lbs" }, ... }
+    @Input() markers: Object = Object.create(null);
+    
     private _value: number = 0;
 
     @Input()
@@ -128,6 +140,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     @Input() duration: number = 1200;
 
     constructor(private _elementRef: ElementRef, private _renderer: Renderer2) { }
+
+    ngOnInit() {
+        // if markers are to be added, but no margin specified then here we add 10 px.
+        if (this.markers && Object.keys(this.markers).length > 0 && !this._margin) this._margin = 10;
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'];
@@ -171,38 +188,162 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _getBounds(type: NgxGaugeType) {
-        let head, tail;
+        let head, tail, start, end;
         if (type == 'semi') {
             head = Math.PI;
             tail = 2 * Math.PI;
+            start = 180;
+            end = 360;
         } else if (type == 'full') {
             head = 1.5 * Math.PI;
             tail = 3.5 * Math.PI;
+            start = 270;
+            end = start + 360;
         } else if (type === 'arch') {
             head = 0.8 * Math.PI;
             tail = 2.2 * Math.PI;
+            start = 180 - (0.2 * 180);
+            end = 360 + (0.2 * 180);
         }
-        return { head, tail };
+        return { head, tail, start, end };
     }
 
     private _drawShell(start: number, middle: number, tail: number, color: string) {
         let center = this._getCenter(),
             radius = this._getRadius();
 
-        middle = Math.max(middle, start); // never below 0%
-        middle = Math.min(middle, tail); // never exceed 100%
         if (this._initialized) {
             this._clear();
-            this._context.beginPath();
-            this._context.strokeStyle = this.backgroundColor;
-            this._context.arc(center.x, center.y, radius, middle, tail, false);
-            this._context.stroke();
+            this._drawMarkersAndTicks();
 
+            let ranges = this._getBackgroundColorRanges();
+
+            this._context.lineWidth = this.thick;
+            
+            if (ranges && ranges.length > 0) {
+                // if background color is not specified then use default background, unless opacity is provided in which case use the color
+                // and opactity against color, to form the background color.
+                this._context.lineCap = 'butt'
+                for(let i = 0; i < ranges.length; ++i) {
+                    let r = ranges[i];
+                    this._context.beginPath();
+                    this._context.strokeStyle = r.backgroundColor ? r.backgroundColor : (r.bgOpacity) ? r.color : this.backgroundColor;
+                    if (r.bgOpacity !== undefined && r.bgOpacity !== null) {
+                        this._context.globalAlpha = r.bgOpacity;
+                    }
+                    this._context.arc(center.x, center.y, radius, this._getDisplacement(r.start),this._getDisplacement(r.end), false);
+                    this._context.stroke();         
+                    this._context.globalAlpha = 1;                    
+                }
+            } else {
+                this._context.lineCap = this.cap;
+                this._context.beginPath();
+                this._context.strokeStyle = this.backgroundColor;
+                this._context.arc(center.x, center.y, radius, start, tail, false);
+                this._context.stroke();
+            }
+            this._drawFill(start, middle, tail, color);
+        }
+    }
+
+    private _drawFill(start: number, middle: number, tail: number, color: string) {
+        let center = this._getCenter(),
+            radius = this._getRadius();
+
+        this._context.lineCap = this.cap;
+        this._context.lineWidth = this.thick;            
+
+        middle = Math.max(middle, start); // never below 0%
+        middle = Math.min(middle, tail); // never exceed 100%
+
+        this._context.lineCap = this.cap;
+        this._context.lineWidth = this.thick;
+
+        this._context.beginPath();
+        this._context.strokeStyle = color;
+        this._context.arc(center.x, center.y, radius, start, middle, false);
+        this._context.stroke();
+
+    }
+
+    private _addMarker(angle,color,label?,type?,len?,font?) {
+
+        var rad = angle * Math.PI / 180; 
+
+        let offset = 2;
+
+        if (!len) len = 8;
+
+        if (!type) type = 'line';
+
+        let center = this._getCenter(),
+            radius = this._getRadius();
+
+        let x =  (radius + this.thick/2 + offset) * Math.cos(rad) + center.x;
+        let y =  (radius + this.thick/2 + offset) * Math.sin(rad) + center.y;    
+        let x2 = (radius + this.thick/2 + offset + len) * Math.cos(rad) + center.x;
+        let y2= (radius + this.thick/2 + offset + len) * Math.sin(rad) + center.y;
+        
+        if (type == 'triangle') {
+
+            //Draw the triangle marker
             this._context.beginPath();
             this._context.strokeStyle = color;
-            this._context.arc(center.x, center.y, radius, start, middle, false);
+            this._context.moveTo(x,y);
+
+            this._context.lineWidth = 1;
+
+            let a2 = angle - 45;
+            let a3 = angle + 45;
+
+            if (a2 < 0) a2 += 360;
+            if (a2 > 360) a2 -= 360;
+
+            if (a3 < 0) a3 += 360;
+            if (a3 > 360) a3 -= 360;
+
+            let rad2 = a2 * Math.PI / 180;  
+            let x3 =  len * Math.cos(rad2) + x;
+            let y3 =  len * Math.sin(rad2) + y;
+            this._context.lineTo(x3,y3);
+
+            let rad3 = a3 * Math.PI / 180;  
+            let x4 =  len * Math.cos(rad3) + x;
+            let y4 =  len * Math.sin(rad3) + y;
+
+            this._context.lineTo(x4,y4);
+            this._context.lineTo(x,y);
+
+            this._context.closePath();
             this._context.stroke();
+
+            this._context.fillStyle = color;
+            this._context.fill();
+
+        } else { //line
+  
+            this._context.beginPath();
+            this._context.lineWidth = .5;
+            this._context.strokeStyle = color;
+     
+            this._context.moveTo(x,y);
+            this._context.lineTo(x2,y2);
+    
+            this._context.closePath();
+            this._context.stroke();
+
         }
+
+        if (label) {         
+            this._context.save();
+            this._context.translate(x2, y2);
+            this._context.rotate((angle + 90) * (Math.PI / 180));
+            this._context.textAlign = "center";
+            this._context.font = (font) ? font : '13px Arial';
+            this._context.fillText(label,0,-3);
+            this._context.restore();
+        }
+
     }
 
     private _clear() {
@@ -225,8 +366,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
     }
 
     private _getRadius() {
-        var center = this._getCenter();
-        return center.x - this.thick;
+        const center = this._getCenter();
+        var rad = center.x - this.thick;
+        if (this._margin > 0) rad -= this._margin;
+        return rad;
     }
 
     private _getCenter() {
@@ -239,7 +382,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         this._context = (this._canvas.nativeElement as HTMLCanvasElement).getContext('2d');
         this._initialized = true;
         this._updateSize();
-        this._setupStyles();
         this._create();
     }
 
@@ -253,21 +395,78 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
         this._initialized = false;
     }
 
-    private _setupStyles() {
-        this._context.lineCap = this.cap;
-        this._context.lineWidth = this.thick;
-    }
-
     private _getForegroundColorByRange(value) {
 
+        const thresh = this._getThresholdMatchForValue(value);
+        return thresh && thresh.color ? thresh.color : this.foregroundColor;
+    }
+
+    private _getThresholdMatchForValue(value) {
         const match = Object.keys(this.thresholds)
             .filter(function (item) { return isNumber(item) && Number(item) <= value })
             .sort((a, b) => Number(a) - Number(b))
             .reverse()[0];
 
-        return match !== undefined
-            ? this.thresholds[match].color || this.foregroundColor
-            : this.foregroundColor;
+        if (match !== undefined) {
+            const thresh = this.thresholds[match];
+            const t = {
+                color:thresh.color,
+                backgroundColor:thresh.backgroundColor,
+                bgOpacity: thresh.bgOpacity,
+                start:Number(match),
+                end:this._getNextThreshold(Number(match))
+            };
+            return t;
+        }
+    }
+
+    private _getNextThreshold(value) :number {
+        const match = Object.keys(this.thresholds)
+            .filter(function (item) { return isNumber(item) && Number(item) > value })
+            .sort((a, b) => Number(a) - Number(b)) 
+
+        if (match && match[0] !== undefined) {
+            return Number(match[0]);
+        }
+        else {
+            return this.max;
+        }           
+    }
+
+    private _getBackgroundColorRanges() {
+
+        let i = 0,ranges = [];
+        do {
+            let thresh = this._getThresholdMatchForValue(i);
+            if (thresh) {
+                ranges.push({
+                    start:thresh.start,
+                    end:thresh.end,
+                    color: thresh.color,
+                    backgroundColor: thresh.backgroundColor,
+                    bgOpacity: thresh.bgOpacity
+                });
+                i = thresh.end;
+                if (i >= this.max) break;
+            }
+            else break;
+        } while(true);
+
+        return ranges;
+    }
+
+    private _getDisplacement(v:number) {
+        let  type = this.type,
+            bounds = this._getBounds(type),
+            min = this.min,
+            max = this.max,
+            start = bounds.head,
+            value = clamp(v, this.min, this.max),
+            unit = (bounds.tail - bounds.head) / (max - min),
+            displacement = unit * (value - min);
+        
+        return start + displacement;
+            
     }
 
     private _create(nv?: number, ov?: number) {
@@ -295,7 +494,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             let progress = Math.min(runtime / duration, 1);
             let previousProgress = ov ? (ov - min) * unit : 0;
             let middle = start + previousProgress + displacement * progress;
-
             self._drawShell(start, middle, tail, color);
             if (self._animationRequestID && (runtime < duration)) {
                 self._animationRequestID = window.requestAnimationFrame((timestamp) => animate(timestamp));
@@ -313,6 +511,39 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy {
             });
         } else {
             self._drawShell(start, start + displacement, tail, color);
+        }
+    }
+
+    private _drawMarkersAndTicks() {
+    
+        /*
+         * example:
+        this.markers = {
+            '10': {
+                color: '#555',
+                size: 5,
+                label: '10',
+                font: '11px verdana'
+                type: 'line',
+            },
+            '20': {
+                color: '#555',
+                size: 5,
+                label: '20',
+                type: 'line',
+            },
+        };
+        */
+
+        if (this.markers) for(let mv in this.markers) {
+            var n = Number(mv);
+            var bounds = this._getBounds(this.type);
+            var degrees = (bounds.end - bounds.start);
+            var perD =  degrees / this.max;
+            var angle = bounds.start + (n * perD);
+
+            var m = this.markers[mv];
+            this._addMarker(angle,m.color,m.label,m.type,m.size,m.font);
         }
     }
 
