@@ -26,7 +26,6 @@
               "apps/demo/src/styles.css",
               "node_modules/highlight.js/styles/github.css",
               "@angular/material/prebuilt-themes/deeppurple-amber.css"
-
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -69,8 +68,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-          },
+          "options": {},
           "configurations": {
             "production": {
               "browserTarget": "demo:build:production"
@@ -103,6 +101,15 @@
               "apps/demo/src/assets"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -125,6 +132,15 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "e2e/**/*.ts",
+              "e2e/**/*.html"
+            ]
+          }
         }
       }
     },
@@ -155,12 +171,22 @@
             "tsConfig": "projects/ngx-gauge/tsconfig.spec.json",
             "karmaConfig": "projects/ngx-gauge/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/ngx-gauge/src/**/*.ts",
+              "projects/ngx-gauge/src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "defaultProject": "demo",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
