@@ -24,6 +24,7 @@ A highly customizable Gauge component for **Angular** apps and dashboards. It pr
 |10.x.x | 2.0.0 |
 |11.x.x | 3.0.0 |
 |12.x.x | 4.0.0 |
+|13.x.x | 5.0.0 |
 
 #### Step 1: Install npm module
 
