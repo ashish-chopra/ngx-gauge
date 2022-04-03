@@ -81,6 +81,7 @@
                     <input matInput [(ngModel)]="backgroundColor" type="color">
                 </mat-form-field>
             </div>
+            <!-- THRESHOLDS  -->
             <div layout-gt-sm="row" class="mat-block" layout-align="space-between center">
 
                 <div flex style="max-width:200px;">Thresholds</div>
@@ -89,20 +90,37 @@
             </div>
             <small>
                 Toggle the threshold switch to apply a threshold based color range configuration. And change the gauge's
-                value to see different colors in action.
+                value to see different colors in action. Also if you specify a bgOpacity, this color will be applied the opacity value and shown as the background for that range, otherwise the backgroundColor property value is used.
             </small>
             <br /> <br />
             <mat-card *ngIf="enableThresholds" class="mat-whiteframe-1dp" layout-padding layout
                 layout-align="center center">
                 <pre><code>{{thresholdConfig | json}}</code></pre>
             </mat-card>
+
+            <!-- MARKERS -->
+            <div layout-gt-sm="row" class="mat-block" layout-align="space-between center">
+
+                <div flex style="max-width:200px;">Markers</div>
+                <mat-slide-toggle [(ngModel)]="enableMarkers" aria-label="Switch 2"></mat-slide-toggle>
+
+            </div>
+            <small>
+                Toggle the Markers switch to apply a markers configuration and change the value of the gauge to see it in action.
+            </small>
+            <br /> <br />
+            <mat-card *ngIf="enableMarkers" class="mat-whiteframe-1dp" layout-padding layout
+                layout-align="center center">
+                <pre><code>{{markerConfig | json}}</code></pre>
+            </mat-card>
+
         </section>
         <section class="playground-section">
             <div>
                 <ngx-gauge [type]="type" [size]="size" [thick]="thick" [label]="label" [append]="append"
                     [prepend]="prepend" [cap]="cap" [foregroundColor]="foregroundColor"
                     [backgroundColor]="backgroundColor" [value]="value" [min]="min" [max]="max"
-                    [markers]="markers" [margin]="12"
+                    [markers]="enableMarkers ? markerConfig: {}" [margin]="12"
                     [thresholds]="enableThresholds ? thresholdConfig : {}"></ngx-gauge>
             </div>
         </section>

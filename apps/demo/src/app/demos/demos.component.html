@@ -267,4 +267,43 @@
             </div>
         </div>
     </div>
+
+    <div class="column-box">
+
+        <div class="column-item">
+            <mat-tab-group dynamicHeight="true">
+                <mat-tab label="Description">
+                    <div class="content">
+                        <h4>Adding Markers to the Gauge</h4>
+                        You can also add markers to the gauge by setting the "markers" property to an object. 
+                        The marker size, color, font, and type can be customized. A marker can be of type "line" or "triangle".
+                        You can also club markers with "bgOpacity" property of the threshold to create beautiful gauges as shown below. 
+                        Checkout the documentation for API. <br/>
+                        <img src="/src/assets/demo2.png" width="200"  />          
+                        <img src="/src/assets/demo1.png" width="250"  />          
+                    </div>
+                </mat-tab>
+                <mat-tab label="Markup">
+                    <div class="content">
+                        This is the code for the demo shown on the right:
+
+                        <pre [highlight]="gaugeWithMarkerMarkup"></pre>
+                    </div>
+                </mat-tab>
+                <mat-tab label="TypeScript">
+                    <div class="content">
+                        This is the code for the demo shown on the right:
+
+                        <pre [highlight]="gaugeWithMarkerTS"></pre>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="column-item">
+            <div class="output-frame">
+                <ngx-gauge size="250" type="arch" thick="12" value="68.2" cap="butt" label="Revenue" append="%" margin="18" [markers]="markerConfig">
+                </ngx-gauge>
+            </div>
+        </div>
+    </div>
 </div>

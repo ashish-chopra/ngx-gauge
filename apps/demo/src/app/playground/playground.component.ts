@@ -26,13 +26,15 @@ export class PlaygroundComponent implements OnInit {
   foregroundColor: string = '#009688';
   backgroundColor: string = '#ebebeb';
 
+  enableMarkers: boolean = false;
+
   thresholdConfig = {
     '0': { color: 'green', bgOpacity: .2 },
     '40': { color: 'orange', bgOpacity: .2 },
     '75.5': { color: 'red', bgOpacity: .2 }
   };
 
-  markers = {
+  markerConfig = {
       "30": { color: '#555', size: 8, label: '30', type: 'line'},
       "70": { color: '#555', size: 8, label: '60', type: 'line'},
       "100": { color: '#555', size: 8, label: '100', type: 'line'},
