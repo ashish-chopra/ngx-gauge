@@ -26,7 +26,6 @@
               "apps/demo/src/styles.css",
               "node_modules/highlight.js/styles/github.css",
               "@angular/material/prebuilt-themes/deeppurple-amber.css"
-
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -69,8 +68,7 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-          },
+          "options": {},
           "configurations": {
             "production": {
               "browserTarget": "demo:build:production"
@@ -93,7 +91,7 @@
             "main": "apps/demo/src/test.ts",
             "polyfills": "apps/demo/src/polyfills.ts",
             "tsConfig": "apps/demo/src/tsconfig.spec.json",
-            "karmaConfig": "apps/demo/rc/karma.conf.js",
+            "karmaConfig": "apps/demo/src/karma.conf.js",
             "styles": [
               "apps/demo/src/styles.css"
             ],
@@ -105,14 +103,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
@@ -139,11 +134,11 @@
           "defaultConfiguration": "development"
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "e2e/**/*.ts",
+              "e2e/**/*.html"
             ]
           }
         }
@@ -178,14 +173,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/ngx-gauge/tsconfig.lib.json",
-              "projects/ngx-gauge/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/ngx-gauge/src/**/*.ts",
+              "projects/ngx-gauge/src/**/*.html"
             ]
           }
         }
@@ -194,6 +186,7 @@
   },
   "defaultProject": "demo",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
