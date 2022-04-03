@@ -11,8 +11,8 @@ A highly customizable Gauge component for **Angular** apps and dashboards. It pr
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
 
 In version `v5.0.0`, we introduced markers, ticks and background opacity for gauge as shown below. Checkout the documentation below.
-<img src="https://raw.githubusercontent.com/ashish-chopra/ashish-chopra.github.io/master/src/assets/demo2.png" alt="markers demo" width="400px" />
-<img src="https://raw.githubusercontent.com/ashish-chopra/ashish-chopra.github.io/master/src/assets/demo1.png" alt="markers demo" width="400px" />
+<img src="https://raw.githubusercontent.com/ashish-chopra/ashish-chopra.github.io/master/src/assets/demo2.png" alt="markers demo" width="300px" />
+<img src="https://raw.githubusercontent.com/ashish-chopra/ashish-chopra.github.io/master/src/assets/demo1.png" alt="markers demo" width="300px" />
 
 # Getting Started
 
