@@ -103,6 +103,8 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `prepend`      | Specifies a `string` prepended to the Gauge's reading. For example `"$"` in case of financial data displayed in Gauge.                                        | No        | `undefined`            | Any String           |
 | `duration`    | Specifies the duration (in milliseconds) of the Gauge's animation | No       | `1500` | Positive Integer           |
 | `thresholds` | Specifies an object of threshold values at which the gauge's color changes. Checkout an example [here](#configure-threshold-color-ranges).  | No |  `none` | {}
+| `markers` | Specifies an object of marker values at which value to place a marker. Can be a line or triangle and optionally may specify color, size and label. Note if you use labels you should add to margin value to the gauge using the margin option | No | A special object of the format shown. Currently type supports "line" or "triangle" marker. ```{ "50": { color: "#555", type: "triangle", size: 8, label: "Goal", font: "12px arial" } , ... }``` | {} |
+| `margin` | Specifies an optional margin for the gauge. | No | 0 | Positive Integer |
 | `animate` | toggles the gauge animation.  | No |  `true` | boolean
 | `aria-label` | Specifies the label used by screen readers | No | `undefined` | Any String
 | `aria-labelledby` | Specifies the ID of any external element to be used as label by screen readers | No | `null` | Any ID String
