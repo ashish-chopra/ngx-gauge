@@ -1,14 +1,14 @@
 {
   "name": "ngx-gauge",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "A highly customizable Gauge Component for Angular 4+ apps and dashboards",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ashish-chopra/ngx-gauge.git"
   },
   "peerDependencies": {
-    "@angular/common": "^13.0.0",
-    "@angular/core": "^13.0.0"
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0"
   },
   "keywords": [
     "angular",
