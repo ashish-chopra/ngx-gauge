@@ -28,6 +28,7 @@ In version `v5.0.0`, we introduced markers, ticks and background opacity for gau
 |11.x.x | 3.0.0 |
 |12.x.x | 4.0.0 |
 |13.x.x | 5.0.0 |
+|14.x.x | 6.0.0 |
 
 #### Step 1: Install npm module
 
