@@ -35,8 +35,10 @@ export class PlaygroundComponent implements OnInit {
   };
 
   markerConfig = {
+      "-10": { color: '#555', size: 8, label: '-10', type: 'line'},
+      "0": { color: '#555', size: 8, label: '0', type: 'line'},
       "30": { color: '#555', size: 8, label: '30', type: 'line'},
-      "70": { color: '#555', size: 8, label: '60', type: 'line'},
+      "70.5": { color: '#555', size: 8, label: '70.5', type: 'line'},
       "100": { color: '#555', size: 8, label: '100', type: 'line'},
   }
 

@@ -12,7 +12,6 @@ import {
     ContentChild,
     OnInit
 } from '@angular/core';
-import { NgxGaugeError } from './gauge-error';
 import {
     clamp,
     coerceBooleanProperty,
@@ -139,6 +138,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     @Input() duration: number = 1200;
 
+    /** keep track of previous value in case of negative numbers or mistypes */
+    private _oldChangeVal: number;
+
     constructor(private _elementRef: ElementRef, private _renderer: Renderer2) { }
 
     ngOnInit() {
@@ -152,12 +154,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
         if (this._initialized) {
             if (isDataChanged) {
-                let nv, ov;
+                let nv;
                 if (changes['value']) {
-                    nv = changes['value'].currentValue;
-                    ov = changes['value'].previousValue;
+                    nv = Number(changes['value'].currentValue);
+                    nv = isNaN(nv) ? 0 : nv;
+                    const prevVal = Number(changes['value'].previousValue);
+                    this._oldChangeVal = isNaN(prevVal) ? this._oldChangeVal : prevVal;
                 }
-                this._update(nv, ov);
+                this._update(nv, this._oldChangeVal);
             }
             if (isCanvasPropertyChanged) {
                 this._destroy();
@@ -321,7 +325,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             this._context.fill();
 
         } else { //line
-  
             this._context.beginPath();
             this._context.lineWidth = .5;
             this._context.strokeStyle = color;
@@ -331,10 +334,9 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     
             this._context.closePath();
             this._context.stroke();
-
         }
 
-        if (label) {         
+        if (label) {
             this._context.save();
             this._context.translate(x2, y2);
             this._context.rotate((angle + 90) * (Math.PI / 180));
@@ -454,7 +456,6 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
         return ranges;
     }
-
     private _getDisplacement(v:number) {
         let  type = this.type,
             bounds = this._getBounds(type),
@@ -470,39 +471,40 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     }
 
     private _create(nv?: number, ov?: number) {
-        let self = this,
-            type = this.type,
-            bounds = this._getBounds(type),
-            duration = this.duration,
-            min = this.min,
-            max = this.max,
-            value = clamp(this.value, this.min, this.max),
-            start = bounds.head,
-            unit = (bounds.tail - bounds.head) / (max - min),
-            displacement = unit * (value - min),
-            tail = bounds.tail,
-            color = this._getForegroundColorByRange(value),
-            startTime;
+        const self = this;
+        const type = this.type;
+        const bounds = this._getBounds(type);
+        const duration = this.duration;
+        const min = this.min;
+        const max = this.max;
+        const value = clamp(this.value, min, max);
+        const start = bounds.head;
+        const unit = (bounds.tail - bounds.head) / (max - min);
+        let displacement = unit * (value - min);
+        const tail = bounds.tail;
+        const color = this._getForegroundColorByRange(value);
+        let startTime;
 
         if (self._animationRequestID) {
             window.cancelAnimationFrame(self._animationRequestID);
         }
 
-        function animate(timestamp) {
+        const animate = (timestamp: number) => {
             timestamp = timestamp || new Date().getTime();
-            let runtime = timestamp - startTime;
-            let progress = Math.min(runtime / duration, 1);
-            let previousProgress = ov ? (ov - min) * unit : 0;
-            let middle = start + previousProgress + displacement * progress;
+            const runtime = timestamp - startTime;
+            const progress = Math.min(runtime / duration, 1);
+            const previousProgress = ov ? (ov - min) * unit : 0;
+            const middle = start + previousProgress + displacement * progress;
             self._drawShell(start, middle, tail, color);
             if (self._animationRequestID && (runtime < duration)) {
-                self._animationRequestID = window.requestAnimationFrame((timestamp) => animate(timestamp));
+                self._animationRequestID = window.requestAnimationFrame((ts) => animate(ts));
             } else {
                 window.cancelAnimationFrame(self._animationRequestID);
             }
-        }
+        };
+
         if (this._animate) {
-            if (nv != undefined && ov != undefined) {
+            if (nv !== undefined && ov !== undefined && ov !== 0) {
                 displacement = unit * nv - unit * ov;
             }
             self._animationRequestID = window.requestAnimationFrame((timestamp) => {
@@ -515,15 +517,21 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     }
 
     private _drawMarkersAndTicks() {
-    
         /*
          * example:
         this.markers = {
+            '-10': {
+                color: '#555',
+                size: 5,
+                label: '-10',
+                font: '11px verdana',
+                type: 'line',
+            },
             '10': {
                 color: '#555',
                 size: 5,
                 label: '10',
-                font: '11px verdana'
+                font: '11px verdana',
                 type: 'line',
             },
             '20': {
@@ -534,16 +542,16 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             },
         };
         */
-
-        if (this.markers) for(let mv in this.markers) {
-            var n = Number(mv);
-            var bounds = this._getBounds(this.type);
-            var degrees = (bounds.end - bounds.start);
-            var perD =  degrees / this.max;
-            var angle = bounds.start + (n * perD);
-
-            var m = this.markers[mv];
-            this._addMarker(angle,m.color,m.label,m.type,m.size,m.font);
+        if (this.markers) {
+            const bounds = this._getBounds(this.type);
+            const degrees = (bounds.end - bounds.start);
+            const perD =  degrees / (this.max - this.min);
+            for (const mv in this.markers) {
+                const n = Number(mv) - this.min;
+                const angle = bounds.start + n * perD;
+                const m = this.markers[mv];
+                this._addMarker(angle,m.color,m.label,m.type,m.size,m.font);
+            }
         }
     }
 
