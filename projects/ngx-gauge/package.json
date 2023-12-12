@@ -7,8 +7,8 @@
     "url": "git+https://github.com/ashish-chopra/ngx-gauge.git"
   },
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0"
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0"
   },
   "keywords": [
     "angular",
