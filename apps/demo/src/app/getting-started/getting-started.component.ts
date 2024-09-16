@@ -25,7 +25,7 @@ export class GettingStartedComponent implements OnInit {
       imports: [NgxGaugeModule],
       ...
   })
-  export class AppModule { }  
+  export class AppModule { }
   `;
 
   step3Install: string = `import { Component } from '@angular/core';
@@ -35,16 +35,16 @@ export class GettingStartedComponent implements OnInit {
       templateUrl: 'app.html'
   })
   export class AppComponent {
-      
+
       gaugeType = "semi";
       gaugeValue = 28.3;
       gaugeLabel = "Speed";
       gaugeAppendText = "km/hr";
   }`;
 
-  step3Install2 = `<ngx-gauge [type]="gaugeType" 
-           [value]="gaugeValue" 
-           [label]="gaugeLabel"  
+  step3Install2 = `<ngx-gauge [type]="gaugeType"
+           [value]="gaugeValue"
+           [label]="gaugeLabel"
            [append]="gaugeAppendText">
 </ngx-gauge>`;
 }

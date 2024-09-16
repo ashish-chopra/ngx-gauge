@@ -1,6 +1,6 @@
 {
   "name": "ngx-gauge",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "A highly customizable Gauge Component for Angular 4+ apps and dashboards",
   "repository": {
     "type": "git",

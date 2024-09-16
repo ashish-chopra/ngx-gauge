@@ -28,7 +28,8 @@
             </div>
             <mat-form-field class="mat-block">
                 <mat-label>Size</mat-label>
-                <mat-slider min="100" max="500" class="mat-primary" [(ngModel)]="size">
+                <mat-slider min="100" max="500" class="mat-primary">
+                  <input matSliderThumb [(ngModel)]="size">
                 </mat-slider>
                 <div>
                     <input matInput type="number" [(ngModel)]="size">
@@ -36,7 +37,8 @@
             </mat-form-field>
             <mat-form-field class="mat-block">
                 <mat-label>Thick</mat-label>
-                <mat-slider min="1" max="50" class="mat-primary" [(ngModel)]="thick">
+                <mat-slider min="1" max="50" class="mat-primary">
+                  <input matSliderThumb [(ngModel)]="thick">
                 </mat-slider>
                 <div>
                     <input matInput type="number" [(ngModel)]="thick">
