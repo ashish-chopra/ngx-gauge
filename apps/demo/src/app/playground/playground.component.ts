@@ -16,10 +16,10 @@ export class PlaygroundComponent implements OnInit {
   value: number = 28.3;
   thick: number = 20;
   size: number = 300;
-  type: any = "semi";
-  cap: any = "round";
+  type: string = "semi";
+  cap: string = "round";
   label: string = "Speed";
-  prepend: any = '';
+  prepend: string = '';
   append: any = 'km/hr';
   min: number = 0;
   max: number = 100;
