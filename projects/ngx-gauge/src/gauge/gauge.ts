@@ -48,9 +48,9 @@ export type NgxGaugeCap = 'round' | 'butt';
         '[attr.aria-valuenow]': 'value',
         '[attr.aria-label]': 'ariaLabel',
         '[attr.aria-labelledby]': 'ariaLabelledby'
-
     },
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 

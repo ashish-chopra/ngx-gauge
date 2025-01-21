@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-playground',
-  templateUrl: './playground.component.html',
-  styleUrls: ['./playground.component.css']
+    selector: 'app-playground',
+    templateUrl: './playground.component.html',
+    styleUrls: ['./playground.component.css'],
+    standalone: false
 })
 export class PlaygroundComponent implements OnInit {
 
