@@ -5,7 +5,6 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ashish-chopra/ngx-gauge/issues)
 ![NPM](https://img.shields.io/npm/l/ngx-gauge)
 
-
 A highly customizable Gauge component for **Angular** apps and dashboards. It provides many configurationable options to customize according to your needs. Checkout the live demo [here](https://ashish-chopra.github.io/ngx-gauge). (For older versions of Angular, check out the [compatibility matrix](#compatibility) below).
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
@@ -29,25 +28,28 @@ In version `v5.0.0`, we introduced markers, ticks and background opacity for gau
 |12.x.x | 4.0.0 |
 |13.x.x | 5.0.0 |
 |14.x.x | 6.0.0 |
-|15.x.x | 7.0.0 | 
+|15.x.x | 7.0.0 |
 |16.x.x | 8.0.0 |
 |17.x.x | 9.0.0 |
 |18.x.x | 10.0.0 |
-|19.x.x | 11.0.0 | 
+|19.x.x | 11.0.0 |
+|20.x.x | 12.0.0 |
 
 #### Step 1: Install npm module
 
-For latest version use the command: 
+For latest version use the command:
+
 ```bash
 npm install ngx-gauge
 ```
 
 For a specific version for an older Angular version as per [Compatibility table](#compatibility) above, use command:
+
 ```bash
 npm install --save ngx-gauge@<version>
 ```
 
-#### Step 2: Import the _NgxGaugeModule_ 
+#### Step 2: Import the _NgxGaugeModule_
 
 ```ts
 import { NgxGaugeModule } from 'ngx-gauge';
@@ -60,9 +62,11 @@ import { NgxGaugeModule } from 'ngx-gauge';
 export class AppModule { }
 
 ```
+
 Be sure to import `NgxGaugeModule` after Angular's `BrowserModule`, as the import order matters for _NgModules_.
 
 #### Step 3: Use gauge component in HTML
+
 `NgxGaugeModule` provides a `<ngx-gauge>` component which can be used in any angular template to render a gauge.
 It's configuration properties can be bind to a typescript variable as shown below:
 
@@ -118,10 +122,9 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `aria-label` | Specifies the label used by screen readers | No | `undefined` | Any String
 | `aria-labelledby` | Specifies the ID of any external element to be used as label by screen readers | No | `null` | Any ID String
 
-
 ## Configure Threshold Color Ranges
 
-You can customize the colors of the gauge based on the current value being shown. In order to show different colors when gauge crosses certain value, use property `thresholds`. It takes an object with the threshold value  as `key` and an object with `color` property as `value`. For example: 
+You can customize the colors of the gauge based on the current value being shown. In order to show different colors when gauge crosses certain value, use property `thresholds`. It takes an object with the threshold value  as `key` and an object with `color` property as `value`. For example:
 
 ```ts
 @Component({ ... })
@@ -141,9 +144,11 @@ export class AppComponent {
 ```html
 <ngx-gauge ...  [thresholds]="thresholdConfig"></ngx-gauge>
 ```
+
 The keys in the threshold object signifies the minimum value at which the color will be applied. For instance, if the gauge's current value is `53.2`, then orange color will be applied because after point `40` every value will be displayed as `orange`, until next threshold is encountered. In this example `75.5` is the next threshold.
 
 ## Custom Directives for display text
+
 Sometimes setting a property value on `<ngx-gauge>` does not solve your purpose. You may want to add custom HTML for displaying `value`,`append`, `prepend` and `label` texts. In order to provide custom templates for these properties display following directives can be used.
 
 ```html
@@ -162,6 +167,7 @@ Sometimes setting a property value on `<ngx-gauge>` does not solve your purpose.
     </ngx-gauge-value>
 </ngx-gauge>
 ```
+
 Note that `value` attribute is still required on `<ngx-gauge>` even when you are providing custom template using `<ngx-gauge-value>`. Because `value` attribute is responsible for calculating the gauge's drawing on a scale.
 
 <!-- # Playground
@@ -172,7 +178,7 @@ And, you can see the result live on-screen. It is good start to get familiar wit
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/playground.png)
  -->
 
-# Contribution Welcome!
+# Contribution Welcome
 
 The project is continously evolving with every new release. Give it a star, if you like it. For contribution, setup the development environment as follows:
 
@@ -193,7 +199,6 @@ $> npm run build         # triggers a manual build for library, outputs at `/dis
 ```
 
 3. To add a new feature or fix a bug, make sure to create a new branch from `master`.
-
 
 First thing first, explore the [issue tracker](https://github.com/ashish-chopra/ngx-gauge/issues) to find something to contribute. There are tons of other project setup related issues and activities in which you can help. Your feedback could also be a great contribution.
 

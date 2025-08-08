@@ -1,11 +1,35 @@
 <div class="reading-block" #reading [style.fontSize]="(size-(margin*2)) * 0.22 + 'px'">
   <!-- This block can not be indented correctly, because line breaks cause layout spacing, related problem: https://pt.stackoverflow.com/q/276760/2998 -->
-  <u class="reading-affix" [ngSwitch]="_prependChild != null"><ng-content select="ngx-gauge-prepend" *ngSwitchCase="true"></ng-content><ng-container *ngSwitchCase="false">{{prepend}}</ng-container></u><ng-container [ngSwitch]="_valueDisplayChild != null"><ng-content *ngSwitchCase="true" select="ngx-gauge-value"></ng-content><ng-container *ngSwitchCase="false">{{value | number}}</ng-container></ng-container><u class="reading-affix" [ngSwitch]="_appendChild != null"><ng-content select="ngx-gauge-append" *ngSwitchCase="true"></ng-content><ng-container *ngSwitchCase="false">{{append}}</ng-container></u>
-</div>
-<div class="reading-label" #rLabel
-     [style.fontSize]="(size-(margin*2)) / 13 + 'px'"
-     [ngSwitch]="_labelChild != null">
-  <ng-content select="ngx-gauge-label" *ngSwitchCase="true"></ng-content>
-  <ng-container *ngSwitchCase="false">{{label}}</ng-container>
-</div>
-<canvas #canvas></canvas>
+  <u class="reading-affix">
+    @switch (_prependChild != null) {@case (true) {
+      <ng-content select="ngx-gauge-prepend"></ng-content>
+      }@case (false) {
+      {{prepend}}
+      }}
+    </u>
+    @switch (_valueDisplayChild != null) {@case (true) {
+      <ng-content select="ngx-gauge-value"></ng-content>
+      }@case (false) {
+      {{value | number}}
+      }}
+      <u class="reading-affix">
+        @switch (_appendChild != null) {@case (true) {
+          <ng-content select="ngx-gauge-append"></ng-content>
+          }@case (false) {
+          {{append}}
+          }}
+        </u>
+      </div>
+      <div class="reading-label" #rLabel
+        [style.fontSize]="(size-(margin*2)) / 13 + 'px'"
+        >
+        @switch (_labelChild != null) {
+          @case (true) {
+            <ng-content select="ngx-gauge-label"></ng-content>
+          }
+          @case (false) {
+            {{label}}
+          }
+        }
+      </div>
+      <canvas #canvas></canvas>
