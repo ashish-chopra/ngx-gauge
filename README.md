@@ -103,7 +103,7 @@ There are plenty of configurable properties available to tune the gauge as per y
 | Name      | Description  | Required  | Default value  | Possible values |
 | ---       | ---          | ---       | ---               | ---            |
 | `size`    | Specifies the size of the canvas in which Gauge will be drawn. It is used as `width` and `height` both. | No       | `200` | Positive Integer           |
-| `type`      | Specifies the gauge's type.                     | No        | `"full"`     |  `"full"`, `"semi"`, `"arch"`  |
+| `type`      | Specifies the gauge's type.                     | No        | `"arch"`     |  `"full"`, `"semi"`, `"arch"`  |
 | `min`  | Specifies the minimum numeric value for gauge's scale.  | No     | `0`  | Any numeric value  |
 | `max` | Specified the maximum numeric value for gauge's scale. | No       | `100`  | Any numeric value  |
 | `value`          | Specifies the current value of the Gauge in the range specified by `min` and `max`. It is a required attribute.       | Yes       | `undefined`  | Any numeric value |
