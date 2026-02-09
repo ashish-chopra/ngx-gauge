@@ -1,23 +1,51 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div style="text-align:center; padding: 20px;">
+  <h1>ngx-gauge Demo</h1>
+
+  <div style="margin: 40px 0;">
+    <h2>Issue #159 Fix: Negative Threshold Backgrounds</h2>
+    <p style="max-width: 600px; margin: 0 auto;">
+      This gauge demonstrates the fix for negative threshold backgrounds.
+      The gauge ranges from -100 to +100 with colored threshold backgrounds across the full range.
+    </p>
+    <div style="margin: 20px 0;">
+      <ngx-gauge
+        [type]="'arch'"
+        [value]="negativeTestValue"
+        [min]="-100"
+        [max]="100"
+        [thick]="20"
+        [thresholds]="negativeThresholds"
+        [label]="'Temperature'"
+        [append]="'°C'">
+      </ngx-gauge>
+      <p style="margin-top: 10px;">
+        <strong>Current Value: {{ negativeTestValue }}</strong>
+      </p>
+      <button (click)="changeNegativeValue()" style="padding: 10px 20px; font-size: 16px;">
+        Change Value
+      </button>
+    </div>
+    <div style="margin-top: 20px; text-align: left; max-width: 600px; margin: 20px auto; background: #f5f5f5; padding: 15px; border-radius: 5px;">
+      <h3>Threshold Configuration:</h3>
+      <ul style="font-family: monospace; font-size: 14px;">
+        <li style="color: #ff0000;">-100 to -80: Red (bgOpacity: 0.2)</li>
+        <li style="color: #ff9800;">-80 to -60: Orange (bgOpacity: 0.2)</li>
+        <li style="color: #ffeb3b;">-60 to 0: Yellow (bgOpacity: 0.2)</li>
+        <li style="color: #4caf50;">0 to 60: Green (bgOpacity: 0.2)</li>
+        <li style="color: #2196f3;">60 to 80: Blue (bgOpacity: 0.2)</li>
+        <li style="color: #9c27b0;">80 to 100: Purple (bgOpacity: 0.2)</li>
+      </ul>
+      <p><strong>Expected Result:</strong> All threshold backgrounds should be visible, including the negative ones.</p>
+    </div>
+  </div>
+
+  <hr style="margin: 40px 0;">
+
+  <div style="margin: 40px 0;">
+    <h2>Standard Gauge (Positive Range)</h2>
+    <ngx-gauge [value]="currentValue" [label]="'Progress'"></ngx-gauge>
+    <button (click)="changeValue()" style="margin-top: 10px; padding: 10px 20px; font-size: 16px;">Change</button>
+  </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-<ngx-gauge [value]="currentValue" [label]="'Label'"></ngx-gauge>
-<button (click)="changeValue()">change</button>
-<input type="checkbox" #checkbox>
 <router-outlet></router-outlet>

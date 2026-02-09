@@ -161,6 +161,41 @@ export class DemosComponent {
 
 }`
 
+const negativeThresholdMarkup = `<ngx-gauge size="220"
+           type="arch"
+           thick="20"
+           value="-45"
+           min="-100"
+           max="100"
+           cap="butt"
+           label="Temperature"
+           append="°C"
+           [thresholds]="negativeThresholdConfig">
+</ngx-gauge>
+`;
+
+const negativeThresholdTS = `import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-demos',
+  templateUrl: './demos.component.html',
+  styleUrls: ['./demos.component.css']
+})
+export class DemosComponent {
+
+  constructor() { }
+
+  negativeThresholdConfig = {
+    "-100": { color: '#ff0000', bgOpacity: 0.2 },
+    "-80": { color: '#ff9800', bgOpacity: 0.2 },
+    "-60": { color: '#ffeb3b', bgOpacity: 0.2 },
+    "0": { color: '#4caf50', bgOpacity: 0.2 },
+    "60": { color: '#2196f3', bgOpacity: 0.2 },
+    "80": { color: '#9c27b0', bgOpacity: 0.2 }
+  }
+
+}`
+
 @Component({
     selector: 'app-demos',
     templateUrl: './demos.component.html',
@@ -189,6 +224,8 @@ export class DemosComponent implements OnInit {
   customMarkup2 = customMarkup2;
   gaugeWithMarkerMarkup = gaugeWithMarkerMarkup;
   gaugeWithMarkerTS = gaugeWithMarkersTS;
+  negativeThresholdMarkup = negativeThresholdMarkup;
+  negativeThresholdTS = negativeThresholdTS;
   markerConfig = {
     "0": { color: '#555', size: 8, label: '0', type: 'line'},
     "15": { color: '#555', size: 4, type: 'line'},
@@ -201,10 +238,24 @@ export class DemosComponent implements OnInit {
     "100": { color: '#555', size: 8, label: '100', type: 'line'},
 }
 
+  negativeThresholdConfig = {
+    "-100": { color: '#ff0000', bgOpacity: 0.2 },
+    "-80": { color: '#ff9800', bgOpacity: 0.2 },
+    "-60": { color: '#ffeb3b', bgOpacity: 0.2 },
+    "0": { color: '#4caf50', bgOpacity: 0.2 },
+    "60": { color: '#2196f3', bgOpacity: 0.2 },
+    "80": { color: '#9c27b0', bgOpacity: 0.2 }
+  }
+
   dynamicGaugeDemoValue = 10.2;
+  negativeThresholdValue = -45;
 
   onUpdateClick() {
     this.dynamicGaugeDemoValue = Math.round(Math.random() * 1000)/10;
+  }
+
+  onNegativeUpdateClick() {
+    this.negativeThresholdValue = Math.floor(Math.random() * 201) - 100; // Random value from -100 to 100
   }
 
 }
