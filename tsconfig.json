@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "declaration": false,
     "module": "es2020",

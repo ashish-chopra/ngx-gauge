@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { version } from '../../../../../projects/ngx-gauge/package.json';
 
 @Component({
     selector: 'app-getting-started',
@@ -8,6 +9,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     standalone: false
 })
 export class GettingStartedComponent implements OnInit {
+
+  version = version;
 
   constructor() { }
 
