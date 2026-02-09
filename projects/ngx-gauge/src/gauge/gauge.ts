@@ -437,7 +437,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     private _getBackgroundColorRanges() {
 
-        let i = 0,ranges = [];
+        let i = this.min,ranges = [];
         do {
             let thresh = this._getThresholdMatchForValue(i);
             if (thresh) {

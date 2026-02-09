@@ -310,4 +310,55 @@
       </div>
     </div>
   </div>
+
+  <div class="column-box">
+
+    <div class="column-item">
+      <mat-tab-group dynamicHeight="true">
+        <mat-tab label="Description">
+          <div class="content">
+            <h4>Negative Range with Threshold Backgrounds</h4>
+            <p>
+              Gauges now support negative ranges with threshold backgrounds! This example demonstrates a gauge
+              ranging from -100 to +100 with colored threshold backgrounds across the entire range,
+              including negative values.
+            </p>
+            <p>
+              <strong>Threshold ranges:</strong>
+            </p>
+            <ul style="font-family: monospace; font-size: 14px;">
+              <li style="color: #ff0000;">-100 to -80: Red</li>
+              <li style="color: #ff9800;">-80 to -60: Orange</li>
+              <li style="color: #ffeb3b;">-60 to 0: Yellow</li>
+              <li style="color: #4caf50;">0 to 60: Green</li>
+              <li style="color: #2196f3;">60 to 80: Blue</li>
+              <li style="color: #9c27b0;">80 to 100: Purple</li>
+            </ul>
+            <button mat-raised-button color="accent" (click)="onNegativeUpdateClick()">Update Value</button>
+          </div>
+        </mat-tab>
+        <mat-tab label="Markup">
+          <div class="content">
+            This is the code for the demo shown on the right:
+
+            <pre [highlight]="negativeThresholdMarkup"></pre>
+          </div>
+        </mat-tab>
+        <mat-tab label="TypeScript">
+          <div class="content">
+            This is the code for the demo shown on the right:
+
+            <pre [highlight]="negativeThresholdTS"></pre>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="column-item">
+      <div class="output-frame">
+        <ngx-gauge size="220" type="arch" thick="20" [value]="negativeThresholdValue" min="-100" max="100" cap="butt" label="Temperature" append="°C" [thresholds]="negativeThresholdConfig">
+        </ngx-gauge>
+        <p style="margin-top: 15px;"><strong>Current Value: {{ negativeThresholdValue }}°C</strong></p>
+      </div>
+    </div>
+  </div>
 </div>
