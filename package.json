@@ -11,6 +11,7 @@
     "predeploy": "npm run build:lib && npm run build:demo",
     "deploy": "npx angular-cli-ghpages --dir=dist/demo/browser",
     "test": "ng test",
+    "test:ci": "ng test ngx-gauge --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "pack": "cd dist/ngx-gauge && npm pack"
