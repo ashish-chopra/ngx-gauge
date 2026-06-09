@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 const intelligentDefaults1 = `<ngx-gauge value="68.2"></ngx-gauge>`;
-const intelligentDefaults2 = `<ngx-gauge value="68.2" thick="15" 
+const intelligentDefaults2 = `<ngx-gauge value="68.2" thick="15"
 label="Disk Usage" append="GB">
 </ngx-gauge>`;
 
@@ -17,63 +17,63 @@ const gaugeType1 = `<!-- full type gauge -->
 <ngx-gauge type="arch" value="68" thick="5" size="120"
           label="Speed" append="mph"></ngx-gauge>`;
 
-const gaugeStyle1 = `<ngx-gauge size="180" type="arch" thick="15" 
-value="68" cap="butt" label="Speed" 
+const gaugeStyle1 = `<ngx-gauge size="180" type="arch" thick="15"
+value="68" cap="butt" label="Speed"
 append="mph"></ngx-gauge>
 
-<ngx-gauge size="180" type="arch" thick="15" 
-value="68" cap="round" label="Speed" 
+<ngx-gauge size="180" type="arch" thick="15"
+value="68" cap="round" label="Speed"
 append="mph"></ngx-gauge>`;
 
 const gaugeThickness1 = `<!-- thickness = 5 -->
-<ngx-gauge type="arch" value="68" thick="5" size="150" 
+<ngx-gauge type="arch" value="68" thick="5" size="150"
 label="Speed" append="mph"></ngx-gauge>
 
 <!-- thickness = 10 -->
-<ngx-gauge type="arch" value="68" thick="10" size="150" 
+<ngx-gauge type="arch" value="68" thick="10" size="150"
 label="Speed" append="mph"></ngx-gauge>
 
 <!-- thickness = 15 -->
-<ngx-gauge type="arch" value="68" thick="15" size="150" 
+<ngx-gauge type="arch" value="68" thick="15" size="150"
 label="Speed" append="mph"></ngx-gauge>`;
 
 const gaugeScale1 = `
-<ngx-gauge size="250" 
-           type="arch" 
-           thick="10" 
-           min="0" 
-           max="250" 
-           value="105.8" 
-           cap="butt" 
-           label="Speed" 
+<ngx-gauge size="250"
+           type="arch"
+           thick="10"
+           min="0"
+           max="250"
+           value="105.8"
+           cap="butt"
+           label="Speed"
            append="mph">
 <ngx-gauge>`;
 
 const themesMarkup1 = `<!--blue theme -->
-<ngx-gauge size="150" type="arch" thick="7" value="68.2" 
-          cap="round" label="Speed" append="mph" 
+<ngx-gauge size="150" type="arch" thick="7" value="68.2"
+          cap="round" label="Speed" append="mph"
           foregroundColor="#2980b9"
           backgroundColor="#ecf0f1"></ngx-gauge>
 
 <!-- green theme -->
-<ngx-gauge size="150" type="arch" thick="7" value="68.2" 
-          cap="round" label="Speed" append="mph" 
+<ngx-gauge size="150" type="arch" thick="7" value="68.2"
+          cap="round" label="Speed" append="mph"
           foregroundColor="#2ecc71"
           backgroundColor="#ecf0f1"></ngx-gauge>
 
 <!-- red theme -->
-<ngx-gauge size="150" type="arch" thick="7" value="68.2" 
-          cap="round" label="Speed" append="mph" 
+<ngx-gauge size="150" type="arch" thick="7" value="68.2"
+          cap="round" label="Speed" append="mph"
           foregroundColor="#e74c3c"
           backgroundColor="#ecf0f1"></ngx-gauge>`;
 
-const dynamicGaugeDemoMarkup1 = ` 
+const dynamicGaugeDemoMarkup1 = `
 <ngx-gauge [value]="dynamicGaugeDemoValue"
-           type="arch" 
-           thick="13" 
-           cap="round" 
-           size="200" 
-           label="I/O Utilization" 
+           type="arch"
+           thick="13"
+           cap="round"
+           size="200"
+           label="I/O Utilization"
            append="%">
 </ngx-gauge>
 
@@ -94,7 +94,7 @@ export class DemosComponent {
   dynamicGaugeDemoValue = 10.2;
 
   onUpdateClick() {
-    this.dynamicGaugeDemoValue = 
+    this.dynamicGaugeDemoValue =
     Math.round(Math.random() * 1000)/10;
   }
 
@@ -116,8 +116,8 @@ const customMarkup1=  `
     </ngx-gauge-value>
 </ngx-gauge>
 `;
-const customMarkup2 = `<ngx-gauge size="180" type="arch" thick="7" 
-          value="68.2" cap="round" 
+const customMarkup2 = `<ngx-gauge size="180" type="arch" thick="7"
+          value="68.2" cap="round"
           label="Revenue" append="%">
     <ngx-gauge-prepend>
         <i class="fa fa-caret-up" style="color: green"></i>
@@ -125,12 +125,12 @@ const customMarkup2 = `<ngx-gauge size="180" type="arch" thick="7"
 </ngx-gauge>`;
 
 
-const gaugeWithMarkerMarkup = `<ngx-gauge size="180" 
-           type="arch" 
-           thick="10" 
-           value="68.2" 
-           cap="butt" 
-           label="Revenue" 
+const gaugeWithMarkerMarkup = `<ngx-gauge size="180"
+           type="arch"
+           thick="10"
+           value="68.2"
+           cap="butt"
+           label="Revenue"
            append="%"
            [markers]="markerConfig">
 </ngx-gauge>
@@ -202,12 +202,7 @@ export class DemosComponent {
     styleUrls: ['./demos.component.css'],
     standalone: false
 })
-export class DemosComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class DemosComponent {
 
   showNewGauge = false;
 

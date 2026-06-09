@@ -40,11 +40,8 @@ jobs:
         run: npm run test:ci
 
   lint:
-    name: Lint (informational)
+    name: Lint
     runs-on: ubuntu-latest
-    # Lint failures do not block the pipeline yet — pre-existing errors will be
-    # fixed in a dedicated cleanup PR. Once master is clean, remove this flag.
-    continue-on-error: true
 
     steps:
       - name: Checkout
