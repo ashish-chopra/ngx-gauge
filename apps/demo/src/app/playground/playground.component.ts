@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-playground',
@@ -6,12 +6,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./playground.component.css'],
     standalone: false
 })
-export class PlaygroundComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class PlaygroundComponent {
 
   enableThresholds: boolean = false;
   value: number = 28.3;
@@ -21,7 +16,7 @@ export class PlaygroundComponent implements OnInit {
   cap: string = "round";
   label: string = "Speed";
   prepend: string = '';
-  append: any = 'km/hr';
+  append: string = 'km/hr';
   min: number = 0;
   max: number = 100;
   foregroundColor: string = '#009688';
@@ -43,7 +38,7 @@ export class PlaygroundComponent implements OnInit {
       "100": { color: '#555', size: 8, label: '100', type: 'line'},
   }
 
-  onClick(e) {
+  onClick() {
     console.log(this.foregroundColor, this.backgroundColor);
     this.foregroundColor = 'red';
   }

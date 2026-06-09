@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { version } from '../../../../../projects/ngx-gauge/package.json';
 
 @Component({
@@ -8,14 +8,9 @@ import { version } from '../../../../../projects/ngx-gauge/package.json';
     encapsulation: ViewEncapsulation.None,
     standalone: false
 })
-export class GettingStartedComponent implements OnInit {
+export class GettingStartedComponent {
 
   version = version;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   onHighlight(e) {
     console.log(e);

@@ -14,9 +14,9 @@
         "@angular-eslint/directive-selector": [
           "error",
           {
-            "type": "attribute",
+            "type": ["attribute", "element"],
             "prefix": "ngx",
-            "style": "camelCase"
+            "style": "kebab-case"
           }
         ],
         "@angular-eslint/component-selector": [
@@ -26,6 +26,20 @@
             "prefix": "ngx",
             "style": "kebab-case"
           }
+        ],
+        "@angular-eslint/prefer-standalone": "off",
+        "@angular-eslint/prefer-inject": "off",
+        "brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "rules": {
+        "@angular-eslint/template/eqeqeq": [
+          "error",
+          { "allowNullOrUndefined": true }
         ]
       }
     }

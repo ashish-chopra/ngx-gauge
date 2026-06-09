@@ -35,6 +35,24 @@ const DEFAULTS = {
 export type NgxGaugeType = 'full' | 'arch' | 'semi';
 export type NgxGaugeCap = 'round' | 'butt';
 
+export interface NgxGaugeThreshold {
+    color?: string;
+    backgroundColor?: string;
+    bgOpacity?: number;
+}
+
+export type NgxGaugeThresholds = Record<string, NgxGaugeThreshold>;
+
+export interface NgxGaugeMarker {
+    color?: string;
+    type?: 'line' | 'triangle';
+    size?: number;
+    label?: string;
+    font?: string;
+}
+
+export type NgxGaugeMarkers = Record<string, NgxGaugeMarker>;
+
 @Component({
     selector: 'ngx-gauge',
     templateUrl: 'gauge.html',
@@ -87,7 +105,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     get margin(): number { return this._margin; }
     set margin(value: number) {
         this._margin = coerceNumberProperty(value);
-    }    
+    }
 
     @Input()
     get min(): number { return this._min; }
@@ -123,11 +141,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     @Input() backgroundColor: string = DEFAULTS.BACKGROUND_COLOR;
 
     // { "40" : { color: "green", bgOpacity: .2 }, ... }
-    @Input() thresholds: Object = Object.create(null);
+    @Input() thresholds: NgxGaugeThresholds = Object.create(null);
 
     // { "25": { color: '#ccc', type: 'line', size: 8, label: "25 lbs" }, ... }
-    @Input() markers: Object = Object.create(null);
-    
+    @Input() markers: NgxGaugeMarkers = Object.create(null);
+
     private _value: number = 0;
 
     @Input()
@@ -213,31 +231,31 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     }
 
     private _drawShell(start: number, middle: number, tail: number, color: string) {
-        let center = this._getCenter(),
+        const center = this._getCenter(),
             radius = this._getRadius();
 
         if (this._initialized) {
             this._clear();
             this._drawMarkersAndTicks();
 
-            let ranges = this._getBackgroundColorRanges();
+            const ranges = this._getBackgroundColorRanges();
 
             this._context.lineWidth = this.thick;
-            
+
             if (ranges && ranges.length > 0) {
                 // if background color is not specified then use default background, unless opacity is provided in which case use the color
                 // and opactity against color, to form the background color.
                 this._context.lineCap = 'butt'
                 for(let i = 0; i < ranges.length; ++i) {
-                    let r = ranges[i];
+                    const r = ranges[i];
                     this._context.beginPath();
                     this._context.strokeStyle = r.backgroundColor ? r.backgroundColor : (r.bgOpacity) ? r.color : this.backgroundColor;
                     if (r.bgOpacity !== undefined && r.bgOpacity !== null) {
                         this._context.globalAlpha = r.bgOpacity;
                     }
                     this._context.arc(center.x, center.y, radius, this._getDisplacement(r.start),this._getDisplacement(r.end), false);
-                    this._context.stroke();         
-                    this._context.globalAlpha = 1;                    
+                    this._context.stroke();
+                    this._context.globalAlpha = 1;
                 }
             } else {
                 this._context.lineCap = this.cap;
@@ -251,11 +269,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     }
 
     private _drawFill(start: number, middle: number, tail: number, color: string) {
-        let center = this._getCenter(),
+        const center = this._getCenter(),
             radius = this._getRadius();
 
         this._context.lineCap = this.cap;
-        this._context.lineWidth = this.thick;            
+        this._context.lineWidth = this.thick;
 
         middle = Math.max(middle, start); // never below 0%
         middle = Math.min(middle, tail); // never exceed 100%
@@ -272,22 +290,22 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     private _addMarker(angle,color,label?,type?,len?,font?) {
 
-        var rad = angle * Math.PI / 180; 
+        const rad = angle * Math.PI / 180;
 
-        let offset = 2;
+        const offset = 2;
 
         if (!len) len = 8;
 
         if (!type) type = 'line';
 
-        let center = this._getCenter(),
+        const center = this._getCenter(),
             radius = this._getRadius();
 
-        let x =  (radius + this.thick/2 + offset) * Math.cos(rad) + center.x;
-        let y =  (radius + this.thick/2 + offset) * Math.sin(rad) + center.y;    
-        let x2 = (radius + this.thick/2 + offset + len) * Math.cos(rad) + center.x;
-        let y2= (radius + this.thick/2 + offset + len) * Math.sin(rad) + center.y;
-        
+        const x =  (radius + this.thick/2 + offset) * Math.cos(rad) + center.x;
+        const y =  (radius + this.thick/2 + offset) * Math.sin(rad) + center.y;
+        const x2 = (radius + this.thick/2 + offset + len) * Math.cos(rad) + center.x;
+        const y2= (radius + this.thick/2 + offset + len) * Math.sin(rad) + center.y;
+
         if (type == 'triangle') {
 
             //Draw the triangle marker
@@ -306,14 +324,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             if (a3 < 0) a3 += 360;
             if (a3 > 360) a3 -= 360;
 
-            let rad2 = a2 * Math.PI / 180;  
-            let x3 =  len * Math.cos(rad2) + x;
-            let y3 =  len * Math.sin(rad2) + y;
+            const rad2 = a2 * Math.PI / 180;
+            const x3 =  len * Math.cos(rad2) + x;
+            const y3 =  len * Math.sin(rad2) + y;
             this._context.lineTo(x3,y3);
 
-            let rad3 = a3 * Math.PI / 180;  
-            let x4 =  len * Math.cos(rad3) + x;
-            let y4 =  len * Math.sin(rad3) + y;
+            const rad3 = a3 * Math.PI / 180;
+            const x4 =  len * Math.cos(rad3) + x;
+            const y4 =  len * Math.sin(rad3) + y;
 
             this._context.lineTo(x4,y4);
             this._context.lineTo(x,y);
@@ -328,10 +346,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             this._context.beginPath();
             this._context.lineWidth = .5;
             this._context.strokeStyle = color;
-     
+
             this._context.moveTo(x,y);
             this._context.lineTo(x2,y2);
-    
+
             this._context.closePath();
             this._context.stroke();
         }
@@ -369,13 +387,13 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     private _getRadius() {
         const center = this._getCenter();
-        var rad = center.x - this.thick;
+        let rad = center.x - this.thick;
         if (this._margin > 0) rad -= this._margin;
         return rad;
     }
 
     private _getCenter() {
-        var x = this._getWidth() / 2,
+        const x = this._getWidth() / 2,
             y = this._getHeight() / 2;
         return { x, y };
     }
@@ -405,7 +423,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     private _getThresholdMatchForValue(value) {
         const match = Object.keys(this.thresholds)
-            .filter(function (item) { return isNumber(item) && Number(item) <= value })
+            .filter((item) => isNumber(item) && Number(item) <= value)
             .sort((a, b) => Number(a) - Number(b))
             .reverse()[0];
 
@@ -424,40 +442,37 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     private _getNextThreshold(value) :number {
         const match = Object.keys(this.thresholds)
-            .filter(function (item) { return isNumber(item) && Number(item) > value })
-            .sort((a, b) => Number(a) - Number(b)) 
+            .filter((item) => isNumber(item) && Number(item) > value)
+            .sort((a, b) => Number(a) - Number(b))
 
         if (match && match[0] !== undefined) {
             return Number(match[0]);
-        }
-        else {
+        } else {
             return this.max;
-        }           
+        }
     }
 
     private _getBackgroundColorRanges() {
 
-        let i = this.min,ranges = [];
-        do {
-            let thresh = this._getThresholdMatchForValue(i);
-            if (thresh) {
-                ranges.push({
-                    start:thresh.start,
-                    end:thresh.end,
-                    color: thresh.color,
-                    backgroundColor: thresh.backgroundColor,
-                    bgOpacity: thresh.bgOpacity
-                });
-                i = thresh.end;
-                if (i >= this.max) break;
-            }
-            else break;
-        } while(true);
+        const ranges = [];
+        let i = this.min;
+        let thresh = this._getThresholdMatchForValue(i);
+        while (thresh && i < this.max) {
+            ranges.push({
+                start: thresh.start,
+                end: thresh.end,
+                color: thresh.color,
+                backgroundColor: thresh.backgroundColor,
+                bgOpacity: thresh.bgOpacity
+            });
+            i = thresh.end;
+            thresh = this._getThresholdMatchForValue(i);
+        }
 
         return ranges;
     }
     private _getDisplacement(v:number) {
-        let  type = this.type,
+        const  type = this.type,
             bounds = this._getBounds(type),
             min = this.min,
             max = this.max,
@@ -465,13 +480,12 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             value = clamp(v, this.min, this.max),
             unit = (bounds.tail - bounds.head) / (max - min),
             displacement = unit * (value - min);
-        
+
         return start + displacement;
-            
+
     }
 
     private _create(nv?: number, ov?: number) {
-        const self = this;
         const type = this.type;
         const bounds = this._getBounds(type);
         const duration = this.duration;
@@ -485,8 +499,8 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
         const color = this._getForegroundColorByRange(value);
         let startTime;
 
-        if (self._animationRequestID) {
-            window.cancelAnimationFrame(self._animationRequestID);
+        if (this._animationRequestID) {
+            window.cancelAnimationFrame(this._animationRequestID);
         }
 
         const animate = (timestamp: number) => {
@@ -495,11 +509,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             const progress = Math.min(runtime / duration, 1);
             const previousProgress = ov ? (ov - min) * unit : 0;
             const middle = start + previousProgress + displacement * progress;
-            self._drawShell(start, middle, tail, color);
-            if (self._animationRequestID && (runtime < duration)) {
-                self._animationRequestID = window.requestAnimationFrame((ts) => animate(ts));
+            this._drawShell(start, middle, tail, color);
+            if (this._animationRequestID && (runtime < duration)) {
+                this._animationRequestID = window.requestAnimationFrame((ts) => animate(ts));
             } else {
-                window.cancelAnimationFrame(self._animationRequestID);
+                window.cancelAnimationFrame(this._animationRequestID);
             }
         };
 
@@ -507,12 +521,12 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             if (nv !== undefined && ov !== undefined && ov !== 0) {
                 displacement = unit * nv - unit * ov;
             }
-            self._animationRequestID = window.requestAnimationFrame((timestamp) => {
+            this._animationRequestID = window.requestAnimationFrame((timestamp) => {
                 startTime = timestamp || new Date().getTime();
                 animate(startTime);
             });
         } else {
-            self._drawShell(start, start + displacement, tail, color);
+            this._drawShell(start, start + displacement, tail, color);
         }
     }
 
