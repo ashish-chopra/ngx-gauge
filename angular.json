@@ -5,7 +5,7 @@
   "projects": {
     "demo": {
       "root": "",
-      "sourceRoot": "apps/demo",
+      "sourceRoot": "projects/demo",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -16,17 +16,13 @@
             "outputPath": {
               "base": "dist/demo"
             },
-            "index": "apps/demo/src/index.html",
+            "index": "projects/demo/src/index.html",
             "polyfills": [
-              "apps/demo/src/polyfills.ts"
+              "zone.js"
             ],
-            "tsConfig": "apps/demo/src/tsconfig.app.json",
-            "assets": [
-              "apps/demo/src/favicon.ico",
-              "apps/demo/src/assets"
-            ],
+            "tsConfig": "projects/demo/src/tsconfig.app.json",
             "styles": [
-              "apps/demo/src/styles.css",
+              "projects/demo/src/styles.css",
               "node_modules/highlight.js/styles/github.css",
               "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
             ],
@@ -35,16 +31,10 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "browser": "apps/demo/src/main.ts"
+            "browser": "projects/demo/src/main.ts"
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/demo/src/environments/environment.ts",
-                  "with": "apps/demo/src/environments/environment.prod.ts"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -88,26 +78,22 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "apps/demo/src/test.ts",
-            "polyfills": "apps/demo/src/polyfills.ts",
-            "tsConfig": "apps/demo/src/tsconfig.spec.json",
-            "karmaConfig": "apps/demo/src/karma.conf.js",
+            "main": "projects/demo/src/test.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "projects/demo/src/tsconfig.spec.json",
+            "karmaConfig": "projects/demo/src/karma.conf.js",
             "styles": [
-              "apps/demo/src/styles.css"
+              "projects/demo/src/styles.css"
             ],
-            "scripts": [],
-            "assets": [
-              "apps/demo/src/favicon.ico",
-              "apps/demo/src/assets"
-            ]
+            "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "apps/demo/**/*.ts",
-              "apps/demo/**/*.html"
+              "projects/demo/**/*.ts",
+              "projects/demo/**/*.html"
             ]
           }
         }
