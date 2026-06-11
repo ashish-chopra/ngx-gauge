@@ -65,6 +65,9 @@ jobs:
         run: npm run test:ci
 
       - name: Publish to npm
-        run: npm publish dist/ngx-gauge --provenance --access public
+        # Run from inside the package directory to avoid npm parsing
+        # "dist/ngx-gauge" as an owner/repo GitHub shorthand.
+        working-directory: dist/ngx-gauge
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
