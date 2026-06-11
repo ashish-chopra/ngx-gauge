@@ -1,0 +1,70 @@
+name: Release
+
+# Publishes the ngx-gauge library to npm when a GitHub Release is published.
+#
+# How to cut a release:
+#   1. Merge a release-prep PR that bumps projects/ngx-gauge/package.json
+#      version and updates CHANGELOG.md.
+#   2. On master, draft a new GitHub Release with tag `v<version>`
+#      (e.g. `v13.2.0`). The tag must match the version in
+#      projects/ngx-gauge/package.json or this workflow will fail.
+#   3. Publish the Release — this workflow runs and publishes to npm.
+#
+# Required repository secret:
+#   NPM_TOKEN — an npm "Automation" granular access token scoped to publish
+#               the `ngx-gauge` package.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Build, verify & publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # required for npm provenance
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify release tag matches package.json version
+        if: github.event_name == 'release'
+        run: |
+          PKG_VERSION="$(node -p "require('./projects/ngx-gauge/package.json').version")"
+          TAG="${GITHUB_REF_NAME}"
+          EXPECTED="v${PKG_VERSION}"
+          if [ "${TAG}" != "${EXPECTED}" ]; then
+            echo "::error::Release tag '${TAG}' does not match package version '${EXPECTED}'."
+            echo "Update projects/ngx-gauge/package.json or rename the release tag."
+            exit 1
+          fi
+          echo "Tag ${TAG} matches package version ${PKG_VERSION}."
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Test library
+        run: npm run test:ci
+
+      - name: Publish to npm
+        run: npm publish dist/ngx-gauge --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
