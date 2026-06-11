@@ -6,7 +6,7 @@
     "start": "ng serve",
     "start:lib": "ng build ngx-gauge --watch --configuration=development",
     "build": "ng build",
-    "build:lib": "ng build ngx-gauge --configuration=production",
+    "build:lib": "ng build ngx-gauge --configuration=production && cp README.md LICENSE.md CHANGELOG.md dist/ngx-gauge/",
     "build:demo": "ng build --configuration=production --base-href=/ngx-gauge/",
     "predeploy": "npm run build:lib && npm run build:demo",
     "deploy": "npx angular-cli-ghpages --dir=dist/demo/browser",
