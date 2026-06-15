@@ -30,7 +30,7 @@
     "ngx-highlightjs": "^5.0.0",
     "rxjs": "~6.6.6",
     "tslib": "^2.4.0",
-    "zone.js": "^0.15.0"
+    "zone.js": "^0.16.2"
   },
   "devDependencies": {
     "@angular-eslint/builder": "^21.2.0",
