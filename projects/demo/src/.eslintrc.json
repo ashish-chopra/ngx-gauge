@@ -10,6 +10,13 @@
       "files": [
         "*.ts"
       ],
+      "parserOptions": {
+        "project": [
+          "projects/demo/src/tsconfig.app.json",
+          "projects/demo/src/tsconfig.spec.json"
+        ],
+        "createDefaultProgram": true
+      },
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
