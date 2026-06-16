@@ -53,7 +53,6 @@ import { MatTabsModule } from '@angular/material/tabs';
       provide: HIGHLIGHT_OPTIONS,
       useValue: {
         coreLibraryLoader: () => import('highlight.js/lib/core'),
-        lineNumbersLoader: () => import('highlightjs-line-numbers.js'),
         languages: {
           typescript: () => import('highlight.js/lib/languages/typescript'),
           css: () => import('highlight.js/lib/languages/css'),
