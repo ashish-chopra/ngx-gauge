@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxGauge } from './gauge';
-import { NgxGaugeModule } from '../ngx-gauge.module';
+import { NgxGauge } from '../../src/gauge/gauge';
+import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 
 /**
  * Phase 2.6 — drawing pipeline coverage.

@@ -8,8 +8,8 @@
     ]
   },
   "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+    "test/**/*.spec.ts",
+    "src/**/*.d.ts"
   ],
   "exclude": []
 }

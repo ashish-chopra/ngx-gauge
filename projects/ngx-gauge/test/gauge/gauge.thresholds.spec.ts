@@ -1,5 +1,5 @@
 import { ElementRef, Renderer2 } from '@angular/core';
-import { NgxGauge, NgxGaugeThresholds } from './gauge';
+import { NgxGauge, NgxGaugeThresholds } from '../../src/gauge/gauge';
 
 /**
  * Threshold algorithm tests.

@@ -96,7 +96,7 @@
     },
     "ngx-gauge": {
       "root": "projects/ngx-gauge",
-      "sourceRoot": "projects/ngx-gauge/src",
+      "sourceRoot": "projects/ngx-gauge",
       "projectType": "library",
       "prefix": "ngx",
       "architect": {
@@ -120,10 +120,11 @@
             "tsConfig": "projects/ngx-gauge/tsconfig.spec.json",
             "buildTarget": "demo::development",
             "browsers": ["chromium"],
+            "include": ["test/**/*.spec.ts"],
             "coverage": true,
             "coverageInclude": ["projects/ngx-gauge/src/**/*.ts"],
             "coverageExclude": [
-              "projects/ngx-gauge/src/**/*.spec.ts",
+              "projects/ngx-gauge/test/**/*.spec.ts",
               "projects/ngx-gauge/src/test.ts",
               "projects/ngx-gauge/src/public-api.ts"
             ],
@@ -141,7 +142,8 @@
           "options": {
             "lintFilePatterns": [
               "projects/ngx-gauge/src/**/*.ts",
-              "projects/ngx-gauge/src/**/*.html"
+              "projects/ngx-gauge/src/**/*.html",
+              "projects/ngx-gauge/test/**/*.ts"
             ]
           }
         }

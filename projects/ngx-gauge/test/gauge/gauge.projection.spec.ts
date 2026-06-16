@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxGaugeModule } from '../ngx-gauge.module';
+import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 
 /**
  * Content-projection regression coverage for the four projected slots.

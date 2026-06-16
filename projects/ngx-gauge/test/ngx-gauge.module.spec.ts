@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { NgxGaugeModule } from './ngx-gauge.module';
-import { NgxGauge } from './gauge/gauge';
+import { NgxGaugeModule } from '../src/ngx-gauge.module';
+import { NgxGauge } from '../src/gauge/gauge';
 import {
   NgxGaugeAppend,
   NgxGaugeLabel,
   NgxGaugePrepend,
   NgxGaugeValue,
-} from './gauge/gauge-directives';
+} from '../src/gauge/gauge-directives';
 
 /**
  * Module sanity coverage. Verifies each of the five public symbols is
