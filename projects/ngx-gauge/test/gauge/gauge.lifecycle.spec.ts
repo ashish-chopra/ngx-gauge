@@ -19,6 +19,8 @@ import { NgxGauge, NgxGaugeMarkers, NgxGaugeThresholds } from '../../src/gauge/g
       [animate]="animate"
       [markers]="markers"
       [thresholds]="thresholds"
+      [foregroundColor]="foregroundColor"
+      [backgroundColor]="backgroundColor"
     ></ngx-gauge>
   `,
 })
@@ -34,6 +36,8 @@ class LifecycleHost {
   animate: any = false; // disable RAF for deterministic tests
   markers: NgxGaugeMarkers = {};
   thresholds: NgxGaugeThresholds = {};
+  foregroundColor: any = 'rgba(0, 150, 136, 1)';
+  backgroundColor: any = 'rgba(0, 0, 0, 0.1)';
 }
 
 /**
@@ -101,11 +105,20 @@ describe('NgxGauge lifecycle', () => {
   });
 
   describe('ngOnDestroy (pre-init safety)', () => {
-    // Known issue: _destroy() unconditionally calls _clear() which dereferences
-    // this._context.clearRect(...). When called before _init has run, _context
-    // is undefined and a TypeError is thrown. The fix (a `if (this._context)`
-    // guard) is deferred to v14 to keep 13.x runtime behavior unchanged.
-    it.todo('is safe to call before _init has run (deferred to v14)');
+    // Issue #87: _destroy() unconditionally calls _clear() which dereferences
+    // this._context.clearRect(...). When called before _init has run,
+    // _context is undefined and a TypeError is thrown. Fix: null-guard
+    // _clear and harden _destroy to be idempotent.
+    it('is safe to call before _init has run', () => {
+      const gauge = makeBareGauge();
+      expect(() => gauge.ngOnDestroy()).not.toThrow();
+    });
+
+    it('is idempotent: calling _destroy twice does not throw', () => {
+      const gauge = makeBareGauge();
+      gauge.ngOnDestroy();
+      expect(() => gauge.ngOnDestroy()).not.toThrow();
+    });
   });
 
   describe('ngAfterViewInit (TestBed)', () => {
@@ -131,14 +144,16 @@ describe('NgxGauge lifecycle', () => {
       expect(ctx).not.toBeNull();
     });
 
-    it('sets canvas width to size', () => {
+    it('sets canvas CSS width to size', () => {
       const canvas: HTMLCanvasElement = hostEl.querySelector('canvas')!;
-      expect(canvas.width).toBe(200);
+      // Backing store may be size*dpr on high-DPR displays (#13/#156); the
+      // consumer-facing dimension is the inline CSS width.
+      expect(canvas.style.width).toBe('200px');
     });
 
-    it('sets canvas height to 0.85 * size for type "arch"', () => {
+    it('sets canvas CSS height to 0.85 * size for type "arch"', () => {
       const canvas: HTMLCanvasElement = hostEl.querySelector('canvas')!;
-      expect(canvas.height).toBe(170); // 0.85 * 200
+      expect(canvas.style.height).toBe('170px'); // 0.85 * 200
     });
 
     it('sets inline width/height styles on the host element', () => {
@@ -163,17 +178,77 @@ describe('NgxGauge lifecycle', () => {
 
     it('uses 0.85 * size for type "arch"', () => {
       const { canvas } = setupWithType('arch');
-      expect(canvas.height).toBe(170);
+      expect(canvas.style.height).toBe('170px');
     });
 
     it('uses 0.85 * size for type "semi"', () => {
+      // Note: #85 (shrink semi to ~0.55 × size) is deferred to v14 due to
+      // its layout-affecting nature; semi continues to reserve the full
+      // arch height in 13.x.
       const { canvas } = setupWithType('semi');
-      expect(canvas.height).toBe(170);
+      expect(canvas.style.height).toBe('170px');
     });
 
     it('uses size (full square) for type "full"', () => {
       const { canvas } = setupWithType('full');
-      expect(canvas.height).toBe(200);
+      expect(canvas.style.height).toBe('200px');
+    });
+  });
+
+  // Issues #13 / #156: on high-DPR (Retina) displays, drawing onto a canvas
+  // whose backing store matches its CSS size produces a blurry result. Fix:
+  // size the backing store to size*dpr × canvasHeight*dpr, keep the inline
+  // CSS size unchanged, and apply ctx.scale(dpr, dpr) once per init so the
+  // drawing routines can keep working in CSS-pixel coordinates.
+  describe('high-DPR canvas scaling', () => {
+    let originalDpr: number;
+
+    beforeEach(() => {
+      originalDpr = window.devicePixelRatio;
+      Object.defineProperty(window, 'devicePixelRatio', {
+        configurable: true,
+        get: () => 2,
+      });
+    });
+
+    afterEach(() => {
+      Object.defineProperty(window, 'devicePixelRatio', {
+        configurable: true,
+        get: () => originalDpr,
+      });
+    });
+
+    function setupAt2x(): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({ imports: [LifecycleHost] });
+      const fixture = TestBed.createComponent(LifecycleHost);
+      fixture.detectChanges();
+      const canvas: HTMLCanvasElement = fixture.nativeElement.querySelector('canvas');
+      const gauge: NgxGauge = fixture.componentInstance.gauge;
+      return { canvas, ctx: (gauge as any)._context };
+    }
+
+    it('scales canvas backing store by devicePixelRatio (arch, size=200)', () => {
+      const { canvas } = setupAt2x();
+      // Backing store: size*dpr × canvasHeight*dpr
+      expect(canvas.width).toBe(400);
+      expect(canvas.height).toBe(340); // 0.85 * 200 * 2
+    });
+
+    it('keeps the inline CSS size at the unscaled (size, canvasHeight) values', () => {
+      const { canvas } = setupAt2x();
+      expect(canvas.style.width).toBe('200px');
+      expect(canvas.style.height).toBe('170px');
+    });
+
+    it('applies ctx.scale(dpr, dpr) so drawing uses CSS-pixel coordinates', () => {
+      const { ctx } = setupAt2x();
+      // getTransform reflects all transforms applied since the last reset.
+      const t = ctx.getTransform();
+      expect(t.a).toBeCloseTo(2);
+      expect(t.d).toBeCloseTo(2);
+      expect(t.b).toBeCloseTo(0);
+      expect(t.c).toBeCloseTo(0);
     });
   });
 
@@ -255,6 +330,115 @@ describe('NgxGauge lifecycle', () => {
       expect(updateSpy).toHaveBeenCalled();
       const callArgs = updateSpy.mock.calls[0];
       expect(Number.isNaN(callArgs[0])).toBe(false);
+    });
+
+    // Issue #150 Bug 2: _oldChangeVal is only updated in the `value` change
+    // branch. When max (or min) changes alone after a previous value change,
+    // _oldChangeVal carries a stale value from the previous (min, max) regime
+    // and the next _create computes previousProgress from it, animating to a
+    // wrong middle.
+    it('resets _oldChangeVal to the current value when max changes', () => {
+      vi.spyOn(gauge as any, '_update').mockImplementation(() => undefined);
+      host.min = 0;
+      host.max = 3;
+      host.value = 1;
+      fixture.detectChanges();
+      host.value = 0;
+      fixture.detectChanges();
+      // After the value change, _oldChangeVal holds the previous value (1).
+      expect((gauge as any)._oldChangeVal).toBe(1);
+
+      host.max = 2; // max-only change → must NOT carry the stale _oldChangeVal
+      fixture.detectChanges();
+
+      expect((gauge as any)._oldChangeVal).toBe(host.value); // i.e. 0
+    });
+
+    it('resets _oldChangeVal to the current value when min changes', () => {
+      vi.spyOn(gauge as any, '_update').mockImplementation(() => undefined);
+      host.min = 0;
+      host.max = 3;
+      host.value = 2;
+      fixture.detectChanges();
+      host.value = 1;
+      fixture.detectChanges();
+      expect((gauge as any)._oldChangeVal).toBe(2);
+
+      host.min = 1; // min-only change → must reset
+      fixture.detectChanges();
+
+      expect((gauge as any)._oldChangeVal).toBe(host.value); // i.e. 1
+    });
+
+    // Issues #97 / #151: changes to foregroundColor / backgroundColor /
+    // thresholds / markers don't refresh the canvas because ngOnChanges only
+    // checks value/min/max/thick/type/cap/size. Fix: extend isDataChanged to
+    // include color/threshold/marker changes and redraw synchronously (no
+    // animation re-run on color-only updates).
+    it('redraws when foregroundColor changes', () => {
+      const updateSpy = vi.spyOn(gauge as any, '_update').mockImplementation(() => undefined);
+      const drawShellSpy = vi
+        .spyOn(gauge as any, '_drawShell')
+        .mockImplementation(() => undefined);
+
+      host.foregroundColor = '#f00';
+      fixture.detectChanges();
+
+      // Either _update or _drawShell must fire so the canvas reflects the new color.
+      expect(updateSpy.mock.calls.length + drawShellSpy.mock.calls.length).toBeGreaterThan(0);
+    });
+
+    it('redraws when backgroundColor changes', () => {
+      const updateSpy = vi.spyOn(gauge as any, '_update').mockImplementation(() => undefined);
+      const drawShellSpy = vi
+        .spyOn(gauge as any, '_drawShell')
+        .mockImplementation(() => undefined);
+
+      host.backgroundColor = '#eee';
+      fixture.detectChanges();
+
+      expect(updateSpy.mock.calls.length + drawShellSpy.mock.calls.length).toBeGreaterThan(0);
+    });
+
+    it('redraws when thresholds reference changes', () => {
+      const updateSpy = vi.spyOn(gauge as any, '_update').mockImplementation(() => undefined);
+      const drawShellSpy = vi
+        .spyOn(gauge as any, '_drawShell')
+        .mockImplementation(() => undefined);
+
+      host.thresholds = { '50': { color: 'red' } };
+      fixture.detectChanges();
+
+      expect(updateSpy.mock.calls.length + drawShellSpy.mock.calls.length).toBeGreaterThan(0);
+    });
+
+    it('redraws when markers reference changes', () => {
+      const updateSpy = vi.spyOn(gauge as any, '_update').mockImplementation(() => undefined);
+      const drawShellSpy = vi
+        .spyOn(gauge as any, '_drawShell')
+        .mockImplementation(() => undefined);
+
+      host.markers = { '25': { color: '#000', label: '25' } };
+      fixture.detectChanges();
+
+      expect(updateSpy.mock.calls.length + drawShellSpy.mock.calls.length).toBeGreaterThan(0);
+    });
+
+    it('color-only changes do not schedule a new requestAnimationFrame (animation skipped)', () => {
+      // animate=true so we'd otherwise expect RAF on data changes.
+      host.animate = true;
+      fixture.detectChanges();
+      const rafSpy = vi.spyOn(window, 'requestAnimationFrame');
+
+      host.foregroundColor = '#f00';
+      fixture.detectChanges();
+
+      // Color-only changes should trigger a synchronous redraw, not a new
+      // animation frame. Without the fix, _update → _create on animate=true
+      // would schedule RAF and re-run the 0 → value animation.
+      expect(rafSpy).not.toHaveBeenCalled();
+
+      rafSpy.mockRestore();
     });
   });
 

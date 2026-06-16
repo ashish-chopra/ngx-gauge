@@ -330,11 +330,25 @@ describe('NgxGauge drawing pipeline — context-dependent methods', () => {
       expect(ctx.stroke).toHaveBeenCalledTimes(1);
     });
 
-    it('clamps middle to start when below start', () => {
+    // Issue #150 Bug 1: with cap='round', a zero-length arc still paints a
+    // rounded sliver because the round cap extends beyond the endpoints. Fix:
+    // skip the stroke entirely when the clamped middle is at or below start.
+    it('does not stroke when middle equals start (zero-length arc)', () => {
       const ctx = gauge._context as any;
-      gauge._drawFill(2, 1, 5, '#fff'); // middle (1) < start (2) → clamped to 2
+      gauge._drawFill(2, 2, 5, '#fff'); // middle === start → no draw
 
-      expect(ctx.arc).toHaveBeenCalledWith(expect.any(Number), expect.any(Number), expect.any(Number), 2, 2, false);
+      expect(ctx.beginPath).not.toHaveBeenCalled();
+      expect(ctx.arc).not.toHaveBeenCalled();
+      expect(ctx.stroke).not.toHaveBeenCalled();
+    });
+
+    it('does not stroke when middle is below start (post-clamp zero-length arc)', () => {
+      const ctx = gauge._context as any;
+      gauge._drawFill(2, 1, 5, '#fff'); // middle (1) < start (2) → clamped to 2 → still zero-length
+
+      expect(ctx.beginPath).not.toHaveBeenCalled();
+      expect(ctx.arc).not.toHaveBeenCalled();
+      expect(ctx.stroke).not.toHaveBeenCalled();
     });
 
     it('uses the color argument for strokeStyle', () => {
