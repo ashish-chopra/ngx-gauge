@@ -4,7 +4,7 @@ import {
   coerceNumberProperty,
   cssUnit,
   isNumber,
-} from './util';
+} from '../../src/common/util';
 
 describe('util', () => {
   describe('clamp', () => {

@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxGaugeModule } from '../ngx-gauge.module';
+import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 import {
   NgxGaugeAppend,
   NgxGaugeLabel,
   NgxGaugePrepend,
   NgxGaugeValue,
-} from './gauge-directives';
+} from '../../src/gauge/gauge-directives';
 
 @Component({
   standalone: true,

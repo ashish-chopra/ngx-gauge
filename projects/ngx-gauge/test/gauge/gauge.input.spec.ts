@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxGaugeModule } from '../ngx-gauge.module';
-import { NgxGauge, NgxGaugeMarkers, NgxGaugeThresholds } from './gauge';
+import { NgxGaugeModule } from '../../src/ngx-gauge.module';
+import { NgxGauge, NgxGaugeMarkers, NgxGaugeThresholds } from '../../src/gauge/gauge';
 
 // Defaults host: no input bindings, just the bare element
 @Component({
