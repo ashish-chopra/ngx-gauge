@@ -169,8 +169,25 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     ngOnChanges(changes: SimpleChanges) {
         const isCanvasPropertyChanged = changes['thick'] || changes['type'] || changes['cap'] || changes['size'];
         const isDataChanged = changes['value'] || changes['min'] || changes['max'];
+        // Issues #97 / #151: a change to one of these inputs must refresh the
+        // canvas. They were previously ignored by ngOnChanges. `thresholds`
+        // and `markers` reactivity is identity-based — consumers must replace
+        // the object reference, not mutate it in place (consistent with
+        // Angular's OnChanges semantics).
+        const isVisualOnlyChanged =
+            changes['foregroundColor']
+            || changes['backgroundColor']
+            || changes['thresholds']
+            || changes['markers'];
 
         if (this._initialized) {
+            // Issue #150 Bug 2: when min or max changes, reset _oldChangeVal so
+            // the next _create computes previousProgress in the *new* (min, max)
+            // regime instead of carrying stale displacement from the old one.
+            if (changes['min'] || changes['max']) {
+                this._oldChangeVal = this.value;
+            }
+
             if (isDataChanged) {
                 let nv;
                 if (changes['value']) {
@@ -180,6 +197,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
                     this._oldChangeVal = isNaN(prevVal) ? this._oldChangeVal : prevVal;
                 }
                 this._update(nv, this._oldChangeVal);
+            } else if (isVisualOnlyChanged) {
+                // Color / threshold / marker only changes: redraw
+                // synchronously so theme switches don't re-run the entry
+                // animation.
+                this._redraw();
             }
             if (isCanvasPropertyChanged) {
                 this._destroy();
@@ -189,10 +211,26 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     }
 
     private _updateSize() {
-        this._renderer.setStyle(this._elementRef.nativeElement, 'width', cssUnit(this._getWidth()));
-        this._renderer.setStyle(this._elementRef.nativeElement, 'height', cssUnit(this._getCanvasHeight()));
-        this._canvas.nativeElement.width = this._getWidth();
-        this._canvas.nativeElement.height = this._getCanvasHeight();
+        // Issues #13 / #156: scale the canvas backing store by
+        // window.devicePixelRatio so the gauge renders crisply on high-DPR
+        // (Retina) displays. The inline CSS keeps the unscaled width/height
+        // so layout is unchanged; ctx.setTransform(dpr,...) means the
+        // drawing routines below can keep working in CSS-pixel coordinates.
+        const dpr = window.devicePixelRatio || 1;
+        const w = this._getWidth();
+        const h = this._getCanvasHeight();
+        this._renderer.setStyle(this._elementRef.nativeElement, 'width', cssUnit(w));
+        this._renderer.setStyle(this._elementRef.nativeElement, 'height', cssUnit(h));
+        const canvas = this._canvas.nativeElement as HTMLCanvasElement;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = `${w}px`;
+        canvas.style.height = `${h}px`;
+        if (this._context) {
+            // Setting canvas.width/height resets the transform, so apply the
+            // CSS-pixel scale here (after sizing) on every (re)init.
+            this._context.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
         this._renderer.setStyle(this._label.nativeElement,
             'transform', 'translateY(' + (this.size / 3 * 2 - this.size / 13 / 4) + 'px)');
         this._renderer.setStyle(this._reading.nativeElement,
@@ -277,6 +315,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
         middle = Math.max(middle, start); // never below 0%
         middle = Math.min(middle, tail); // never exceed 100%
+
+        // Issue #150 Bug 1: a zero-length arc with cap='round' still paints a
+        // rounded sliver because the cap extends past the endpoints. Skip the
+        // stroke entirely — the background was already drawn by _drawShell.
+        if (middle <= start) return;
 
         this._context.lineCap = this.cap;
         this._context.lineWidth = this.thick;
@@ -367,7 +410,15 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     }
 
     private _clear() {
-        this._context.clearRect(0, 0, this._getWidth(), this._getHeight());
+        if (!this._context) return;
+        // Clear the entire backing store regardless of any user-space transform
+        // (e.g. ctx.scale(dpr, dpr) for high-DPR displays).
+        const canvas = this._canvas?.nativeElement as HTMLCanvasElement | undefined;
+        if (canvas) {
+            this._context.clearRect(0, 0, canvas.width, canvas.height);
+        } else {
+            this._context.clearRect(0, 0, this._getWidth(), this._getHeight());
+        }
     }
 
     private _getWidth() {
@@ -410,8 +461,14 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             window.cancelAnimationFrame(this._animationRequestID);
             this._animationRequestID = 0;
         }
-        this._clear();
-        this._context = null;
+        // Issue #87: tolerate _destroy being called before _init has run
+        // (e.g. component destroyed before ngAfterViewInit) and being called
+        // multiple times. _clear is null-guarded above; just skip if there's
+        // no context to clear.
+        if (this._context) {
+            this._clear();
+            this._context = null;
+        }
         this._initialized = false;
     }
 
@@ -492,6 +549,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
         const min = this.min;
         const max = this.max;
         const value = clamp(this.value, min, max);
+        // Issue #150 Bug 2: defensively clamp `ov` so a value left over from a
+        // wider (min, max) regime can't push previousProgress past the bounds.
+        if (ov !== undefined) {
+            ov = clamp(ov, min, max);
+        }
         const start = bounds.head;
         const unit = (bounds.tail - bounds.head) / (max - min);
         let displacement = unit * (value - min);
@@ -572,6 +634,30 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     private _update(nv: number, ov: number) {
         this._clear();
         this._create(nv, ov);
+    }
+
+    /**
+     * Synchronous repaint at the current value. Used by ngOnChanges for
+     * color / threshold / marker changes (#97, #151) so theme switches don't
+     * re-run the entry animation.
+     */
+    private _redraw() {
+        const type = this.type;
+        const bounds = this._getBounds(type);
+        const min = this.min;
+        const max = this.max;
+        const value = clamp(this.value, min, max);
+        const start = bounds.head;
+        const unit = (bounds.tail - bounds.head) / (max - min);
+        const displacement = unit * (value - min);
+        const tail = bounds.tail;
+        const color = this._getForegroundColorByRange(value);
+        if (this._animationRequestID) {
+            window.cancelAnimationFrame(this._animationRequestID);
+            this._animationRequestID = 0;
+        }
+        this._clear();
+        this._drawShell(start, start + displacement, tail, color);
     }
 
 }
