@@ -1,0 +1,76 @@
+name: Deploy Demo
+
+# Builds the ngx-gauge demo app and deploys it to GitHub Pages.
+#
+# Triggers:
+#   - GitHub Release published — fires alongside `release.yml`. The two
+#     workflows are independent: a failing demo deploy does not roll back the
+#     npm publish, and vice versa.
+#   - Manual `workflow_dispatch` — for ad-hoc redeploys (README/docs fixes,
+#     content tweaks) without cutting a new release.
+#
+# Prerequisite (one-time): in repo Settings → Pages, set Source = "GitHub
+# Actions". The legacy `gh-pages` branch is no longer the source of truth.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+# Pages serializes deployments natively; the explicit group prevents a manual
+# run racing a release-triggered run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Build demo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        # The demo app consumes the built `dist/ngx-gauge` package.
+        run: npm run build:lib
+
+      - name: Build demo
+        # Already passes `--base-href=/ngx-gauge/` for ashish-chopra.github.io/ngx-gauge.
+        run: npm run build:demo
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/demo/browser
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
