@@ -21,5 +21,9 @@
       ]
     },
     "useDefineForClassFields": false
-  }
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "dist/**"
+  ]
 }
