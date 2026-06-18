@@ -34,7 +34,7 @@ In version `v5.0.0`, we introduced markers, ticks and background opacity for gau
 |18.x.x | 10.0.0 |
 |19.x.x | 11.0.0 |
 |20.x.x | 12.0.0 |
-|21.x.x | 13.2.0 |
+|21.x.x | 13.3.1 |
 
 #### Step 1: Install npm module
 
@@ -79,7 +79,7 @@ import { Component } from '@angular/core';
     templateUrl: 'app.html'
 })
 export class AppComponent {
-    
+
     gaugeType = "semi";
     gaugeValue = 28.3;
     gaugeLabel = "Speed";
@@ -88,9 +88,9 @@ export class AppComponent {
 ```
 
 ```html
-<ngx-gauge [type]="gaugeType" 
-           [value]="gaugeValue" 
-           [label]="gaugeLabel"  
+<ngx-gauge [type]="gaugeType"
+           [value]="gaugeValue"
+           [label]="gaugeLabel"
            [append]="gaugeAppendText">
 </ngx-gauge>
 ```
@@ -173,7 +173,7 @@ Note that `value` attribute is still required on `<ngx-gauge>` even when you are
 
 <!-- # Playground
 
-The examples section is redesigned as a playground where you can play with Gauge by tuning its different parameters. 
+The examples section is redesigned as a playground where you can play with Gauge by tuning its different parameters.
 And, you can see the result live on-screen. It is good start to get familiar with Gauge.
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/playground.png)
@@ -193,7 +193,7 @@ $> npm install
 2. Use following commands based on what you'd like to do:
 
 ```shell
-$> npm start             # builds the project and watch for changes. 
+$> npm start             # builds the project and watch for changes.
 $> npm test              # runs test suite once and exit.
 $> npm run test:watch    # starts the test framework and watch for changes in code.
 $> npm run build         # triggers a manual build for library, outputs at `/dist` directory.
