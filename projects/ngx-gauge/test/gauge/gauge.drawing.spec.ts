@@ -49,7 +49,7 @@ class DrawingHost {
   margin: number | undefined = undefined;
   thresholds: { [k: string]: { color?: string; backgroundColor?: string; bgOpacity?: number } } = {};
   markers: {
-    [k: string]: { color?: string; label?: string; type?: 'line' | 'triangle'; size?: number; font?: string };
+    [k: string]: { color?: string; label?: string; type?: 'line' | 'triangle'; size?: number; font?: string; labelColor?: string };
   } = {};
   foregroundColor = '#0f0';
   backgroundColor = '#000';
@@ -273,14 +273,49 @@ describe('NgxGauge drawing pipeline — context-dependent methods', () => {
       expect(gauge._context.lineCap).toBe('round');
     });
 
-    it("uses lineCap='butt' when thresholds are configured", () => {
+    it("uses lineCap='butt' for the segment loop when thresholds are configured", () => {
       host.thresholds = { '0': { color: 'red' }, '50': { color: 'green' } };
       fixture.detectChanges();
       spyOnContext();
       gauge._drawShell(0, 1, 2, '#abc');
 
-      // Even if cap input is 'round', threshold rendering forces butt.
+      // Default cap is 'butt', so no round-cap pass runs; the final lineCap
+      // reflects the segment loop.
       expect(gauge._context.lineCap).toBe('butt');
+    });
+
+    // Issue #127: cap='round' + thresholds previously left the outer ends of
+    // the background bar square because the segment loop forces butt. Two
+    // extra round-capped arcs (one at the leading edge of the first range,
+    // one at the trailing edge of the last range) restore the rounded look.
+    it("Issue #127: cap='round' + thresholds: draws extra round-capped arcs at both outer ends", () => {
+      host.cap = 'round';
+      host.thresholds = { '0': { color: 'red' }, '50': { color: 'green' } };
+      fixture.detectChanges();
+      spyOnContext();
+      const ctx = gauge._context as any;
+
+      gauge._drawShell(0, 1, 2, '#abc');
+
+      // 2 segment arcs + 2 round-cap arcs + 1 foreground fill = 5
+      expect(ctx.arc).toHaveBeenCalledTimes(5);
+      // Final lineCap reflects the round-cap pass (last thing set).
+      expect(gauge._context.lineCap).toBe('round');
+      // globalAlpha still reset after each cap that uses bgOpacity.
+      expect(ctx.globalAlpha).toBe(1);
+    });
+
+    it("Issue #127: cap='butt' + thresholds: does NOT add extra cap arcs", () => {
+      host.cap = 'butt';
+      host.thresholds = { '0': { color: 'red' }, '50': { color: 'green' } };
+      fixture.detectChanges();
+      spyOnContext();
+      const ctx = gauge._context as any;
+
+      gauge._drawShell(0, 1, 2, '#abc');
+
+      // 2 segment arcs + 1 foreground fill = 3 (no cap pass)
+      expect(ctx.arc).toHaveBeenCalledTimes(3);
     });
 
     it("propagates 'thick' to ctx.lineWidth", () => {
@@ -404,6 +439,19 @@ describe('NgxGauge drawing pipeline — context-dependent methods', () => {
       expect(gauge._context.font).toContain('verdana');
     });
 
+    // Issue #123 / #145: label fillStyle is now set explicitly so labels
+    // stay visible on dark themes and don't inherit a stale fillStyle from
+    // a previously drawn marker.
+    it("Issue #123: defaults label fillStyle to the marker color when labelColor is omitted", () => {
+      gauge._addMarker(0, '#abc123', 'X');
+      expect(gauge._context.fillStyle).toBe('#abc123');
+    });
+
+    it("Issue #123: uses explicit labelColor when provided, independent of marker color", () => {
+      gauge._addMarker(0, '#abc123', 'X', undefined, undefined, undefined, '#ffffff');
+      expect(gauge._context.fillStyle).toBe('#ffffff');
+    });
+
     it('does not call fillText when no label is provided', () => {
       const ctx = gauge._context as any;
       gauge._addMarker(0, '#000');
@@ -439,9 +487,9 @@ describe('NgxGauge drawing pipeline — context-dependent methods', () => {
       }
     });
 
-    it('forwards marker color/label/type/size/font to _addMarker', () => {
+    it('forwards marker color/label/type/size/font/labelColor to _addMarker', () => {
       host.markers = {
-        '50': { color: 'cyan', label: 'mid', type: 'triangle', size: 12, font: '10px serif' },
+        '50': { color: 'cyan', label: 'mid', type: 'triangle', size: 12, font: '10px serif', labelColor: '#fff' },
       };
       fixture.detectChanges();
       spyOnContext();
@@ -455,6 +503,7 @@ describe('NgxGauge drawing pipeline — context-dependent methods', () => {
       expect(call[3]).toBe('triangle'); // type
       expect(call[4]).toBe(12); // size/len
       expect(call[5]).toBe('10px serif'); // font
+      expect(call[6]).toBe('#fff'); // labelColor (Issue #123 / #145)
     });
   });
 });

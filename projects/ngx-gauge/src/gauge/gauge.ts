@@ -49,6 +49,13 @@ export interface NgxGaugeMarker {
     size?: number;
     label?: string;
     font?: string;
+    /**
+     * Issue #123 / #145: color used for the marker's label text. Defaults
+     * to `color` (the marker's stroke/fill color) when omitted, so labels
+     * are visible on dark themes and don't inherit a stale `fillStyle`
+     * from a previously drawn marker.
+     */
+    labelColor?: string;
 }
 
 export type NgxGaugeMarkers = Record<string, NgxGaugeMarker>;
@@ -295,6 +302,18 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
                     this._context.stroke();
                     this._context.globalAlpha = 1;
                 }
+                // Issue #127: when cap='round' is requested together with
+                // thresholds, the per-segment loop above must use 'butt' so
+                // inner joints stay clean. Restore the rounded outer ends by
+                // stroking a tiny arc with lineCap='round' at the very start
+                // of the first range and the very end of the last range. The
+                // round cap protrudes a half-linewidth past the endpoint —
+                // exactly the look users get without thresholds.
+                if (this.cap === 'round') {
+                    this._context.lineCap = 'round';
+                    this._drawThresholdEndCap(center.x, center.y, radius, ranges[0], 'start');
+                    this._drawThresholdEndCap(center.x, center.y, radius, ranges[ranges.length - 1], 'end');
+                }
             } else {
                 this._context.lineCap = this.cap;
                 this._context.beginPath();
@@ -331,7 +350,46 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     }
 
-    private _addMarker(angle,color,label?,type?,len?,font?) {
+    /**
+     * Issue #127: draw a single rounded "end cap" at either edge of the
+     * thresholded background. Strokes a near-zero-length arc with
+     * `lineCap='round'` so only the cap is rendered. `which='start'` rounds
+     * the leading edge of the first range; `which='end'` rounds the
+     * trailing edge of the last range.
+     *
+     * `lineCap`, `lineWidth`, and globalAlpha bookkeeping are the caller's
+     * responsibility; this method only touches `strokeStyle`, `globalAlpha`,
+     * the path, and `stroke()`.
+     */
+    private _drawThresholdEndCap(
+        cx: number,
+        cy: number,
+        radius: number,
+        range: { color?: string; backgroundColor?: string; bgOpacity?: number; start: number; end: number },
+        which: 'start' | 'end'
+    ) {
+        const eps = 0.0001;
+        const angle = which === 'start'
+            ? this._getDisplacement(range.start)
+            : this._getDisplacement(range.end);
+        // Tiny arc: start cap protrudes back past `angle`, end cap protrudes
+        // forward. Either way the cap is what's visible.
+        const a0 = which === 'start' ? angle : angle - eps;
+        const a1 = which === 'start' ? angle + eps : angle;
+
+        this._context.beginPath();
+        this._context.strokeStyle = range.backgroundColor
+            ? range.backgroundColor
+            : (range.bgOpacity ? range.color : this.backgroundColor);
+        if (range.bgOpacity !== undefined && range.bgOpacity !== null) {
+            this._context.globalAlpha = range.bgOpacity;
+        }
+        this._context.arc(cx, cy, radius, a0, a1, false);
+        this._context.stroke();
+        this._context.globalAlpha = 1;
+    }
+
+    private _addMarker(angle,color,label?,type?,len?,font?,labelColor?) {
 
         const rad = angle * Math.PI / 180;
 
@@ -403,6 +461,10 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
             this._context.rotate((angle + 90) * (Math.PI / 180));
             this._context.textAlign = "center";
             this._context.font = (font) ? font : '13px Arial';
+            // Issue #123 / #145: set fillStyle explicitly so the label is
+            // visible on dark themes and doesn't inherit a stale value from
+            // a previously drawn marker. Defaults to the marker color.
+            this._context.fillStyle = labelColor ?? color ?? '#000';
             this._context.fillText(label,0,-3);
             this._context.restore();
         }
@@ -626,7 +688,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
                 const n = Number(mv) - this.min;
                 const angle = bounds.start + n * perD;
                 const m = this.markers[mv];
-                this._addMarker(angle,m.color,m.label,m.type,m.size,m.font);
+                this._addMarker(angle,m.color,m.label,m.type,m.size,m.font,m.labelColor);
             }
         }
     }

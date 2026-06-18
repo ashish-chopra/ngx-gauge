@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `NgxGaugeMarker.labelColor?: string` — color used for a marker's label
+  text. Defaults to the marker's `color` when omitted, so labels stay
+  visible on dark themes and `line` markers no longer inherit whatever
+  `fillStyle` happened to be set from a previously drawn marker.
+  (#123, #145)
+
+### Fixed
+- `cap: 'round'` now also rounds the outer ends of the background bar when
+  `thresholds` are configured. Previously the segment loop forced
+  `lineCap: 'butt'` so only the foreground value bar was rounded; the
+  background ends stayed square. Two extra round-capped arcs are now
+  stroked at the leading edge of the first range and the trailing edge of
+  the last range, leaving inner segment joints untouched. (#127)
+- `.reading-block` and `.reading-label` no longer clip the top/bottom of
+  tall digits. The default `overflow` changed from `hidden` to `visible`
+  (and the now-inert `text-overflow: ellipsis` was removed). Consumers
+  that prefer the old clip-with-ellipsis behaviour for long
+  prepend/append text can restore it via a global style override (see
+  CSS comment in `gauge.css`). (#100)
+
 ## [13.3.0] - 2026-06-15
 
 ### Fixed
