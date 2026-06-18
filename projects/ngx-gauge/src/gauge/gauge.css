@@ -4,14 +4,22 @@
     position: relative;
 }
 
+/*
+ * Issue #100: `overflow: hidden` on `.reading-block` / `.reading-label`
+ * clipped the top/bottom of tall digits (notably with rounded gauge fonts
+ * or large `[size]`). Default to `overflow: visible` so the value is shown
+ * fully. Long prepend/append strings will now overflow the gauge bounds
+ * instead of being ellipsized — consumers who need the ellipsis behaviour
+ * can override with `.ngx-gauge-meter .reading-block { overflow: hidden;
+ * text-overflow: ellipsis; }` in their global styles.
+ */
 .reading-block {
     position: absolute;
     width: 100%;
     font-weight: normal;
     white-space: nowrap;
     text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
 }
 
 .reading-label {
@@ -21,8 +29,7 @@
     position: absolute;
     text-align: center;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
     font-weight: normal;
 }
 
