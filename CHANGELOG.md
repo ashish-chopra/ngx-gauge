@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [13.3.1] - 2026-06-17
+
 ### Added
 - `NgxGaugeMarker.labelColor?: string` — color used for a marker's label
   text. Defaults to the marker's `color` when omitted, so labels stay
@@ -100,7 +102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 See the [GitHub Releases](https://github.com/ashish-chopra/ngx-gauge/releases)
 page for the history of releases prior to `13.2.0`.
 
-[Unreleased]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.3.0...HEAD
+[Unreleased]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.3.1...HEAD
+[13.3.1]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.3.0...v13.3.1
 [13.3.0]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.2.0...v13.3.0
 [13.2.0]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.1.0...v13.2.0
 [13.1.0]: https://github.com/ashish-chopra/ngx-gauge/releases/tag/v13.1.0
