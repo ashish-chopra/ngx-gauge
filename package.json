@@ -52,7 +52,7 @@
     "jsdom": "^29.1.1",
     "ng-packagr": "^21.1.0",
     "playwright": "^1.60.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.61.1",
     "vitest": "^4.1.8"
   }
