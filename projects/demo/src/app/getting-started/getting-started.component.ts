@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { version } from '../../../../../projects/ngx-gauge/package.json';
 
 @Component({
@@ -6,6 +6,7 @@ import { version } from '../../../../../projects/ngx-gauge/package.json';
     templateUrl: './getting-started.component.html',
     styleUrls: ['./getting-started.component.css'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GettingStartedComponent {

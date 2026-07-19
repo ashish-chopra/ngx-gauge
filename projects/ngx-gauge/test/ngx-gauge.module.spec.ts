@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NgxGaugeModule } from '../src/ngx-gauge.module';
 import { NgxGauge } from '../src/gauge/gauge';
@@ -34,6 +34,7 @@ describe('NgxGaugeModule', () => {
     @Component({
       standalone: true,
       imports: [NgxGaugeModule],
+      changeDetection: ChangeDetectionStrategy.Eager,
       template: `<ngx-gauge [value]="42"></ngx-gauge>`,
     })
     class Host {}
@@ -55,6 +56,7 @@ describe('NgxGaugeModule', () => {
     @Component({
       standalone: true,
       imports: [NgxGaugeModule],
+      changeDetection: ChangeDetectionStrategy.Eager,
       template: `
         <ngx-gauge [value]="50">
           <ngx-gauge-prepend>$</ngx-gauge-prepend>
@@ -86,6 +88,7 @@ describe('NgxGaugeModule', () => {
     @Component({
       standalone: true,
       imports: [NgxGaugeModule],
+      changeDetection: ChangeDetectionStrategy.Eager,
       template: `
         <ngx-gauge [value]="10" [label]="'fallback'">
           @if (showProjected) {

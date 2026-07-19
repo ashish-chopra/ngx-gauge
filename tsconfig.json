@@ -9,6 +9,7 @@
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "importHelpers": true,
+    "strict": false,
     "target": "ES2022",
     "paths": {
       "ngx-gauge": [

@@ -24,6 +24,9 @@ export default tseslint.config(
       'id-blacklist': 'off',
       'id-match': 'off',
       'no-underscore-dangle': 'off',
+      // ChangeDetectionStrategy.Eager preserves pre-v22 default CD behavior
+      // (added by the `ng update` migration); not an opt-out to flag.
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
 

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 import { NgxGauge, NgxGaugeMarkers, NgxGaugeThresholds } from '../../src/gauge/gauge';
@@ -7,6 +7,7 @@ import { NgxGauge, NgxGaugeMarkers, NgxGaugeThresholds } from '../../src/gauge/g
 @Component({
   standalone: true,
   imports: [NgxGaugeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<ngx-gauge #gauge></ngx-gauge>`,
 })
 class DefaultsHost {
@@ -18,6 +19,7 @@ class DefaultsHost {
 @Component({
   standalone: true,
   imports: [NgxGaugeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ngx-gauge
       #gauge
