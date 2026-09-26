@@ -35,6 +35,9 @@ In version `v5.0.0`, we introduced markers, ticks and background opacity for gau
 |19.x.x | 11.0.0 |
 |20.x.x | 12.0.0 |
 |21.x.x | 13.3.1 |
+|22.x.x | 14.0.0 |
+
+`ngx-gauge@14` declares `@angular/core` and `@angular/common` `^22.0.0` as peer dependencies. Apps still on Angular 21 should stay on `ngx-gauge@13.3.1`.
 
 #### Step 1: Install npm module
 
