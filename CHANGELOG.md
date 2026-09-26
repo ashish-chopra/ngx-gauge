@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [14.0.0] - 2026-09-26
+
+### Changed
+- **BREAKING:** Requires Angular 22. Peer dependencies are now
+  `@angular/core` and `@angular/common` `^22.0.0` (was `^21.1.3`). Apps on
+  Angular 21 should stay on `13.3.1`. (#238)
+- **BREAKING:** Built with TypeScript 6.0, as required by Angular 22.
+- `NgxGauge` now sets `changeDetection: ChangeDetectionStrategy.Eager`
+  explicitly, so it keeps the same change-detection behaviour under
+  Angular 22's new default. No change for consumers. (#238)
+- Development and CI now need Node `^22.22.3`, `^24.15.0` or `>=26` (Angular
+  22's minimum). CI tests on Node 22 and 24; Node 20 is dropped. (#238)
+
+### Security
+- Resolved all `npm audit` advisories in the project's dev and demo
+  dependencies (vitest, tar, undici, postcss and others). These were not
+  shipped in the published package. (#262)
+
 ## [13.3.1] - 2026-06-17
 
 ### Added
@@ -102,7 +120,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 See the [GitHub Releases](https://github.com/ashish-chopra/ngx-gauge/releases)
 page for the history of releases prior to `13.2.0`.
 
-[Unreleased]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.3.1...HEAD
+[Unreleased]: https://github.com/ashish-chopra/ngx-gauge/compare/v14.0.0...HEAD
+[14.0.0]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.3.1...v14.0.0
 [13.3.1]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.3.0...v13.3.1
 [13.3.0]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.2.0...v13.3.0
 [13.2.0]: https://github.com/ashish-chopra/ngx-gauge/compare/v13.1.0...v13.2.0
