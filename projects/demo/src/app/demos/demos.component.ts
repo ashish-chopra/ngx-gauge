@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 const intelligentDefaults1 = `<ngx-gauge value="68.2"></ngx-gauge>`;
 const intelligentDefaults2 = `<ngx-gauge value="68.2" thick="15"
@@ -200,6 +200,7 @@ export class DemosComponent {
     selector: 'app-demos',
     templateUrl: './demos.component.html',
     styleUrls: ['./demos.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DemosComponent {

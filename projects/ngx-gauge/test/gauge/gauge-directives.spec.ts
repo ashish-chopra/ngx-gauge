@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 import {
@@ -11,6 +11,7 @@ import {
 @Component({
   standalone: true,
   imports: [NgxGaugeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ngx-gauge-append #appendRef="ngxGaugeAppend">a</ngx-gauge-append>
     <ngx-gauge-prepend #prependRef="ngxGaugePrepend">p</ngx-gauge-prepend>

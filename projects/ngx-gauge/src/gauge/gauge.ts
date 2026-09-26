@@ -1,16 +1,17 @@
 import {
-    Component,
-    Input,
-    SimpleChanges,
-    ViewEncapsulation,
-    Renderer2,
-    AfterViewInit,
-    ElementRef,
-    OnChanges,
-    OnDestroy,
-    ViewChild,
-    ContentChild,
-    OnInit
+  Component,
+  Input,
+  SimpleChanges,
+  ViewEncapsulation,
+  Renderer2,
+  AfterViewInit,
+  ElementRef,
+  OnChanges,
+  OnDestroy,
+  ViewChild,
+  ContentChild,
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
     clamp,
@@ -75,6 +76,7 @@ export type NgxGaugeMarkers = Record<string, NgxGaugeMarker>;
         '[attr.aria-labelledby]': 'ariaLabelledby'
     },
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {

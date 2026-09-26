@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 
@@ -15,6 +15,7 @@ import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 @Component({
   standalone: true,
   imports: [NgxGaugeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ngx-gauge
       [label]="label"

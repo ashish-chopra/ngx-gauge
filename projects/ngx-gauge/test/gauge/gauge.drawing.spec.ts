@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxGauge } from '../../src/gauge/gauge';
 import { NgxGaugeModule } from '../../src/ngx-gauge.module';
@@ -19,6 +19,7 @@ import { NgxGaugeModule } from '../../src/ngx-gauge.module';
 @Component({
   standalone: true,
   imports: [NgxGaugeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <ngx-gauge
       [value]="value"
