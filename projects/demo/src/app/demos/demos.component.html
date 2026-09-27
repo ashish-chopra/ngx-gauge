@@ -246,6 +246,39 @@
       <mat-tab-group dynamicHeight="true">
         <mat-tab label="Description">
           <div class="content">
+            <h4>Gradient Foreground</h4>
+            Use <b>foregroundGradient</b> to paint the gauge's bar with a gradient instead of a single color.
+            The colors are spread evenly across the whole scale, from <b>min</b> to <b>max</b>, so the color
+            at the tip of the bar shows where the value sits: a low value ends in green, a high value in red.
+            <ul>
+              <li>Takes an array of two or more color strings. A single color works like <b>foregroundColor</b>.</li>
+              <li>Takes precedence over <b>foregroundColor</b>. A matching threshold <b>color</b> still wins.</li>
+            </ul>
+          </div>
+        </mat-tab>
+        <mat-tab label="Markup">
+          <div class="content">
+            <pre [highlightAuto]="gradientMarkup1"></pre>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="column-item">
+      <div class="output-frame">
+        @for (v of gradientDemoValues; track v) {
+          <ngx-gauge size="150" type="arch" thick="10" [value]="v" cap="round" label="Speed" append="mph"
+            [foregroundGradient]="['#2ecc71', '#f1c40f', '#e74c3c']" backgroundColor="#ecf0f1">
+          </ngx-gauge>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="column-box">
+
+    <div class="column-item">
+      <mat-tab-group dynamicHeight="true">
+        <mat-tab label="Description">
+          <div class="content">
             <h4>Custom Directive for Display</h4>
             The gauge has three custom directives which can be used to modify the representation of the content displayed in the gauge
             which is beyond configuring just properties. For example, if you want to show an icon with the value to indicate increase or decrease is shown at the right.

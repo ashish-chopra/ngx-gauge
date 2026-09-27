@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `foregroundGradient?: string[]`: paints the value bar with a gradient
+  fixed to the scale. Colors are spread evenly from `min` to `max`, so the
+  color at the tip of the bar shows where the value sits. Takes precedence
+  over `foregroundColor`; a matching threshold `color` still wins. Browsers
+  without conic gradient support fall back to the first color. (#61)
+
 ## [14.0.0] - 2026-09-26
 
 ### Changed
