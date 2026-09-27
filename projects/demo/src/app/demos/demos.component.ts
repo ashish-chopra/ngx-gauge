@@ -79,6 +79,13 @@ const dynamicGaugeDemoMarkup1 = `
 
 <button (click)="onUpdateClick()">Update</button>`;
 
+const gradientMarkup1 = `<!-- colors spread evenly from min to max -->
+<ngx-gauge size="150" type="arch" thick="10" cap="round"
+          value="60"
+          label="Speed" append="mph"
+          [foregroundGradient]="['#2ecc71', '#f1c40f', '#e74c3c']"
+          backgroundColor="#ecf0f1"></ngx-gauge>`;
+
 const dynamicGaugeDemoTS1 = `
 import { Component } from '@angular/core';
 
@@ -214,6 +221,8 @@ export class DemosComponent {
   gaugeThickness1 = gaugeThickness1;
   gaugeScale1 = gaugeScale1;
   themesMarkup1 = themesMarkup1;
+  gradientMarkup1 = gradientMarkup1;
+  gradientDemoValues = [25, 60, 92];
   dynamicGaugeDemoMarkup1 = dynamicGaugeDemoMarkup1;
   dynamicGaugeDemoTS1 = dynamicGaugeDemoTS1;
   customMarkup1 = customMarkup1;

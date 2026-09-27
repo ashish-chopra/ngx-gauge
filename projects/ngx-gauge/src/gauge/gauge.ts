@@ -147,6 +147,15 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     @Input() foregroundColor: string = DEFAULTS.FOREGROUND_COLOR;
 
+    /**
+     * Issue #61: paint the value bar with a gradient fixed to the scale.
+     * Colors are spread evenly from `min` to `max`, so the color at the tip
+     * of the bar shows where the value sits on the scale. Takes precedence
+     * over `foregroundColor`; a matching threshold `color` still wins.
+     * e.g. ['#2ecc71', '#f1c40f', '#e74c3c']
+     */
+    @Input() foregroundGradient: string[] | null = null;
+
     @Input() backgroundColor: string = DEFAULTS.BACKGROUND_COLOR;
 
     // { "40" : { color: "green", bgOpacity: .2 }, ... }
@@ -185,6 +194,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
         // Angular's OnChanges semantics).
         const isVisualOnlyChanged =
             changes['foregroundColor']
+            || changes['foregroundGradient']
             || changes['backgroundColor']
             || changes['thresholds']
             || changes['markers'];
@@ -277,7 +287,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
         return { head, tail, start, end };
     }
 
-    private _drawShell(start: number, middle: number, tail: number, color: string) {
+    private _drawShell(start: number, middle: number, tail: number, color: string | CanvasGradient) {
         const center = this._getCenter(),
             radius = this._getRadius();
 
@@ -327,7 +337,7 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
         }
     }
 
-    private _drawFill(start: number, middle: number, tail: number, color: string) {
+    private _drawFill(start: number, middle: number, tail: number, color: string | CanvasGradient) {
         const center = this._getCenter(),
             radius = this._getRadius();
 
@@ -536,10 +546,52 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
         this._initialized = false;
     }
 
-    private _getForegroundColorByRange(value) {
+    private _getForegroundColorByRange(value): string | CanvasGradient {
 
         const thresh = this._getThresholdMatchForValue(value);
-        return thresh && thresh.color ? thresh.color : this.foregroundColor;
+        if (thresh && thresh.color) return thresh.color;
+        return this._getForegroundGradient() ?? this.foregroundColor;
+    }
+
+    /**
+     * Issue #61: build a conic gradient whose color stops are spread evenly
+     * along the gauge's full sweep (min..max), independent of the current
+     * value. Returns null when no gradient is configured or it can't be
+     * built, so the caller falls back to `foregroundColor`.
+     */
+    private _getForegroundGradient(): string | CanvasGradient | null {
+        const colors = (this.foregroundGradient || []).filter((c) => !!c);
+        if (colors.length === 0) return null;
+        if (colors.length === 1) return colors[0];
+
+        const ctx = this._context;
+        if (!ctx) return null;
+        // Older browsers without conic gradients: use the first color.
+        if (typeof ctx.createConicGradient !== 'function') return colors[0];
+
+        const bounds = this._getBounds(this.type);
+        const center = this._getCenter();
+        const radius = this._getRadius();
+        const turn = 2 * Math.PI;
+        const sweep = bounds.tail - bounds.head;
+        // A round cap protrudes half a line-width before the start of the
+        // arc. Begin the gradient that much earlier so the cap gets the first
+        // color instead of wrapping around to the last one. A full circle has
+        // no gap to borrow from.
+        const lead = (sweep < turn && radius > 0)
+            ? Math.min((this.thick / 2) / radius, (turn - sweep) / 2)
+            : 0;
+
+        try {
+            const gradient = ctx.createConicGradient(bounds.head - lead, center.x, center.y);
+            const last = colors.length - 1;
+            gradient.addColorStop(0, colors[0]);
+            colors.forEach((c, i) => gradient.addColorStop((lead + sweep * i / last) / turn, c));
+            return gradient;
+        } catch {
+            // addColorStop throws on an unparsable color string.
+            return null;
+        }
     }
 
     private _getThresholdMatchForValue(value) {
