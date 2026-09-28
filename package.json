@@ -45,7 +45,7 @@
     "@types/node": "^25.2.2",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
     "@typescript-eslint/parser": "^8.61.1",
-    "@vitest/browser-playwright": "^4.1.11",
+    "@vitest/browser-playwright": "^5.0.1",
     "@vitest/coverage-v8": "^4.1.11",
     "angular-eslint": "^22.5.0",
     "eslint": "^10.5.0",
