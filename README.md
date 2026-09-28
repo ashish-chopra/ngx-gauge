@@ -9,9 +9,10 @@ A highly customizable Gauge component for **Angular** apps and dashboards. It pr
 
 ![alt text](https://raw.githubusercontent.com/ashish-chopra/angular-gauge/master/examples/examples.png)
 
-In version `v5.0.0`, we introduced markers, ticks and background opacity for gauge as shown below. Checkout the documentation below.
-<img src="https://raw.githubusercontent.com/ashish-chopra/ashish-chopra.github.io/master/src/assets/demo2.png" alt="markers demo" width="300px" />
-<img src="https://raw.githubusercontent.com/ashish-chopra/ashish-chopra.github.io/master/src/assets/demo1.png" alt="markers demo" width="300px" />
+Markers, ticks and threshold background opacity (added in `v5.0.0`) combine with the gradient foreground (added in `v14.1.0`), which blends the threshold colors along the bar as shown below. Checkout the [documentation](#gradient-foreground) below.
+
+<img src="https://raw.githubusercontent.com/ashish-chopra/ngx-gauge/master/projects/demo/public/assets/gradient-demo1.png" alt="Gauge with a gradient bar, threshold bands and an Avg marker" width="300px" />
+<img src="https://raw.githubusercontent.com/ashish-chopra/ngx-gauge/master/projects/demo/public/assets/gradient-demo2.png" alt="Gauge with a gradient bar, threshold bands and tick markers" width="300px" />
 
 # Getting Started
 
