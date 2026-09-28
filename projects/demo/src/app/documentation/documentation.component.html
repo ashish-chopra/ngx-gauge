@@ -86,10 +86,10 @@
             </tr>
             <tr>
                 <td>foregroundGradient</td>
-                <td>Paints the Gauge's bar with a gradient. Colors are spread evenly from min to max, so the color at the tip shows where the value sits. Takes precedence over foregroundColor; a matching threshold color still wins.</td>
+                <td>Blends the thresholds colors into a gradient instead of switching color at each threshold. Each color sits exactly at its threshold value, so the color at the bar's tip follows the thresholds. Needs at least two thresholds with a color.</td>
                 <td>No</td>
-                <td>null</td>
-                <td>Array of color value strings</td>
+                <td>false</td>
+                <td>boolean</td>
             </tr>
             <tr>
                 <td>backgroundColor</td>

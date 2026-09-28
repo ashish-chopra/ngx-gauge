@@ -247,12 +247,13 @@
         <mat-tab label="Description">
           <div class="content">
             <h4>Gradient Foreground</h4>
-            Use <b>foregroundGradient</b> to paint the gauge's bar with a gradient instead of a single color.
-            The colors are spread evenly across the whole scale, from <b>min</b> to <b>max</b>, so the color
-            at the tip of the bar shows where the value sits: a low value ends in green, a high value in red.
+            By default the bar switches color abruptly at each threshold. Add <b>foregroundGradient</b> to blend
+            the <b>thresholds</b> colors into a smooth gradient instead. Each color sits exactly at its threshold
+            value, so the color at the tip of the bar follows the thresholds: green at 0, yellow at 50 and red
+            from 80 onwards.
             <ul>
-              <li>Takes an array of two or more color strings. A single color works like <b>foregroundColor</b>.</li>
-              <li>Takes precedence over <b>foregroundColor</b>. A matching threshold <b>color</b> still wins.</li>
+              <li>Needs at least two thresholds with a <b>color</b>.</li>
+              <li>The gradient is fixed to the scale and doesn't move with the value.</li>
             </ul>
           </div>
         </mat-tab>
@@ -261,13 +262,18 @@
             <pre [highlightAuto]="gradientMarkup1"></pre>
           </div>
         </mat-tab>
+        <mat-tab label="TypeScript">
+          <div class="content">
+            <pre [highlightAuto]="gradientTS1"></pre>
+          </div>
+        </mat-tab>
       </mat-tab-group>
     </div>
     <div class="column-item">
       <div class="output-frame">
         @for (v of gradientDemoValues; track v) {
           <ngx-gauge size="150" type="arch" thick="10" [value]="v" cap="round" label="Speed" append="mph"
-            [foregroundGradient]="['#2ecc71', '#f1c40f', '#e74c3c']" backgroundColor="#ecf0f1">
+            [thresholds]="gradientThresholds" foregroundGradient backgroundColor="#ecf0f1">
           </ngx-gauge>
         }
       </div>

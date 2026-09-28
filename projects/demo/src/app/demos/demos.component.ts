@@ -79,12 +79,19 @@ const dynamicGaugeDemoMarkup1 = `
 
 <button (click)="onUpdateClick()">Update</button>`;
 
-const gradientMarkup1 = `<!-- colors spread evenly from min to max -->
+const gradientMarkup1 = `<!-- blends the threshold colors into a gradient -->
 <ngx-gauge size="150" type="arch" thick="10" cap="round"
           value="60"
           label="Speed" append="mph"
-          [foregroundGradient]="['#2ecc71', '#f1c40f', '#e74c3c']"
+          [thresholds]="gradientThresholds"
+          foregroundGradient
           backgroundColor="#ecf0f1"></ngx-gauge>`;
+
+const gradientTS1 = `gradientThresholds = {
+  '0': { color: '#2ecc71' },
+  '50': { color: '#f1c40f' },
+  '80': { color: '#e74c3c' }
+};`;
 
 const dynamicGaugeDemoTS1 = `
 import { Component } from '@angular/core';
@@ -222,7 +229,13 @@ export class DemosComponent {
   gaugeScale1 = gaugeScale1;
   themesMarkup1 = themesMarkup1;
   gradientMarkup1 = gradientMarkup1;
+  gradientTS1 = gradientTS1;
   gradientDemoValues = [25, 60, 92];
+  gradientThresholds = {
+    '0': { color: '#2ecc71' },
+    '50': { color: '#f1c40f' },
+    '80': { color: '#e74c3c' }
+  };
   dynamicGaugeDemoMarkup1 = dynamicGaugeDemoMarkup1;
   dynamicGaugeDemoTS1 = dynamicGaugeDemoTS1;
   customMarkup1 = customMarkup1;
