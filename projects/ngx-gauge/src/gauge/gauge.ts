@@ -147,14 +147,19 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     @Input() foregroundColor: string = DEFAULTS.FOREGROUND_COLOR;
 
+    private _foregroundGradient: boolean = false;
+
     /**
-     * Issue #61: paint the value bar with a gradient fixed to the scale.
-     * Colors are spread evenly from `min` to `max`, so the color at the tip
-     * of the bar shows where the value sits on the scale. Takes precedence
-     * over `foregroundColor`; a matching threshold `color` still wins.
-     * e.g. ['#2ecc71', '#f1c40f', '#e74c3c']
+     * Issue #61: blend the `thresholds` colors into a gradient instead of
+     * switching color at each threshold. Each threshold's color sits exactly
+     * at its key on the scale, so the color at the tip of the bar follows
+     * the thresholds. Needs at least two thresholds with a `color`.
      */
-    @Input() foregroundGradient: string[] | null = null;
+    @Input()
+    get foregroundGradient(): boolean { return this._foregroundGradient; }
+    set foregroundGradient(value: boolean) {
+        this._foregroundGradient = coerceBooleanProperty(value);
+    }
 
     @Input() backgroundColor: string = DEFAULTS.BACKGROUND_COLOR;
 
@@ -548,26 +553,36 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
     private _getForegroundColorByRange(value): string | CanvasGradient {
 
+        const gradient = this._getForegroundGradient();
+        if (gradient) return gradient;
         const thresh = this._getThresholdMatchForValue(value);
-        if (thresh && thresh.color) return thresh.color;
-        return this._getForegroundGradient() ?? this.foregroundColor;
+        return thresh && thresh.color ? thresh.color : this.foregroundColor;
     }
 
     /**
-     * Issue #61: build a conic gradient whose color stops are spread evenly
-     * along the gauge's full sweep (min..max), independent of the current
-     * value. Returns null when no gradient is configured or it can't be
-     * built, so the caller falls back to `foregroundColor`.
+     * Issue #61: build a conic gradient from the threshold colors, with each
+     * color stop placed at its threshold key on the scale. The stops don't
+     * depend on the current value. Returns null when the gradient is off,
+     * there are fewer than two colored thresholds, or it can't be built, so
+     * the caller falls back to the regular per-threshold color.
      */
-    private _getForegroundGradient(): string | CanvasGradient | null {
-        const colors = (this.foregroundGradient || []).filter((c) => !!c);
-        if (colors.length === 0) return null;
-        if (colors.length === 1) return colors[0];
+    private _getForegroundGradient(): CanvasGradient | null {
+        if (!this.foregroundGradient) return null;
+
+        const min = this.min;
+        const range = this.max - min;
+        if (!(range > 0)) return null;
+
+        const thresholds = this.thresholds || {};
+        const stops = Object.keys(thresholds)
+            .filter((k) => isNumber(k) && thresholds[k] && thresholds[k].color)
+            .map((k) => ({ value: clamp(Number(k), min, this.max), color: thresholds[k].color }))
+            .sort((a, b) => a.value - b.value);
+        if (stops.length < 2) return null;
 
         const ctx = this._context;
-        if (!ctx) return null;
-        // Older browsers without conic gradients: use the first color.
-        if (typeof ctx.createConicGradient !== 'function') return colors[0];
+        // Older browsers without conic gradients keep the per-threshold colors.
+        if (!ctx || typeof ctx.createConicGradient !== 'function') return null;
 
         const bounds = this._getBounds(this.type);
         const center = this._getCenter();
@@ -584,9 +599,11 @@ export class NgxGauge implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
         try {
             const gradient = ctx.createConicGradient(bounds.head - lead, center.x, center.y);
-            const last = colors.length - 1;
-            gradient.addColorStop(0, colors[0]);
-            colors.forEach((c, i) => gradient.addColorStop((lead + sweep * i / last) / turn, c));
+            // Below the first threshold the bar uses the first color.
+            gradient.addColorStop(0, stops[0].color);
+            for (const s of stops) {
+                gradient.addColorStop((lead + sweep * (s.value - min) / range) / turn, s.color);
+            }
             return gradient;
         } catch {
             // addColorStop throws on an unparsable color string.

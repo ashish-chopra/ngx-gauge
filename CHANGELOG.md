@@ -8,11 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `foregroundGradient?: string[]`: paints the value bar with a gradient
-  fixed to the scale. Colors are spread evenly from `min` to `max`, so the
-  color at the tip of the bar shows where the value sits. Takes precedence
-  over `foregroundColor`; a matching threshold `color` still wins. Browsers
-  without conic gradient support fall back to the first color. (#61)
+- `foregroundGradient` (boolean, default `false`): blends the `thresholds`
+  colors into a smooth gradient instead of switching color at each
+  threshold. Each color sits exactly at its threshold key on the scale, so
+  the color at the tip of the bar follows the thresholds. Needs at least
+  two thresholds with a `color`; with fewer, or on browsers without conic
+  gradient support, the regular per-threshold colors are used. (#61)
 
 ## [14.0.0] - 2026-09-26
 

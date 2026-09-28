@@ -115,7 +115,7 @@ There are plenty of configurable properties available to tune the gauge as per y
 | `thick`        | Specified the thickness of the gauge's bar.            | No        | `6`        | Any Positive Integer |
 | `label`       | Specifies the text to display below the Gauge's reading.  | No  | `undefined`                | Any String           |
 | `foregroundColor`         | Specifies the foreground color of the Gauge's scale.                    | No       | `rgba(0, 150, 136, 1)`             |   Any color value string       |
-| `foregroundGradient` | Paints the Gauge's bar with a gradient. Colors are spread evenly from `min` to `max`, so the color at the tip shows where the value sits. Takes precedence over `foregroundColor`; a matching threshold `color` still wins. See [example](#gradient-foreground). | No | `null` | Array of color value strings |
+| `foregroundGradient` | Blends the `thresholds` colors into a gradient instead of switching color at each threshold. Each color sits exactly at its threshold value, so the color at the bar's tip follows the thresholds. Needs at least two thresholds with a `color`. See [example](#gradient-foreground). | No | `false` | boolean |
 | `backgroundColor`    | Specifies the background color of the Gauge's scale.| No        |    `rgba(0, 0, 0, 0.1)`           |    Any color value string        |
 | `append`   | Specifies a `string` appended to the Gauge's reading. For example `"%"` most commonly used. | No        | `undefined`        | Any string           |
 | `prepend`      | Specifies a `string` prepended to the Gauge's reading. For example `"$"` in case of financial data displayed in Gauge.                                        | No        | `undefined`            | Any String           |
@@ -154,19 +154,26 @@ The keys in the threshold object signifies the minimum value at which the color 
 
 ## Gradient Foreground
 
-To paint the bar with a gradient instead of a single color, pass an array of colors to `foregroundGradient`:
+By default the bar switches color abruptly at each threshold. Set `foregroundGradient` to blend the threshold colors into a smooth gradient instead:
 
-```html
-<ngx-gauge [value]="currentValue"
-           [foregroundGradient]="['#2ecc71', '#f1c40f', '#e74c3c']">
-</ngx-gauge>
+```ts
+thresholdConfig = {
+    '0': {color: 'green'},
+    '40': {color: 'orange'},
+    '75.5': {color: 'red'}
+};
 ```
 
-The colors are spread evenly across the whole scale, from `min` to `max`, and don't move with the value. The bar reveals more of the gradient as the value rises, so the color at its tip shows where the value sits: in the example above, a low value ends in green and a high value ends in red.
+```html
+<ngx-gauge [value]="currentValue" [thresholds]="thresholdConfig" foregroundGradient></ngx-gauge>
+```
 
-- A single color works the same as `foregroundColor`.
-- `foregroundGradient` takes precedence over `foregroundColor`. If `thresholds` are set and the matching threshold has a `color`, the threshold color wins.
-- Browsers without conic gradient support (older than Chrome 99, Safari 16.4, Firefox 112) use the first color.
+Each color sits exactly at its threshold value on the scale: pure green at `0`, pure orange at `40`, pure red at `75.5`, blending in between and staying red up to `max`. The gradient is fixed to the scale and doesn't move with the value, so the color at the tip of the bar follows the thresholds: a value of `40` ends in orange, a value of `90` ends in red.
+
+- It needs at least two thresholds with a `color`. With fewer, the gauge behaves as if `foregroundGradient` were off.
+- Below the first threshold the bar uses the first threshold's color. Threshold keys outside `min`..`max` are clamped to the ends of the scale.
+- `backgroundColor` and `bgOpacity` on thresholds work the same as before.
+- Browsers without conic gradient support (older than Chrome 99, Safari 16.4, Firefox 112) keep the regular per-threshold colors.
 
 ## Custom Directives for display text
 
