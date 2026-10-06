@@ -27,6 +27,12 @@
               "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
             ],
             "scripts": [],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/demo/public"
+              }
+            ],
             "extractLicenses": false,
             "sourceMap": true,
             "optimization": false,

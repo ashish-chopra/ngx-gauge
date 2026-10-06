@@ -10,6 +10,7 @@
     "build:demo": "ng build --configuration=production --base-href=/ngx-gauge/",
     "test": "ng test",
     "test:ci": "ng test ngx-gauge --no-watch --no-progress --coverage",
+    "test:demo": "ng test demo --no-watch --no-progress",
     "lint": "ng lint",
     "pack": "cd dist/ngx-gauge && npm pack"
   },
