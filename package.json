@@ -38,7 +38,7 @@
     "@angular-eslint/schematics": "^22.5.0",
     "@angular-eslint/template-parser": "^22.5.0",
     "@angular/build": "^22.2.0",
-    "@angular/cli": "^22.2.0",
+    "@angular/cli": "^22.2.3",
     "@angular/compiler-cli": "^22.2.0",
     "@angular/language-service": "^22.2.0",
     "@eslint/js": "^10.0.1",
